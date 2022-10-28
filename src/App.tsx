@@ -1,13 +1,31 @@
 import React from "react";
 import styled from "styled-components";
 
-import "./App.css";
-
 import { Footer } from "./components/footer";
 import { Header } from "./components/header";
 
 const range = (from: number, to: number) => {
   return Math.floor(Math.random() * (to - from) + from);
+};
+
+const imgs = [
+  "1.png",
+  "2.png",
+  "3.png",
+  "4.png",
+  "5.png"
+];
+
+const getImg = (exclude: string[] = []) => {
+  const filtered = imgs.filter(f => !exclude.includes(f));
+  return filtered[Math.floor(Math.random() * filtered.length)];
+};
+
+const getNUniqueImgs = (n: number) => {
+  const _imgs: string[] = [];
+  for(let i = 0; i < n; i++)
+    _imgs.push(getImg(_imgs));
+  return _imgs;
 };
 
 const Content = () => {
@@ -30,9 +48,11 @@ const Content = () => {
 };
 
 const BG = () => {
+  const uimgs = getNUniqueImgs(2);
+
   return <BGStyle>
-    <div className="container left"><img src="img/1.png"></img></div>
-    <div className='container right'><img src="img/2.png"></img></div>
+    <div className="container left"><img src={`img/${uimgs[0]}`}></img></div>
+    <div className='container right'><img src={`img/${uimgs[1]}`}></img></div>
   </BGStyle>;
 };
 
@@ -54,6 +74,10 @@ const AppStyle = styled.div`
 	width: 100vw;
 	display: flex;
 	flex-direction: column;
+
+	@function hexToRGB($hex) {
+		@return red($hex), green($hex), blue($hex);
+	}
 `;
 
 const BGStyle = styled.div`
@@ -90,6 +114,10 @@ const ContentStyle = styled.div`
 	flex-direction: column;
 	align-items: center;
 
+	p {
+		text-align: center;
+	}
+
 	ul {
 		list-style: none;
 		padding: 0;
@@ -114,6 +142,8 @@ const ContentStyle = styled.div`
 		padding-top: 0;
 		overflow: hidden;
 		margin-bottom: 20px;
+		background-color: var(--c-p1-aa);
+
 		h2 {
 			text-align: center;
 		}

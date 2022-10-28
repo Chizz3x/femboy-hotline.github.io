@@ -15,6 +15,8 @@ export { Header };
 const HeaderStyle = styled.div`
 	width: 100%;
 	box-shadow: 0 0 5px var(--c-p);
+	background-color: var(--c-p1);
+	
 	.container {
 		padding-left: 20px;
 		padding-right: 20px;

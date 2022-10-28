@@ -25,6 +25,8 @@ const FooterStyle = styled.div`
 	justify-content: center;
 	padding-bottom: 20px;
 	padding-top: 20px;
+	text-align: center;
+	background-color: var(--c-p1);
 
 	.small {
 		color: var(--c-p3)
