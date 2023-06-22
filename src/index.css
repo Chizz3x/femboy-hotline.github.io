@@ -15,6 +15,11 @@ code {
     monospace;
 }
 
+.fake-link {
+	color: var(--c-pink1);
+	cursor: pointer;
+}
+
 :root {
 	--c-p:  #000000;
 	--c-p1: #202020;
@@ -26,4 +31,16 @@ code {
 	--c-p6: #BFBFBF;
 	--c-p7: #DFDFDF;
 	--c-p8: #ffffff;
+
+	--c-pink1: #fb5ec7;
+	--c-pink2: #b92d8a;
+	--c-pink3: #ff97dc;
+}
+
+::-webkit-scrollbar {
+	background-color: var(--c-p);
+}
+
+::-webkit-scrollbar-thumb {
+	background-color: var(--c-p1);
 }

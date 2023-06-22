@@ -1,65 +1,118 @@
+import "react-toastify/dist/ReactToastify.css";
+
 import React from "react";
 import styled from "styled-components";
+import { ToastContainer, toast } from "react-toastify";
 
 import { Footer } from "./components/footer";
 import { Header } from "./components/header";
 
-const range = (from: number, to: number) => {
-  return Math.floor(Math.random() * (to - from) + from);
-};
-
-const imgs = [
-  "1.png",
-  "2.png",
-  "3.png",
-  "4.png",
-  "5.png"
-];
-
-const getImg = (exclude: string[] = []) => {
-  const filtered = imgs.filter(f => !exclude.includes(f));
-  return filtered[Math.floor(Math.random() * filtered.length)];
-};
-
-const getNUniqueImgs = (n: number) => {
-  const _imgs: string[] = [];
-  for(let i = 0; i < n; i++)
-    _imgs.push(getImg(_imgs));
-  return _imgs;
-};
-
 const Content = () => {
   return <ContentStyle>
-    <h1>Hi to Femboys!</h1>
-    <p>{"It's okay to be yourself, but this is a bit too much..."}</p>
-    <div className='main-container'>
-      <h2>Hotline:</h2>
-      <div className="hotline">
-        <ul className='center'>
-          {
-            (new Array(Math.round(Math.random() * (50 - 20) + 20)))
-              .fill(undefined)
-              .map((m, i) => <li key={i}>{`+48 (${range(10, 80)}) ${range(120, 190)} ${range(10, 99)} ${range(10, 99)}`}</li>)
-          }
-        </ul>
+    <div className="image">
+      <img src="img/1.png"></img>
+      <div className='image-text-bottom'>
+        <h2>Hi to Femboys!</h2>
+      </div>
+    </div>
+    <div className='content1'>
+      <div className='content1-inline'>
+        <h3>Femboy Fellaboy Service</h3>
+        <span>Every Femboy is our fella, no matter the color, age, religious and political views.</span>
+      </div>
+      <div className='content1-inline'>
+        <h3>Click n&apos; Call</h3>
+        <span>Quick and simple way to get in touch with our Femboy friends, just click n&apos; call!</span>
+      </div>
+      <div className='content1-inline'>
+        <h3>Spread AIDS with us!</h3>
+        <span>Who cares about reproduction, right?<br/>WE WANT MEN!</span>
+      </div>
+    </div>
+    <div className="image">
+      <img src="img/2.png"></img>
+      <div className='image-text'>
+        <div className='image-text-box image-text-box-right'>
+          <h2>About us</h2>
+          <span>Out goal is to support Femboys in this cruel and unforgiving world.</span>
+        </div>
+      </div>
+    </div>
+    <div className="image">
+      <img src="img/3.png"></img>
+      <div className='image-text'>
+        <div className='image-text-box image-text-box-left'>
+          <h2>Why???</h2>
+          <span>Femboys...</span>
+        </div>
+      </div>
+    </div>
+    <div className='content2'>
+      <div className='content2-box'>
+        <div className='content2-sub-box'>
+          <span className='content2-box-header'>350 Mil</span>
+          <span className='content2-box-info'>Femboys worldwide</span>
+        </div>
+        <div className='content2-sub-box'>
+          <span className='content2-box-header'>100%</span>
+          <span className='content2-box-info'>Femboys using Linux</span>
+        </div>
+        <div className='content2-sub-box'>
+          <span className='content2-box-header'>Since 1990</span>
+          <span className='content2-box-info'>Still exist</span>
+        </div>
+      </div>
+    </div>
+    <div className='content3'>
+      <div className='content3-profile-box'>
+        <div className='content3-profile-icon-box'>
+          <img src='img/p1.png' />
+        </div>
+        <div className='content3-profile-info-box'>
+          <span className='content3-profile-quote'>&quot;Best hotline ever! Be the reason their Bussy quivers.&quot;</span>
+          <span className='content3-profile-name'>A-wut Suparat</span>
+          <span className='content3-profile-country'>- Phichit, Thailand</span>
+        </div>
+      </div>
+      <div className='content3-profile-box'>
+        <div className='content3-profile-icon-box'>
+          <img src='img/p2.png' />
+        </div>
+        <div className='content3-profile-info-box'>
+          <span className='content3-profile-quote'>&quot;Never thought I&apos;d meet that much daily buttplug enjoyers. Thanks Femboy Hotline!&quot;</span>
+          <span className='content3-profile-name'>Aabheer Juntasa</span>
+          <span className='content3-profile-country'>- Loei, Thailand</span>
+        </div>
+      </div>
+      <div className='content3-profile-box'>
+        <div className='content3-profile-icon-box'>
+          <img src='img/p3.png' />
+        </div>
+        <div className='content3-profile-info-box'>
+          <span className='content3-profile-quote'>&quot;I don&apos;t know why I&apos;m here...&quot;</span>
+          <span className='content3-profile-name'>Walter Hartwell White</span>
+          <span className='content3-profile-country'>- Albuquerque, New Mexico</span>
+        </div>
+      </div>
+    </div>
+    <div className="image image-end">
+      <img src="img/4.png"></img>
+      <div className='image-text'>
+        <div className='image-text-box image-text-box-left'>
+          <h2>It is time to join us</h2>
+          <span>Call us now! <span className='fake-link' onClick={() => toast("Or maybe not...", { type: "info" })}>+48 123 123 69</span></span>
+        </div>
       </div>
     </div>
   </ContentStyle>;
 };
 
-const BG = () => {
-  const uimgs = getNUniqueImgs(2);
-
-  return <BGStyle>
-    <div className="container left"><img src={`img/${uimgs[0]}`}></img></div>
-    <div className='container right'><img src={`img/${uimgs[1]}`}></img></div>
-  </BGStyle>;
-};
+const toastStyle: React.CSSProperties = { background: "var(--c-p1-aa)" };
 
 const App = () => {
   return (
     <AppStyle className="App">
-      <BG />
+      <ToastContainer toastStyle={toastStyle} position="bottom-left" />
       <Header />
       <Content />
       <Footer />
@@ -73,6 +126,7 @@ const AppStyle = styled.div`
 	height: 100vh;
 	width: 100vw;
 	display: flex;
+	overflow-x: hidden;
 	flex-direction: column;
 
 	@function hexToRGB($hex) {
@@ -80,88 +134,198 @@ const AppStyle = styled.div`
 	}
 `;
 
-const BGStyle = styled.div`
-	position: absolute;
-	width: 100vw;
-	height: 100vh;
-	z-index: -1;
-	display: flex;
-	flex-direction: row;
-	filter: brightness(.5);
-	overflow: hidden;
-	.container {
-		position: relative;
-		height: 100%;
-		width: 50%;
-		&.left img {
-			left: 0;
-		}
-		&.right img {
-			right: 0;
-		}
-		img {
-			position: absolute;
-			bottom: 0;
-			width: 500px;
-		}
-	}
-`;
-
 const ContentStyle = styled.div`
+	flex-shrink: 0;
 	flex-grow: 1;
-	overflow: hidden;
+	overflow-x: hidden;
 	display: flex;
+	width: 100vw;
 	flex-direction: column;
 	align-items: center;
 
-	p {
-		text-align: center;
-	}
+	.image {
+		width: 100%;
+		height: 600px;
+		overflow: hidden;
+		position: relative;
+		&.image-end {
+			> img {
+				filter: brightness(0.7);
+			}
+			.image-text {
+				justify-content: center;
+				text-align: center;
+			}
+		}
+		> img {
+			z-index: -1;
+			filter: brightness(0.9);
+			position: absolute;
+			top: 0;
+			bottom: 0;
+			margin: auto;
+			object-fit: cover;
+			width: 100%;
+			height: 100%;
+		}
 
-	ul {
-		list-style: none;
-		padding: 0;
-		li {
-			line-height: 30px;
+		.image-text {
+			width: 100%;
+			height: 100%;
+			display: flex;
+			align-items: center;
+			:has(.image-text-box-right) {
+				justify-content: right;
+			}
+			.image-text-box {
+				background-color: var(--c-p1-aa);
+				padding: 0 30px;
+				padding-bottom: 30px;
+				max-width: 400px;
+				min-width: 300px;
+				&.image-text-box-right {
+					margin-right: 50px;
+					> h2 {
+						text-align: right;
+					}
+				}
+				&.image-text-box-left {
+					margin-left: 50px;
+				}
+				> h2 {
+					font-size: 32px;
+					color: var(--c-pink1);
+				}
+			}
+		}
+
+		.image-text-bottom {
+			background-image: linear-gradient(transparent, var(--c-p1) 90%);
+			width: 100%;
+			position: absolute;
+			bottom: 0;
+			left: 0;
+			text-align: center;
+			color: var(--c-pink1);
+			> h2 {
+				font-size: 42px;
+				-webkit-text-stroke: 2px var(--c-p1);
+			}
 		}
 	}
 
-	.center {
+	.content1 {
+		width: 100%;
 		display: flex;
-		flex-direction: column;
-		align-items: center;
-	}
-
-	.main-container {
-		display: flex;
-		flex-direction: column;
-		width: 500px;
-		box-shadow: 0 0 5px var(--c-p);
-		border-radius: 30px;
-		padding: 25px;
-		padding-top: 0;
-		overflow: hidden;
-		margin-bottom: 20px;
-		background-color: var(--c-p1-aa);
-
-		h2 {
+		justify-content: space-evenly;
+		height: 300px;
+		.content1-inline {
+			> h3 {
+				color: var(--c-pink1);
+			}
+			> span {
+				color: var(--c-p7);
+			}
+			flex-grow: 1;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			flex-direction: column;
+			max-width: 210px;
 			text-align: center;
 		}
-		.hotline {
-			overflow-y: scroll;
-			height: 100%;
-			::-webkit-scrollbar {
-				width: 10px;
+	}
+
+	.content2 {
+		width: 100%;
+		height: 400px;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		@keyframes flicker {
+			0% {
+				box-shadow: 0 -5px 6px -4px var(--c-pink1), 0 5px 6px -4px var(--c-pink1);
 			}
-			::-webkit-scrollbar-track {
-				background: transparent;
+			25% {
+				box-shadow: 0 -5px 10px -4px var(--c-pink1), 0 5px 10px -4px var(--c-pink1);
 			}
-			::-webkit-scrollbar-thumb {
-				background: var(--c-p4);
-				border-radius: 5px;
+			50% {
+				box-shadow: 0 -5px 7px -4px var(--c-pink1), 0 5px 7px -4px var(--c-pink1);
 			}
-			::-webkit-scrollbar-thumb:hover {
-				background: var(--c-p3);
+			75% {
+				box-shadow: 0 -5px 6px -4px var(--c-pink1), 0 5px 6px -4px var(--c-pink1);
+			}
+			100% {
+				box-shadow: 0 -5px 5px -4px var(--c-pink1), 0 5px 5px -4px var(--c-pink1);
+			}
+		}
+		.content2-box {
+			padding: 10px 30px;
+			background-color: var(--c-p2);
+			width: 400px;
+			animation: flicker 5s cubic-bezier(0.5, 0, 0.5, 1) 0s infinite alternate;
+			.content2-sub-box {
+				text-align: center;
+				display: flex;
+				flex-direction: column;
+				:not(:last-child) {
+					margin-bottom: 20px;
+				}
+				.content2-box-header {
+					font-size: 32px;
+					font-weight: 700;
+					color: var(--c-pink3);
+				}
+				.content2-box-info {
+					color: var(--c-p7);
+					font-size: 14px;
+				}
+			}
+		}
+	}
+
+	.content3 {
+		width: 100%;
+		height: 400px;
+		display: flex;
+		align-items: center;
+		justify-content: space-around;
+		background-color: var(--c-p2);
+		.content3-profile-box {
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			width: 300px;
+			.content3-profile-icon-box {
+				border-radius: 50%;
+				overflow: hidden;
+				position: relative;
+				width: 150px;
+				height: 150px;
+				margin-bottom: 10px;
+				> img {
+					position: absolute;
+					top: 0;
+					bottom: 0;
+					margin: auto;
+					width: 100%;
+					height: 100%;
+					object-fit: cover;
+				}
+			}
+			.content3-profile-info-box {
+				text-align: center;
+				display: flex;
+				flex-direction: column;
+				.content3-profile-quote {
+					font-size: 22px;
+				}
+				.content3-profile-name {
+					color: var(--c-p7);
+				}
+				.content3-profile-country {
+					color: var(--c-p6);
+				}
 			}
 		}
 	}
