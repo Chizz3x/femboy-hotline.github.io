@@ -58,7 +58,7 @@ root.render(
     <BrowserRouter>
       <Routes>
         {PAGES.map((page, index) => <Route key={index} {...page} path={`${page.path}`} />)}
-        <Route path="*" element={<Layout><P404 /></Layout>}></Route>
+        <Route path="/*" element={<Layout><P404 /></Layout>}></Route>
       </Routes>
     </BrowserRouter>
   </React.StrictMode>
