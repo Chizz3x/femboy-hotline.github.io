@@ -101,6 +101,12 @@ const Home = () => {
           </div>
         </div>
       </div>
+      <div className='content4'>
+        <h2>Donator wall!</h2>
+        <span className='smol gray'>Here is what our donators left to hang</span>
+        <p>Oh well, they didn&apos;t leave anything after all...</p>
+        <span>:(</span>
+      </div>
     </HomeStyle>
   );
 };
@@ -114,6 +120,13 @@ const HomeStyle = styled.div`
 	width: 100%;
 	flex-direction: column;
 	align-items: center;
+
+	.gray {
+		color: var(--c-p3);
+	}
+	.smol {
+		font-size: 14px;
+	}
 
 	.image {
 		width: 100%;
@@ -300,6 +313,11 @@ const HomeStyle = styled.div`
 				}
 			}
 		}
+	}
+
+	.content4 {
+		padding: 50px 0;
+		text-align: center;
 	}
 
 	${CSSMediaSize.tablet} {

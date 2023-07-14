@@ -15,10 +15,12 @@ const Header = () => {
 
   return <HeaderStyle>
     <div className='container container-left'>
-      <div className='container-parts'>
-        <img className='icon' src="favicon.png"></img>
-        <div className='tab tab-main'><i>Femboy Hotline</i></div>
-      </div>
+      <a href={ROUTES.home}>
+        <div className='container-parts'>
+          <img className='icon' src="favicon.png"></img>
+          <div className='tab tab-main'><i>Femboy Hotline</i></div>
+        </div>
+      </a>
       <div className='container-parts menu-info'>
         <span className='call-text'>
           <span>Call us today!</span>
@@ -55,6 +57,10 @@ const HeaderStyle = styled.div`
 	flex-direction: row;
 	padding: 10px 20px;
 
+	a {
+		text-decoration: none;
+	}
+
 	button {
 		padding: 20px 40px;
 		background-color: transparent;
@@ -85,6 +91,13 @@ const HeaderStyle = styled.div`
 		.menu-info {
 			font-size: 14px;
 			margin-left: 30px;
+			.call-text {
+				> span {
+					:not(:last-child) {
+						margin-right: 10px;
+					}
+				}
+			}
 		}
 		.container-parts {
 			display: flex;
@@ -123,6 +136,9 @@ const HeaderStyle = styled.div`
 				.call-text {
 					display: flex;
 					flex-direction: column;
+					> span {
+						margin: 0 !important;
+					}
 				}
 				.mobile-menu {
 					display: block;

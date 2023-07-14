@@ -43,6 +43,10 @@ export default createGlobalStyle`
 		}
 	}
 
+	a {
+		color: unset
+	}
+
 	button {
 		background-color: var(--c-p2);
 		border: none;
@@ -74,6 +78,8 @@ export default createGlobalStyle`
 		--c-pink1: #fb5ec7;
 		--c-pink2: #b92d8a;
 		--c-pink3: #ff97dc;
+
+		--c-red1: #f43c32;
 	}
 
 	::-webkit-scrollbar {

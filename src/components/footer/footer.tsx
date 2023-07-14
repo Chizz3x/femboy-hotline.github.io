@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import { CSSMediaSize } from "../../const";
+import { CSSMediaSize, DISCORD_INVITE, PATREON } from "../../const";
 
 const Footer = () => {
   return <FooterStyle>
@@ -23,8 +23,8 @@ const Footer = () => {
       <table className='icon-table'>
         <tbody>
           <tr>
-            <td><a target="_blank" href="https://discord.gg/yKTgJzceWh" rel="noreferrer"><span className='icon-discord' /></a></td>
-            <td><a target="_blank" href="https://www.patreon.com/Milim" rel="noreferrer"><span className='icon-5968732' /></a></td>
+            <td><a target="_blank" href={DISCORD_INVITE} rel="noreferrer"><span className='icon-discord' /></a></td>
+            <td><a target="_blank" href={PATREON} rel="noreferrer"><span className='icon-5968732' /></a></td>
           </tr>
         </tbody>
       </table>

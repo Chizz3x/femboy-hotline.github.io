@@ -15,3 +15,6 @@ export const CSSMediaSize = {
   pc_huge:
     "@media only screen and (max-width: 1600px)",
 };
+
+export const DISCORD_INVITE = "https://discord.gg/yKTgJzceWh";
+export const PATREON = "https://www.patreon.com/Milim";

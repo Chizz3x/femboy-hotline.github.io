@@ -7,7 +7,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { ROUTES } from "./routes";
 import P404 from "./pages/404";
 import { ToastContainer } from "react-toastify";
-import Layout from "./layout";
+import { Layout } from "./components/layout";
 import About from "./pages/about/About";
 import Contact from "./pages/contact/Contact";
 import Donate from "./pages/donate/Donate";
