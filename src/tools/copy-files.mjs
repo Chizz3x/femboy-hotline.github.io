@@ -1,7 +1,7 @@
 import fs from "fs";
 import PlatformPath from "path";
 
-const toMove = ["CNAME"];
+const toMove = [];
 
 (async () => {
   for(const file of toMove) {

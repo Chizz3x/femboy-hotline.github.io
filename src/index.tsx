@@ -2,7 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import "react-toastify/dist/ReactToastify.css";
 import "./icons.css";
-import Home from "./routes/Home";
+import Home from "./pages/Home";
 import {
   BrowserRouter,
   Route,
@@ -10,13 +10,16 @@ import {
   Routes
 } from "react-router-dom";
 import { ROUTES } from "./routes";
-import P404 from "./routes/404";
+import P404 from "./pages/404";
 import { ToastContainer } from "react-toastify";
 import { Layout } from "./components/layout";
-import About from "./routes/about";
-import Contact from "./routes/contact";
-import Donate from "./routes/donate";
+import About from "./pages/about";
+import Contact from "./pages/contact";
+import Donate from "./pages/donate";
 import GlobalStyle from "./style";
+import Discord from "./pages/discord";
+import Patreon from "./pages/patreon";
+import Coffee from "./pages/coffee";
 
 const toastStyle: React.CSSProperties = { background: "var(--c-p1-aa)" };
 
@@ -47,6 +50,24 @@ const PAGES: RouteProps[] = [
     path: ROUTES.donate,
     element: <Layout>
       <Donate />
+    </Layout>
+  },
+  {
+    path: ROUTES.discord,
+    element: <Layout>
+      <Discord />
+    </Layout>
+  },
+  {
+    path: ROUTES.patreon,
+    element: <Layout>
+      <Patreon />
+    </Layout>
+  },
+  {
+    path: ROUTES.coffee,
+    element: <Layout>
+      <Coffee />
     </Layout>
   }
 ];
