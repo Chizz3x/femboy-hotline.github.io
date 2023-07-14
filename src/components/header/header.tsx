@@ -3,6 +3,7 @@ import { toast } from "react-toastify";
 import styled from "styled-components";
 import { ROUTES } from "../../routes";
 import { CSSMediaSize } from "../../const";
+import { Link } from "react-router-dom";
 
 const Header = () => {
   const [ currentRoute, setCurrentRoute ] = React.useState("");
@@ -15,12 +16,12 @@ const Header = () => {
 
   return <HeaderStyle>
     <div className='container container-left'>
-      <a href={ROUTES.home}>
+      <Link to={ROUTES.home}>
         <div className='container-parts'>
           <img className='icon' src="favicon.png"></img>
           <div className='tab tab-main'><i>Femboy Hotline</i></div>
         </div>
-      </a>
+      </Link>
       <div className='container-parts menu-info'>
         <span className='call-text'>
           <span>Call us today!</span>
@@ -33,10 +34,10 @@ const Header = () => {
     </div>
     <div className='container container-right'>
       <div className='container-parts'>
-        <a href={ROUTES.home}><button className={currentRoute === ROUTES.home ? "active" : ""}>Home</button></a>
-        <a href={ROUTES.about}><button className={currentRoute === ROUTES.about ? "active" : ""}>About</button></a>
-        <a href={ROUTES.contact}><button className={currentRoute === ROUTES.contact ? "active" : ""}>Contact</button></a>
-        <a href={ROUTES.donate}><button className={currentRoute === ROUTES.donate ? "active" : ""}>Donate</button></a>
+        <Link to={ROUTES.home}><button className={currentRoute === ROUTES.home ? "active" : ""}>Home</button></Link>
+        <Link to={ROUTES.about}><button className={currentRoute === ROUTES.about ? "active" : ""}>About</button></Link>
+        <Link to={ROUTES.contact}><button className={currentRoute === ROUTES.contact ? "active" : ""}>Contact</button></Link>
+        <Link to={ROUTES.donate}><button className={currentRoute === ROUTES.donate ? "active" : ""}>Donate</button></Link>
       </div>
     </div>
   </HeaderStyle>;

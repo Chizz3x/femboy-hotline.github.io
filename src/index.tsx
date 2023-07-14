@@ -2,15 +2,20 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import "react-toastify/dist/ReactToastify.css";
 import "./icons.css";
-import Home from "./pages/Home";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Home from "./routes/Home";
+import {
+  BrowserRouter,
+  Route,
+  RouteProps,
+  Routes
+} from "react-router-dom";
 import { ROUTES } from "./routes";
-import P404 from "./pages/404";
+import P404 from "./routes/404";
 import { ToastContainer } from "react-toastify";
 import { Layout } from "./components/layout";
-import About from "./pages/about/About";
-import Contact from "./pages/contact/Contact";
-import Donate from "./pages/donate/Donate";
+import About from "./routes/about";
+import Contact from "./routes/contact";
+import Donate from "./routes/donate";
 import GlobalStyle from "./style";
 
 const toastStyle: React.CSSProperties = { background: "var(--c-p1-aa)" };
@@ -19,46 +24,30 @@ const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
 );
 
-const PAGES = [
+const PAGES: RouteProps[] = [
   {
     path: ROUTES.home,
-    element: () => {
-      return <Layout>
-        <Home />
-      </Layout>;
-    }
+    element: <Layout>
+      <Home />
+    </Layout>
   },
   {
     path: ROUTES.about,
-    element: () => {
-      return <Layout>
-        <About />
-      </Layout>;
-    }
+    element: <Layout>
+      <About />
+    </Layout>
   },
   {
     path: ROUTES.contact,
-    element: () => {
-      return <Layout>
-        <Contact />
-      </Layout>;
-    }
+    element: <Layout>
+      <Contact />
+    </Layout>
   },
   {
     path: ROUTES.donate,
-    element: () => {
-      return <Layout>
-        <Donate />
-      </Layout>;
-    }
-  },
-  {
-    path: "*",
-    element: () => {
-      return <Layout>
-        <P404 />
-      </Layout>;
-    }
+    element: <Layout>
+      <Donate />
+    </Layout>
   }
 ];
 
@@ -68,7 +57,8 @@ root.render(
     <ToastContainer toastStyle={toastStyle} position="bottom-left" />
     <BrowserRouter>
       <Routes>
-        {PAGES.map((page, index) => <Route key={index} path={page.path} element={<page.element />} />)}
+        {PAGES.map((page, index) => <Route key={index} {...page} path={`${page.path}`} />)}
+        <Route path="*" element={<Layout><P404 /></Layout>}></Route>
       </Routes>
     </BrowserRouter>
   </React.StrictMode>

@@ -18,7 +18,7 @@ const Donate = () => {
           <img src="/img/donate/patreon.png" />
         </div>
       </a>
-      <a className='coffee' href="https://www.buymeacoffee.com/Milim" target="_blank" rel="noreferrer">
+      <a target="_blank" className='coffee' href="https://www.buymeacoffee.com/Milim" rel="noreferrer">
         <img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" />
       </a>
     </div>

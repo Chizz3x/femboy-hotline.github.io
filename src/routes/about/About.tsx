@@ -14,7 +14,7 @@ const About = () => {
 
     <h2>Origin Story</h2>
     <p>Femboy Hotline emerged from an internet meme, capturing the playful and humorous spirit of the community. What started as a lighthearted joke quickly gained our attention, and we decided to turn it into a website for fun!</p>
-    <p>True origin of this idea is <a href={"https://www.reddit.com/r/lgbtmemes/comments/wqxqno/theres_a_femboy_hotline/"}>here</a></p>
+    <p>True origin of this idea is <a target="_blank" href={"https://www.reddit.com/r/lgbtmemes/comments/wqxqno/theres_a_femboy_hotline/"} rel="noreferrer">here</a></p>
     
     <h2>Our Mission</h2>
     <p>At Femboy Hotline, our mission is to create a safe and inclusive space where femboy enthusiasts can come together to celebrate and appreciate the femboy culture. We aim to promote positivity, self-expression, and a sense of belonging within our community.</p>
