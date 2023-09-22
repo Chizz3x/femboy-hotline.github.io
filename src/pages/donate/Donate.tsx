@@ -22,6 +22,12 @@ const Donate = () => {
         <img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" />
       </a>
     </div>
+
+    <p>
+			Currently, as you noticed, the site has annoying ads. That is because I need to pay for the domain and donations are not helping.
+      <br></br>
+			But don&apos;t worry, once donations start covering up domain costs, ads will be removed ;P
+    </p>
   </DonateStyle>;
 };
 

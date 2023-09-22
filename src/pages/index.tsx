@@ -68,7 +68,6 @@ const Index = () => {
   const [ isProper, setIsProper ] = React.useState(false);
 
   React.useEffect(() => {
-    console.log("load");
     if(location.search.startsWith("?/")) {
       navigate(location.search.slice(1));
     }
@@ -77,12 +76,10 @@ const Index = () => {
 
   if(!isProper) return null;
 
-  return <>
-    <Routes>
-      {PAGES.map((page, index) => <Route key={index} {...page} path={`${page.path}`} />)}
-      <Route path="/*" element={<Layout><P404 /></Layout>}></Route>
-    </Routes>
-  </>;
+  return <Routes>
+    {PAGES.map((page, index) => <Route key={index} {...page} path={`${page.path}`} />)}
+    <Route path="/*" element={<Layout><P404 /></Layout>}></Route>
+  </Routes>;
 };
 
 export default Index;
