@@ -1,13 +1,29 @@
 import React from "react";
 import styled from "styled-components";
 import { CSSMediaSize, DISCORD_INVITE, PATREON } from "../../const";
+import { Link } from "react-router-dom";
+import { ROUTES } from "../../routes";
 
 const Footer = () => {
   return <FooterStyle>
-    <div className="footer-box footer-box-left"></div>
+    <div className="footer-box footer-box-left">
+      <table className='link-table'>
+        <tbody>
+          <tr>
+            <td><Link to={ROUTES.about}>About</Link></td>
+          </tr>
+          <tr>
+            <td><Link to={ROUTES.contact}>Contact</Link></td>
+          </tr>
+          <tr>
+            <td><Link to={ROUTES.privacyPolicy}>Privacy policy</Link></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
     <div className='footer-box footer-box-middle'>
       <div>
-        <span>Femboy hotline for all my femboys</span>
+        <span>Femboy hotline for all our Femboys</span>
       </div>
       <div>
         <span>Made with <span className='love-icon' title="Love">❤</span></span>
@@ -53,6 +69,7 @@ const FooterStyle = styled.div`
 	.footer-box-left {
 		justify-content: left;
 		padding-left: 20px;
+		text-align: left;
 	}
 	.footer-box-middle {
 		flex-direction: column;

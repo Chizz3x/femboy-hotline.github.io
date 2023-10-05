@@ -4,13 +4,22 @@ import { COFFEE, PATREON } from "../../const";
 
 const Donate = () => {
   return <DonateStyle>
-    <h2>This costs $</h2>
-    <p>As most of us know, keeping a website well fed and dressed costs money, just like your children (if you have any (i don&apos;t)).</p>
-    <p>And as most of us know money does not grow on trees (although it kinda does)</p>
-    <p>So hence this page for kind people who are not dads yet and have some $ to spare, i present you <b className='brand'>DONATIONS</b></p>
-    <h2>Do I get anything?</h2>
-    <p>Oh hell yeah! Honestly the only stuff you get for donating could be a good feeling for being a part of this and mentioning you on homepage!</p>
-    <p>On homepage, we can reserve you a completely custom line of text where you can style it however you want and write there anything your bulge desires. (With little to no limits)</p>
+    <h2>Support femboy-hotline.com</h2>
+
+    <p>Running and maintaining femboy-hotline.com incurs costs for hosting, domain registration, and other operational
+		expenses. We are committed to providing valuable content to our visitors free of charge. If you find our website
+		helpful and would like to support our efforts, we welcome your donations.</p>
+
+    <h2>Why Donate?</h2>
+    <p>Your donations help us in the following ways:</p>
+    <ul>
+      <li>Keep the website online and accessible to everyone.</li>
+      <li>Improve and expand our content and features.</li>
+      <li>Cover the expenses associated with running and maintaining the site.</li>
+    </ul>
+
+    <h2>How to Donate</h2>
+    <p>If you would like to make a donation to support femboy-hotline.com, you can do so via the following methods:</p>
 
     <div className='donate-links'>
       <a target="_blank" href={PATREON} rel="noreferrer">
@@ -23,11 +32,14 @@ const Donate = () => {
       </a>
     </div>
 
-    <p>
-			Currently, as you noticed, the site has annoying ads. That is because I need to pay for the domain and donations are not helping.
-      <br></br>
-			But don&apos;t worry, once donations start covering up domain costs, ads will be removed ;P
-    </p>
+    <h2>Notice About Ads</h2>
+    <p>This website may display ads to help cover its operational costs. We are committed to keeping our content free
+        for all users. However, if donation contributions cover our expenses in the future, we may consider removing
+        ads to enhance the user experience. Your support is crucial in achieving this goal.</p>
+
+    <h2>Thank You</h2>
+    <p>Your support is greatly appreciated. By donating, you help ensure that femboy-hotline.com can continue to
+        provide valuable information and resources to our community. Thank you for being a part of our mission.</p>
   </DonateStyle>;
 };
 
@@ -37,12 +49,12 @@ const DonateStyle = styled.div`
 	flex-shrink: 0;
 	flex-grow: 1;
 	padding: 20px 50px;
-	text-align: center;
 	.donate-links {
 		margin-top: 50px;
 		display: flex;
-		align-items: center;
+		align-items: left;
 		flex-direction: column;
+		width: fit-content;
 		> * {
 			:not(:last-child) {
 				margin-bottom: 10px;

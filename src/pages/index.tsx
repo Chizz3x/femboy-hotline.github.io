@@ -11,6 +11,7 @@ import { Layout } from "../components/layout";
 import About from "./about";
 import Contact from "./contact";
 import Donate from "./donate";
+import PrivacyPolicy from "./privacy-policy";
 import Discord from "./discord";
 import Patreon from "./patreon";
 import Coffee from "./coffee";
@@ -40,6 +41,12 @@ const PAGES: RouteProps[] = [
     path: ROUTES.donate,
     element: <Layout>
       <Donate />
+    </Layout>
+  },
+  {
+    path: ROUTES.privacyPolicy,
+    element: <Layout>
+      <PrivacyPolicy />
     </Layout>
   },
   {

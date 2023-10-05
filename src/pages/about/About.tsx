@@ -24,7 +24,11 @@ const About = () => {
     
     <h2>Join the Fun!</h2>
     <p>We encourage you to explore our website, check on it time at a time, maybe once in a month or so and you might find some interesting stuff here.</p>
-    <p>We might add some easter eggs here, maybe test some neat stuff such as web based mini-games and such.&nbsp;<Tooltip title="Come on, Barbie, let's go party"><span onClick={barbie} className='barbie'>ImAgInAtIoN, LIFE IS YOUR CREATION!</span></Tooltip></p>
+    <p>
+			We might add some easter eggs here, maybe test some neat stuff such as web based mini-games and such.
+      <br/>
+      <Tooltip title="Come on, Barbie, let's go party"><span onClick={barbie} className='barbie'>ImAgInAtIoN, LIFE IS YOUR CREATION!</span></Tooltip>
+    </p>
     <br />
     <p>So go ahead and dive into the fabulous world of femboys! We hope you enjoy your stay at Femboy Hotline!</p>
   </AboutStyle>;

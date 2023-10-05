@@ -17,6 +17,6 @@ export const CSSMediaSize = {
 };
 
 export const DISCORD_INVITE = "https://discord.gg/yKTgJzceWh";
-export const PATREON = "https://www.patreon.com/Milim";
+export const PATREON = "https://patreon.com/FemboyHotline";
 export const COFFEE = "https://www.buymeacoffee.com/Milim";
 export const EMAIL = "femboy.fellaboy@gmail.com";

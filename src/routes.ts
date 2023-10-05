@@ -3,6 +3,7 @@ export const ROUTES = {
   about: "/about",
   contact: "/contact",
   donate: "/donate",
+  privacyPolicy: "/privacy-policy",
   coffee: "/coffee",
   patreon: "/patreon",
   discord: "/discord"

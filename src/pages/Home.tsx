@@ -31,7 +31,7 @@ const Home = () => {
         <div className='image-text'>
           <div className='image-text-box image-text-box-right'>
             <h2>About us</h2>
-            <span>Out goal is to support Femboys in this cruel and unforgiving world.</span>
+            <span>Our goal is to support Femboys in this cruel and unforgiving world.</span>
           </div>
         </div>
       </div>
