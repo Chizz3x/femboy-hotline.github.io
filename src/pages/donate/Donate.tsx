@@ -31,15 +31,6 @@ const Donate = () => {
         <img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" />
       </a>
     </div>
-
-    <h2>Notice About Ads</h2>
-    <p>This website may display ads to help cover its operational costs. We are committed to keeping our content free
-        for all users. However, if donation contributions cover our expenses in the future, we may consider removing
-        ads to enhance the user experience. Your support is crucial in achieving this goal.</p>
-
-    <h2>Thank You</h2>
-    <p>Your support is greatly appreciated. By donating, you help ensure that femboy-hotline.com can continue to
-        provide valuable information and resources to our community. Thank you for being a part of our mission.</p>
   </DonateStyle>;
 };
 

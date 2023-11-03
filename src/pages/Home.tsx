@@ -3,6 +3,8 @@ import styled from "styled-components";
 import { toast } from "react-toastify";
 import { CSSMediaSize } from "../const";
 
+const donatorWall: NHome.IDonatorWall[] = [];
+
 const Home = () => {
   return (
     <HomeStyle id="Home">
@@ -104,12 +106,22 @@ const Home = () => {
       <div className='content4'>
         <h2>Donator wall!</h2>
         <span className='smol gray'>Here is what our donators left to hang</span>
-        <p>Oh well, they didn&apos;t leave anything after all...</p>
+        {
+          donatorWall.length
+            ? donatorWall.map((m, i) => <p key={i}>{m.text}</p>)
+            : <p>Oh well, they didn&apos;t leave anything after all...</p>
+        }
         <span>:(</span>
       </div>
     </HomeStyle>
   );
 };
+
+export namespace NHome {
+	export interface IDonatorWall {
+		text?: string;
+	}
+}
 
 export default Home;
 
