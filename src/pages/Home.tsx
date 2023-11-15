@@ -2,10 +2,45 @@ import React from "react";
 import styled from "styled-components";
 import { toast } from "react-toastify";
 import { CSSMediaSize } from "../const";
+import weekday from "dayjs/plugin/weekday";
+import duration from "dayjs/plugin/duration";
+import dayjs from "dayjs";
+
+dayjs.extend(weekday);
+dayjs.extend(duration);
 
 const donatorWall: NHome.IDonatorWall[] = [];
 
 const Home = () => {
+  const [ time, setTime ] = React.useState(0); // seconds
+  const date = dayjs().startOf("day");
+  const weekdayNow = date.weekday();
+  const lastFriday = weekdayNow >= 5 ? date.weekday(5) : date.subtract(1, "week").weekday(5);
+  const nextFriday = weekdayNow < 5 ? date.weekday(5) : date.add(1, "week").weekday(5);
+  const fridayDiff = Math.abs(nextFriday.diff(lastFriday, "second"));
+  // TODO: Implement some effect if it is friday today WOOOOOOOOOOOOO
+  const isFriday = weekdayNow === 5;
+
+  React.useEffect(() => {
+    let interval: NodeJS.Timer | undefined;
+
+    const updateTime = () => {
+      const dur = Math.abs(dayjs().diff(nextFriday, "second"));
+      setTime(dur);
+    };
+
+    const initTimeout = setTimeout(() => {
+      interval = setInterval(updateTime, 1000);
+    }, new Date().getTime() % 1000);
+
+    updateTime();
+
+    return () => {
+      clearInterval(initTimeout);
+      clearInterval(interval);
+    };
+  }, []);
+
   return (
     <HomeStyle id="Home">
       <div className="image">
@@ -88,10 +123,25 @@ const Home = () => {
             <img src='img/p3.png' />
           </div>
           <div className='content3-profile-info-box'>
-            <span className='content3-profile-quote'>&quot;I don&apos;t know why I&apos;m here...&quot;</span>
+            <span className='content3-profile-quote'>&quot;Gave a call, was not disappointed&quot;</span>
             <span className='content3-profile-name'>Walter Hartwell White</span>
             <span className='content3-profile-country'>- Albuquerque, New Mexico</span>
           </div>
+        </div>
+      </div>
+      <div className='femboy-day-schedule'>
+        <div className='femboy-day-schedule-box'>
+          <span className='femboy-day-title'>Time left until <span className='pinkish-text'>Femboy Friday</span>!</span>
+          <span className='femboy-day-time-text'>{dayjs.duration(time, "seconds").format("D [days] H [hours] m [minutes] s [seconds]")}</span>
+          <div className='process-bar-box'>
+            <div className='progress-bar'>
+              <div className='progress-bar-fill' style={{ width: `${Math.round(100 / fridayDiff * time)}%` }} />
+              <div className='progress-bar-text'>
+                <span>{Math.round(100 / fridayDiff * time)}%</span>
+              </div>
+            </div>
+          </div>
+          <span>Let us celebrate each Friday like it is the last one!</span>
         </div>
       </div>
       <div className="image image-end">
@@ -133,6 +183,10 @@ const HomeStyle = styled.div`
 	flex-direction: column;
 	align-items: center;
 
+	.pinkish-text {
+		color: var(--c-pink3);
+		font-weight: 600;
+	}
 	.gray {
 		color: var(--c-p3);
 	}
@@ -332,6 +386,71 @@ const HomeStyle = styled.div`
 		text-align: center;
 	}
 
+	.progress-bar {
+		position: relative;
+		height: 20px;
+		min-width: 50px;
+		background-color: var(--c-p2);
+		border-radius: 10px;
+		.progress-bar-fill {
+			position: absolute;
+			top: 0;
+			left: 0;
+			border-radius: 10px;
+			background-color: var(--c-pink1);
+			height: 100%;
+		}
+		.progress-bar-text {
+			position: absolute;
+			width: 100%;
+			height: 100%;
+			line-height: 0;
+			top: 0;
+			left: 0;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			mix-blend-mode: difference;
+		}
+	}
+
+	.femboy-day-schedule {
+		width: 100%;
+		min-height: 400px;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		.femboy-day-schedule-box {
+			flex-grow: 1;
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			* {
+				:not(:last-child) {
+					margin-bottom: 10px;
+				}
+				text-align: center;
+			}
+			.femboy-day-title {
+				font-size: 24px;
+			}
+			.process-bar-box {
+				display: flex;
+				justify-content: center;
+				width: 100%;
+				.progress-bar {
+					margin: 0 20px;
+					max-width: 500px;
+					flex-grow: 1;
+				}
+			}
+			.femboy-day-time-text {
+				font-size: 14px;
+				color: var(--c-p6);
+			}
+		}
+	}
+
 	${CSSMediaSize.tablet} {
 		.content1 {
 			flex-direction: column;
@@ -353,7 +472,10 @@ const HomeStyle = styled.div`
 		}
 		.content2 {
 			.content2-box {
-				min-width: auto;
+				flex-grow: 1;
+				margin: 0 20px;
+				max-width: 500px;
+				min-width: 200px;
 			}
 		}
 		.content3 {

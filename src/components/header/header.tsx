@@ -4,15 +4,22 @@ import styled from "styled-components";
 import { ROUTES } from "../../routes";
 import { CSSMediaSize } from "../../const";
 import { Link } from "react-router-dom";
+import { IconButton, MenuItem, Menu } from "@mui/material";
+import { Menu as MenuIcon } from "@mui/icons-material";
 
 const Header = () => {
   const [ currentRoute, setCurrentRoute ] = React.useState("");
+  const [ mobileMenuAnchor, setMobileMenuAnchor ] = React.useState<null | HTMLElement>(null);
 
   React.useEffect(() => {
     if(window?.location?.pathname) {
       setCurrentRoute(window.location.pathname);
     }
   }, [window?.location?.pathname]);
+
+  const toggleMobileMenu = (event?: React.MouseEvent<HTMLElement>) => {
+    setMobileMenuAnchor(state => state ? null : (event?.currentTarget || null));
+  };
 
   return <HeaderStyle>
     <div className='container container-left'>
@@ -28,22 +35,71 @@ const Header = () => {
           <span className='fake-link' onClick={() => toast("It aint real...", { type: "info" })}>+48 123 123 69</span>
         </span>
         <div className='mobile-menu'>
-          <span className='icon-menu' />
+          <IconButton id="mobile-menu" onClick={toggleMobileMenu}>
+            <MenuIcon sx={{ fill: "white" }}></MenuIcon>
+          </IconButton>
+          <MobileMenuStyle
+            disablePortal
+            anchorOrigin={{
+              horizontal: "right",
+              vertical: "bottom", 
+            }}
+            transformOrigin={{
+              horizontal: "right",
+              vertical: "top" 
+            }}
+            MenuListProps={{ "aria-labelledby": "mobile-menu", }}
+            anchorEl={mobileMenuAnchor}
+            open={!!mobileMenuAnchor}
+            onClose={() => toggleMobileMenu()}
+            //PaperProps={{
+            //  style: {
+            //    maxHeight: ITEM_HEIGHT * 4.5,
+            //    width: "20ch",
+            //  },
+            //}}
+          >
+            <MenuItem onClick={() => toggleMobileMenu()}>
+              <Link to={ROUTES.home}><button className={[ currentRoute === ROUTES.home ? "active" : "", "header-mobile-btn" ].join(" ")}>Home</button></Link>
+            </MenuItem>
+            <MenuItem onClick={() => toggleMobileMenu()}>
+              <Link to={ROUTES.about}><button className={[ currentRoute === ROUTES.about ? "active" : "", "header-mobile-btn" ].join(" ")}>About</button></Link>
+            </MenuItem>
+            <MenuItem onClick={() => toggleMobileMenu()}>
+              <Link to={ROUTES.contact}><button className={[ currentRoute === ROUTES.contact ? "active" : "", "header-mobile-btn" ].join(" ")}>Contact</button></Link>
+            </MenuItem>
+            <MenuItem onClick={() => toggleMobileMenu()}>
+              <Link to={ROUTES.donate}><button className={[ currentRoute === ROUTES.donate ? "active" : "", "header-mobile-btn" ].join(" ")}>Donate</button></Link>
+            </MenuItem>
+          </MobileMenuStyle>
         </div>
       </div>
     </div>
     <div className='container container-right'>
       <div className='container-parts'>
-        <Link to={ROUTES.home}><button className={currentRoute === ROUTES.home ? "active" : ""}>Home</button></Link>
-        <Link to={ROUTES.about}><button className={currentRoute === ROUTES.about ? "active" : ""}>About</button></Link>
-        <Link to={ROUTES.contact}><button className={currentRoute === ROUTES.contact ? "active" : ""}>Contact</button></Link>
-        <Link to={ROUTES.donate}><button className={currentRoute === ROUTES.donate ? "active" : ""}>Donate</button></Link>
+        <Link to={ROUTES.home}><button className={[ currentRoute === ROUTES.home ? "active" : "", "header-btn" ].join(" ")}>Home</button></Link>
+        <Link to={ROUTES.about}><button className={[ currentRoute === ROUTES.about ? "active" : "", "header-btn" ].join(" ")}>About</button></Link>
+        <Link to={ROUTES.contact}><button className={[ currentRoute === ROUTES.contact ? "active" : "", "header-btn" ].join(" ")}>Contact</button></Link>
+        <Link to={ROUTES.donate}><button className={[ currentRoute === ROUTES.donate ? "active" : "", "header-btn" ].join(" ")}>Donate</button></Link>
       </div>
     </div>
   </HeaderStyle>;
 };
 
 export { Header };
+
+const MobileMenuStyle = styled(Menu)`
+	.MuiPaper-root {
+		background-color: var(--c-p2);
+		min-width: 100px;
+		max-height: 300px;
+		> ul {
+			> li {
+				justify-content: flex-end;
+			}
+		}
+	}
+`;
 
 const HeaderStyle = styled.div`
 	max-width: 100%;
@@ -62,7 +118,7 @@ const HeaderStyle = styled.div`
 		text-decoration: none;
 	}
 
-	button {
+	.header-btn {
 		padding: 20px 40px;
 		background-color: transparent;
 		border-bottom: 3px solid var(--c-p7);
@@ -72,6 +128,10 @@ const HeaderStyle = styled.div`
 		&.active {
 			border-color: var(--c-pink3);
 		}
+	}
+
+	.header-mobile-btn {
+		text-align: right;
 	}
 	
 	.container {
@@ -144,16 +204,6 @@ const HeaderStyle = styled.div`
 				.mobile-menu {
 					display: block;
 					margin-left: auto;
-					> span {
-						font-size: 24px;
-						transition: color .1s;
-						:active {
-							color: var(--c-pink1) !important;
-						}
-						:hover {
-							color: var(--c-pink3);
-						}
-					}
 				}
 			}
 		}
