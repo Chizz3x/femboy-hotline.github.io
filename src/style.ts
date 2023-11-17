@@ -12,6 +12,7 @@ export default createGlobalStyle`
 
 		background-color: var(--c-p1);
 		color: var(--c-p8);
+		overflow-x: hidden;
 	}
 
 	code {

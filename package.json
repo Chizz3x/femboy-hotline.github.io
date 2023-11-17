@@ -44,6 +44,7 @@
     "@types/react-dom": "18.0.6",
     "dayjs": "^1.11.10",
     "dotenv": "16.3.1",
+    "framer-motion": "^10.16.5",
     "gh-pages": "5.0.0",
     "prettier": "3.0.0",
     "react": "18.2.0",

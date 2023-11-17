@@ -5,6 +5,8 @@ import { CSSMediaSize } from "../const";
 import weekday from "dayjs/plugin/weekday";
 import duration from "dayjs/plugin/duration";
 import dayjs from "dayjs";
+import useScrollIntoView from "../utils/use-scroll-into-view";
+//import { ConfettiGun } from "../components/confetti-gun";
 
 dayjs.extend(weekday);
 dayjs.extend(duration);
@@ -13,20 +15,35 @@ const donatorWall: NHome.IDonatorWall[] = [];
 
 const Home = () => {
   const [ time, setTime ] = React.useState(0); // seconds
+  const [ timeRemaining, setTimeRemaining ] = React.useState(0);
+  //const confettiState = React.useState(true);
+
   const date = dayjs().startOf("day");
   const weekdayNow = date.weekday();
   const lastFriday = weekdayNow >= 5 ? date.weekday(5) : date.subtract(1, "week").weekday(5);
   const nextFriday = weekdayNow < 5 ? date.weekday(5) : date.add(1, "week").weekday(5);
   const fridayDiff = Math.abs(nextFriday.diff(lastFriday, "second"));
-  // TODO: Implement some effect if it is friday today WOOOOOOOOOOOOO
   const isFriday = weekdayNow === 5;
+  const fridayPercent = isFriday ? 100 : Math.floor(100 / fridayDiff * (fridayDiff - time));
+  const timeRemainingPercent = isFriday ? Math.ceil(100 / 86400 * timeRemaining) : 100;
+
+  const fridayRef = React.useRef<HTMLDivElement>(null);
+
+  const fridayScrollIntoView = useScrollIntoView(fridayRef, 0.6);
 
   React.useEffect(() => {
     let interval: NodeJS.Timer | undefined;
 
     const updateTime = () => {
-      const dur = Math.abs(dayjs().diff(nextFriday, "second"));
-      setTime(dur);
+      if(isFriday) {
+        if(time !== 0) setTime(0);
+        const dur = Math.abs(dayjs().diff(date.endOf("day"), "second"));
+        setTimeRemaining(dur);
+      } else {
+        if(timeRemaining !== 0) setTimeRemaining(0);
+        const dur = Math.abs(dayjs().diff(nextFriday, "second"));
+        setTime(dur);
+      }
     };
 
     const initTimeout = setTimeout(() => {
@@ -40,6 +57,12 @@ const Home = () => {
       clearInterval(interval);
     };
   }, []);
+
+  React.useEffect(() => {
+    if(fridayScrollIntoView.scrolledIntoView) {
+      //
+    }
+  }, [fridayScrollIntoView.scrolledIntoView]);
 
   return (
     <HomeStyle id="Home">
@@ -129,15 +152,25 @@ const Home = () => {
           </div>
         </div>
       </div>
-      <div className='femboy-day-schedule'>
+      <div ref={fridayRef} className='femboy-day-schedule'>
+        {/*<ConfettiGun
+          className='confetti-gun-bottom-left'
+          state={confettiState}
+          portal={document.body}
+          style={{
+            top: "50%",
+            left: "50%"
+          }}
+        />*/}
         <div className='femboy-day-schedule-box'>
-          <span className='femboy-day-title'>Time left until <span className='pinkish-text'>Femboy Friday</span>!</span>
-          <span className='femboy-day-time-text'>{dayjs.duration(time, "seconds").format("D [days] H [hours] m [minutes] s [seconds]")}</span>
+          <span className='femboy-day-title'>{isFriday ? "It is" : "Time left until"} <span className='pinkish-text'>Femboy Friday</span>!</span>
+          <span className='femboy-day-time-text'>{isFriday ? `Literally now [ ${date.format("YYYY-MM-DD")} ]` : dayjs.duration(time, "seconds").format("D [days] H [hours] m [minutes] s [seconds]")}</span>
+          {isFriday ? <span className='femboy-day-remaining-text'>Remaining of Femboy Friday</span> : null}
           <div className='process-bar-box'>
             <div className='progress-bar'>
-              <div className='progress-bar-fill' style={{ width: `${Math.round(100 / fridayDiff * time)}%` }} />
+              <div className='progress-bar-fill' style={{ width: `${isFriday ? timeRemainingPercent : fridayPercent}%` }} />
               <div className='progress-bar-text'>
-                <span>{Math.round(100 / fridayDiff * time)}%</span>
+                <span>{isFriday ? timeRemainingPercent : fridayPercent}%</span>
               </div>
             </div>
           </div>
@@ -392,6 +425,7 @@ const HomeStyle = styled.div`
 		min-width: 50px;
 		background-color: var(--c-p2);
 		border-radius: 10px;
+		overflow: hidden;
 		.progress-bar-fill {
 			position: absolute;
 			top: 0;
@@ -446,6 +480,10 @@ const HomeStyle = styled.div`
 			}
 			.femboy-day-time-text {
 				font-size: 14px;
+				color: var(--c-p6);
+			}
+			.femboy-day-remaining-text {
+				font-size: 16px;
 				color: var(--c-p6);
 			}
 		}
