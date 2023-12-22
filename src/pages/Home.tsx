@@ -177,6 +177,11 @@ const Home = () => {
           <span>Let us celebrate each Friday like it is the last one!</span>
         </div>
       </div>
+      <div className='country-ranks-box'>
+        <h3>Country ranking by visits</h3>
+        <span>Here you can see which countries visit this site the most!</span>
+        <a target="_blank" href="https://info.flagcounter.com/LOnc" rel="noreferrer"><img src="https://s01.flagcounter.com/countxl/LOnc/bg_404040/txt_FFFFFF/border_404040/columns_2/maxflags_10/viewers_0/labels_1/pageviews_0/flags_0/percent_0/" alt="Flag Counter" /></a>
+      </div>
       <div className="image image-end">
         <img src="img/4.png"></img>
         <div className='image-text'>
@@ -486,6 +491,25 @@ const HomeStyle = styled.div`
 				font-size: 16px;
 				color: var(--c-p6);
 			}
+		}
+	}
+
+	.country-ranks-box {
+		width: 100%;
+		min-height: 300px;
+		background-color: var(--c-p2);
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		flex-direction: column;
+		> h3 {
+			margin: 0;
+		}
+		> span {
+			color: var(--c-p5)
+		}
+		> a {
+			margin-top: 20px;
 		}
 	}
 

@@ -14,7 +14,7 @@ const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
 );
 
-const theme = createTheme({ palette: { text: { primary: "white" } } });
+const theme = createTheme({ palette: { text: { primary: "#fff" } } });
 
 root.render(
   <React.StrictMode>

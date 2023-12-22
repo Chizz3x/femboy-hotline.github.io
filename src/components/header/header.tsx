@@ -4,8 +4,12 @@ import styled from "styled-components";
 import { ROUTES } from "../../routes";
 import { CSSMediaSize } from "../../const";
 import { Link } from "react-router-dom";
-import { IconButton, MenuItem, Menu } from "@mui/material";
-import { Menu as MenuIcon } from "@mui/icons-material";
+import {
+  IconButton, MenuItem, Menu, Button 
+} from "@mui/material";
+import {
+  CardGiftcard as CardGiftcardIcon, Contacts as ContactsIcon, Home as HomeIcon, Info as InfoIcon, Menu as MenuIcon 
+} from "@mui/icons-material";
 
 const Header = () => {
   const [ currentRoute, setCurrentRoute ] = React.useState("");
@@ -36,7 +40,7 @@ const Header = () => {
         </span>
         <div className='mobile-menu'>
           <IconButton id="mobile-menu" onClick={toggleMobileMenu}>
-            <MenuIcon sx={{ fill: "white" }}></MenuIcon>
+            <MenuIcon sx={{ fill: "#fff" }}></MenuIcon>
           </IconButton>
           <MobileMenuStyle
             disablePortal
@@ -60,16 +64,16 @@ const Header = () => {
             //}}
           >
             <MenuItem onClick={() => toggleMobileMenu()}>
-              <Link to={ROUTES.home}><button className={[ currentRoute === ROUTES.home ? "active" : "", "header-mobile-btn" ].join(" ")}>Home</button></Link>
+              <Link to={ROUTES.home}><Button endIcon={<HomeIcon />} disableRipple className={[ currentRoute === ROUTES.home ? "active" : "", "header-mobile-btn" ].join(" ")}>Home</Button></Link>
             </MenuItem>
             <MenuItem onClick={() => toggleMobileMenu()}>
-              <Link to={ROUTES.about}><button className={[ currentRoute === ROUTES.about ? "active" : "", "header-mobile-btn" ].join(" ")}>About</button></Link>
+              <Link to={ROUTES.about}><Button endIcon={<InfoIcon />} disableRipple className={[ currentRoute === ROUTES.about ? "active" : "", "header-mobile-btn" ].join(" ")}>About</Button></Link>
             </MenuItem>
             <MenuItem onClick={() => toggleMobileMenu()}>
-              <Link to={ROUTES.contact}><button className={[ currentRoute === ROUTES.contact ? "active" : "", "header-mobile-btn" ].join(" ")}>Contact</button></Link>
+              <Link to={ROUTES.contact}><Button endIcon={<ContactsIcon />} disableRipple className={[ currentRoute === ROUTES.contact ? "active" : "", "header-mobile-btn" ].join(" ")}>Contact</Button></Link>
             </MenuItem>
             <MenuItem onClick={() => toggleMobileMenu()}>
-              <Link to={ROUTES.donate}><button className={[ currentRoute === ROUTES.donate ? "active" : "", "header-mobile-btn" ].join(" ")}>Donate</button></Link>
+              <Link to={ROUTES.donate}><Button endIcon={<CardGiftcardIcon />} disableRipple className={[ currentRoute === ROUTES.donate ? "active" : "", "header-mobile-btn" ].join(" ")}>Donate</Button></Link>
             </MenuItem>
           </MobileMenuStyle>
         </div>
@@ -77,10 +81,10 @@ const Header = () => {
     </div>
     <div className='container container-right'>
       <div className='container-parts'>
-        <Link to={ROUTES.home}><button className={[ currentRoute === ROUTES.home ? "active" : "", "header-btn" ].join(" ")}>Home</button></Link>
-        <Link to={ROUTES.about}><button className={[ currentRoute === ROUTES.about ? "active" : "", "header-btn" ].join(" ")}>About</button></Link>
-        <Link to={ROUTES.contact}><button className={[ currentRoute === ROUTES.contact ? "active" : "", "header-btn" ].join(" ")}>Contact</button></Link>
-        <Link to={ROUTES.donate}><button className={[ currentRoute === ROUTES.donate ? "active" : "", "header-btn" ].join(" ")}>Donate</button></Link>
+        <Link to={ROUTES.home}><Button startIcon={<HomeIcon />} disableRipple className={[ currentRoute === ROUTES.home ? "active" : "", "header-btn" ].join(" ")}>Home</Button></Link>
+        <Link to={ROUTES.about}><Button startIcon={<InfoIcon />} disableRipple className={[ currentRoute === ROUTES.about ? "active" : "", "header-btn" ].join(" ")}>About</Button></Link>
+        <Link to={ROUTES.contact}><Button startIcon={<ContactsIcon />} disableRipple className={[ currentRoute === ROUTES.contact ? "active" : "", "header-btn" ].join(" ")}>Contact</Button></Link>
+        <Link to={ROUTES.donate}><Button startIcon={<CardGiftcardIcon />} disableRipple className={[ currentRoute === ROUTES.donate ? "active" : "", "header-btn" ].join(" ")}>Donate</Button></Link>
       </div>
     </div>
   </HeaderStyle>;
@@ -119,19 +123,27 @@ const HeaderStyle = styled.div`
 	}
 
 	.header-btn {
-		padding: 20px 40px;
+		padding: 15px 25px;
 		background-color: transparent;
 		border-bottom: 3px solid var(--c-p7);
 		:hover {
-			border-color: var(--c-pink1) !important;
+			border-color: var(--c-pink1);
+			color: var(--c-pink1);
 		}
 		&.active {
 			border-color: var(--c-pink3);
 		}
+		border-radius: 0;
+		color: #fff;
 	}
 
 	.header-mobile-btn {
 		text-align: right;
+		font-size: 14px;
+		color: #fff;
+		&.active {
+			color: var(--c-pink1);
+		}
 	}
 	
 	.container {
@@ -209,6 +221,16 @@ const HeaderStyle = styled.div`
 		}
 		.container-right {
 			display: none;
+		}
+	}
+
+	${CSSMediaSize.pc_small} {
+		.container.container-left {
+			flex-direction: column;
+			.menu-info {
+				margin: 0;
+				align-self: flex-start;
+			}
 		}
 	}
 `;
