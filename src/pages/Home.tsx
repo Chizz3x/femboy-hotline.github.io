@@ -11,7 +11,32 @@ import useScrollIntoView from "../utils/use-scroll-into-view";
 dayjs.extend(weekday);
 dayjs.extend(duration);
 
-const donatorWall: NHome.IDonatorWall[] = [];
+const donatorClassNames: NHome.IDonatorClasses = {
+  0: {
+    class: "first",
+    subtext: "Diamond",
+    children: (props) => {
+      return <img {...props} src="img/materials/diamond.jpg" />;
+    }
+  },
+  1: {
+    class: "second",
+    subtext: "Platinum",
+    children: (props) => <div {...props}>
+      <div className='glare-cursor-1'>
+        <div className='glare-object' />
+      </div>
+      <div className='glare-cursor-2'>
+        <div className='glare-object' />
+      </div>
+      <div className='glare-cursor-3'>
+        <div className='glare-object' />
+      </div>
+    </div>
+  },
+  2: { class: "third" } 
+};
+const donatorWall: NHome.IDonatorWall[] = [ { text: "Andy 0-0" }, { text: "Pathy Boi" } ];
 
 const Home = () => {
   const [ time, setTime ] = React.useState(0); // seconds
@@ -58,6 +83,7 @@ const Home = () => {
     };
   }, []);
 
+  // Unused for now
   React.useEffect(() => {
     if(fridayScrollIntoView.scrolledIntoView) {
       //
@@ -193,13 +219,29 @@ const Home = () => {
       </div>
       <div className='content4'>
         <h2>Donator wall!</h2>
-        <span className='smol gray'>Here is what our donators left to hang</span>
+        <span className='smol gray'>Here is our donators and what they left to hang</span>
         {
           donatorWall.length
-            ? donatorWall.map((m, i) => <p key={i}>{m.text}</p>)
-            : <p>Oh well, they didn&apos;t leave anything after all...</p>
+            ? donatorWall.map((m, i) => {
+              const cn = donatorClassNames[i] || "";
+              return <div key={i} className={[ "donator-box", `${cn.class}-donator` ].join(" ")}>
+                <div className={[ "donator-name", m.comment ? "has-comment" : "" ].join(" ")}>
+                  <p>{m.text}</p>
+                </div>
+                {m.comment ?
+                  <div className='donator-comment'>
+                    <span>{m.comment}</span>
+                  </div>
+                  : null}
+                {cn.subtext ? <div className='donator-subtext'><span>{cn.subtext}</span></div> : null}
+                {cn.children ? <cn.children className={`${cn.class}-child`} /> : null}
+              </div>;
+            })
+            : <>
+              <p>Oh well, they didn&apos;t leave anything after all...</p>
+              <span>:(</span>
+            </>
         }
-        <span>:(</span>
       </div>
     </HomeStyle>
   );
@@ -207,7 +249,15 @@ const Home = () => {
 
 export namespace NHome {
 	export interface IDonatorWall {
-		text?: string;
+		text: string;
+		comment?: string;
+	}
+	export interface IDonatorClasses {
+		[key: number]: {
+			class: string;
+			subtext?: string;
+			children?: React.FunctionComponent<any>;
+		}
 	}
 }
 
@@ -331,28 +381,28 @@ const HomeStyle = styled.div`
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		@keyframes flicker {
+		@keyframes glow {
 			0% {
-				box-shadow: 0 -5px 6px -4px var(--c-pink1), 0 5px 6px -4px var(--c-pink1);
+				box-shadow: 0 -5px 6px -4px var(--c-pink1), 0 5px 6px -4px var(--c-pink3);
 			}
 			25% {
-				box-shadow: 0 -5px 10px -4px var(--c-pink1), 0 5px 10px -4px var(--c-pink1);
+				box-shadow: 0 -5px 10px -4px var(--c-pink1), 0 5px 10px -4px var(--c-pink3);
 			}
 			50% {
-				box-shadow: 0 -5px 7px -4px var(--c-pink1), 0 5px 7px -4px var(--c-pink1);
+				box-shadow: 0 -5px 7px -4px var(--c-pink1), 0 5px 7px -4px var(--c-pink3);
 			}
 			75% {
-				box-shadow: 0 -5px 6px -4px var(--c-pink1), 0 5px 6px -4px var(--c-pink1);
+				box-shadow: 0 -5px 6px -4px var(--c-pink1), 0 5px 6px -4px var(--c-pink3);
 			}
 			100% {
-				box-shadow: 0 -5px 5px -4px var(--c-pink1), 0 5px 5px -4px var(--c-pink1);
+				box-shadow: 0 -5px 5px -4px var(--c-pink1), 0 5px 5px -4px var(--c-pink3);
 			}
 		}
 		.content2-box {
 			padding: 10px 30px;
 			background-color: var(--c-p2);
 			min-width: 400px;
-			animation: flicker 5s cubic-bezier(0.5, 0, 0.5, 1) 0s infinite alternate;
+			animation: glow 5s cubic-bezier(0.5, 0, 0.5, 1) 0s infinite alternate;
 			.content2-sub-box {
 				text-align: center;
 				display: flex;
@@ -422,6 +472,166 @@ const HomeStyle = styled.div`
 	.content4 {
 		padding: 50px 0;
 		text-align: center;
+
+		> span {
+			display: block;
+			margin-bottom: 20px;
+		}
+
+		.donator-box {
+			overflow: hidden;
+			position: relative;
+			max-width: 500px;
+			background-color: var(--c-p2);
+			background-image: linear-gradient(45deg, var(--c-p1) 0%, var(--c-p2) 100%);
+			border-radius: 10px;
+			padding: 15px 0;
+			:not(:last-child) {
+				margin-bottom: 30px;
+			}
+			:has([class$="-child"]) {
+				background-image: none;
+				background-color: rgba(0, 0, 0, 0.2);
+			}
+			.donator-name {
+				font-size: 24px;
+				&.has-comment {
+					> p {
+						margin-bottom: 10px;
+					}
+				}
+				> p {
+					margin-bottom: 0;
+					margin-top: 0;
+				}
+			}
+			.donator-comment {
+				font-weight: 500;
+			}
+			.donator-subtext {
+				position: absolute;
+				top: 0;
+				right: 0;
+				font-weight: 800;
+				font-size: 12px;
+				letter-spacing: 0;
+				margin-right: 8px;
+				margin-top: 3px;
+			}
+
+			@keyframes shine {
+				0% {
+					filter: invert(0) hue-rotate(0) contrast(0.8) brightness(1.1);
+				}
+				25% {
+					filter: invert(0.1) hue-rotate(90deg) contrast(0.9) brightness(1.5);
+				}
+				50% {
+					filter: invert(0.2) hue-rotate(45deg) contrast(0.8) brightness(1.4);
+				}
+				75% {
+					filter: invert(0) hue-rotate(130deg) contrast(0.7) brightness(1.5);
+				}
+				100% {
+					filter: invert(0.2) hue-rotate(180deg) contrast(1.5) brightness(1.2);
+				}
+			}
+
+			@keyframes glare {
+				0% {
+					left: -100px;
+					top: 50%;
+				}
+				100% {
+					left: calc(100% + 100px);
+					top: 50%;
+				}
+			}
+
+			[class$="-child"] {
+				position: absolute;
+				top: 0;
+				left: 0;
+				width: 100%;
+				height: 100%;
+				z-index: -1;
+			}
+
+			.${donatorClassNames[0]?.class}-child {
+				object-position: center;
+				object-fit: cover;
+				animation: shine 6s ease-in-out infinite alternate;
+			}
+			&.${donatorClassNames[0]?.class}-donator {
+				color: rgba(0,0,0,0.7);
+				box-shadow: 0 0 10px white, 0 0 20px rgb(180,180,255);
+				.donator-name {
+					font-weight: 700;
+				}
+			}
+			.${donatorClassNames[1]?.class}-child {
+				background-color: rgb(220, 220, 220);
+				> .glare-cursor-1 {
+					width: 0;
+					height: 0;
+					position: relative;
+					animation: glare 6s ease-in-out infinite alternate;
+					transform: rotate(70deg);
+					> .glare-object {
+						position: absolute;
+						width: 100vw;
+						height: 50px;
+						background-color: white;
+						transform: translate(-50%, -50%);
+					}
+				}
+				> .glare-cursor-2 {
+					width: 0;
+					height: 0;
+					position: relative;
+					animation: glare 5.5s ease-in-out infinite alternate;
+					transform: rotate(70deg);
+					> .glare-object {
+						position: absolute;
+						width: 100vw;
+						height: 20px;
+						background-color: white;
+						transform: translate(-50%, -50%);
+						filter: blur(5px);
+					}
+				}
+				> .glare-cursor-3 {
+					width: 0;
+					height: 0;
+					position: relative;
+					animation: glare 6s ease-in-out infinite alternate;
+					transform: rotate(70deg);
+					> .glare-object {
+						position: absolute;
+						width: 100vw;
+						height: 100px;
+						background-color: white;
+						transform: translate(-50%, -50%);
+						filter: blur(20px);
+					}
+				}
+			}
+			&.${donatorClassNames[1]?.class}-donator {
+				color: rgba(0,0,0,0.7);
+				box-shadow: 0 0 10px white, 0 0 20px rgb(180,180,180);
+				.donator-name {
+					font-weight: 600;
+				}
+			}
+			.${donatorClassNames[2]?.class}-child {
+				//
+			}
+			&.${donatorClassNames[2]?.class}-donator {
+				.donator-name {
+					font-weight: 500;
+				}
+			}
+		}
 	}
 
 	.progress-bar {
