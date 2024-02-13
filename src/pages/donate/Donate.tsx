@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import React from "react";
-import { COFFEE, PATREON } from "../../const";
+import { CSSMediaSize, PATREON } from "../../const";
 
 const Donate = () => {
   return <DonateStyle>
@@ -26,9 +26,6 @@ const Donate = () => {
         <div className='patreon'>
           <img src="/img/donate/patreon.png" />
         </div>
-      </a>
-      <a target="_blank" className='coffee' href={COFFEE} rel="noreferrer">
-        <img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" />
       </a>
     </div>
   </DonateStyle>;
@@ -68,5 +65,9 @@ const DonateStyle = styled.div`
 		img {
 			width: 180px;
 		}
+	}
+
+	${CSSMediaSize.phone} {
+		padding: 20px 10px;
 	}
 `;

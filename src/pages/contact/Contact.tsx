@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import React from "react";
-import { DISCORD_INVITE, EMAIL } from "../../const";
+import { CSSMediaSize, DISCORD_INVITE, EMAIL } from "../../const";
 import { CopyButton } from "../../components/copy-button";
 
 const Contact = () => {
@@ -43,5 +43,9 @@ const ContactStyle = styled.div`
 	}
 	.copy-button {
 		padding-left: 10px;
+	}
+
+	${CSSMediaSize.phone} {
+		padding: 20px 10px;
 	}
 `;

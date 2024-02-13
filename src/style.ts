@@ -24,6 +24,14 @@ export default createGlobalStyle`
 		color: var(--c-pink1);
 		cursor: pointer;
 	}
+	.link {
+		text-decoration: none;
+		color: var(--c-pink1);
+		cursor: pointer;
+		:hover {
+			text-decoration: underline;
+		}
+	}
 
 	.icon-table {
 		td {

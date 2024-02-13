@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { toast } from "react-toastify";
-import { CSSMediaSize } from "../const";
+import { CSSMediaSize, PATREON } from "../const";
 import weekday from "dayjs/plugin/weekday";
 import duration from "dayjs/plugin/duration";
 import dayjs from "dayjs";
@@ -211,7 +211,7 @@ const Home = () => {
       <div className="image image-end">
         <img src="img/4.png"></img>
         <div className='image-text'>
-          <div className='image-text-box image-text-box-left'>
+          <div className='image-text-box'>
             <h2>It is time to join us</h2>
             <span>Call us now! <span className='fake-link' onClick={() => toast("Or maybe not...", { type: "info" })}>+48 123 123 69</span></span>
           </div>
@@ -220,6 +220,7 @@ const Home = () => {
       <div className='content4'>
         <h2>Donator wall!</h2>
         <span className='smol gray'>Here is our donators and what they left to hang</span>
+        <span><a className='link' href={PATREON} target="_blank" rel="noreferrer">Join Now!</a></span>
         {
           donatorWall.length
             ? donatorWall.map((m, i) => {
@@ -474,8 +475,11 @@ const HomeStyle = styled.div`
 		text-align: center;
 
 		> span {
+			margin-bottom: 10px;
 			display: block;
-			margin-bottom: 20px;
+			:last-of-type {
+				margin-bottom: 40px;
+			}
 		}
 
 		.donator-box {
@@ -720,6 +724,9 @@ const HomeStyle = styled.div`
 		}
 		> a {
 			margin-top: 20px;
+		}
+		> * {
+			padding: 0 10px;
 		}
 	}
 

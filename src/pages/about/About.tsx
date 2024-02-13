@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import React from "react";
 import Tooltip from "@mui/material/Tooltip";
+import { CSSMediaSize } from "../../const";
 
 const About = () => {
   const barbie: React.MouseEventHandler<HTMLSpanElement> = (event) => {
@@ -57,5 +58,9 @@ const AboutStyle = styled.div.attrs(props => ({ delay: (props as any).delay }))`
 		75% {
 			color: var(--c-pink3);
 		}
+	}
+
+	${CSSMediaSize.phone} {
+		padding: 20px 10px;
 	}
 `;

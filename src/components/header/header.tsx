@@ -8,8 +8,44 @@ import {
   IconButton, MenuItem, Menu, Button 
 } from "@mui/material";
 import {
-  CardGiftcard as CardGiftcardIcon, Contacts as ContactsIcon, Home as HomeIcon, Info as InfoIcon, Menu as MenuIcon 
+  CardGiftcard as CardGiftcardIcon,
+  Contacts as ContactsIcon,
+  Home as HomeIcon,
+  Info as InfoIcon,
+  Menu as MenuIcon,
+  AutoStories as AutoStoriesIcon 
 } from "@mui/icons-material";
+
+const links: NHeader.ILink[] = [
+  {
+    name: "Home",
+    route: ROUTES.home,
+    icon: <HomeIcon />
+  },
+  {
+    name: "About",
+    route: ROUTES.about,
+    icon: <InfoIcon />
+  },
+  {
+    name: "Contact",
+    route: ROUTES.contact,
+    icon: <ContactsIcon />
+  },
+  {
+    name: "Donate",
+    route: ROUTES.donate,
+    icon: <CardGiftcardIcon />
+  }
+];
+
+const moreLinks: NHeader.ILink[] = [
+  {
+    name: "Crash course",
+    route: ROUTES.crashCourse,
+    icon: <AutoStoriesIcon />
+  }
+];
 
 const Header = () => {
   const [ currentRoute, setCurrentRoute ] = React.useState("");
@@ -63,34 +99,54 @@ const Header = () => {
             //  },
             //}}
           >
-            <MenuItem onClick={() => toggleMobileMenu()}>
-              <Link to={ROUTES.home}><Button endIcon={<HomeIcon />} disableRipple className={[ currentRoute === ROUTES.home ? "active" : "", "header-mobile-btn" ].join(" ")}>Home</Button></Link>
-            </MenuItem>
-            <MenuItem onClick={() => toggleMobileMenu()}>
-              <Link to={ROUTES.about}><Button endIcon={<InfoIcon />} disableRipple className={[ currentRoute === ROUTES.about ? "active" : "", "header-mobile-btn" ].join(" ")}>About</Button></Link>
-            </MenuItem>
-            <MenuItem onClick={() => toggleMobileMenu()}>
-              <Link to={ROUTES.contact}><Button endIcon={<ContactsIcon />} disableRipple className={[ currentRoute === ROUTES.contact ? "active" : "", "header-mobile-btn" ].join(" ")}>Contact</Button></Link>
-            </MenuItem>
-            <MenuItem onClick={() => toggleMobileMenu()}>
-              <Link to={ROUTES.donate}><Button endIcon={<CardGiftcardIcon />} disableRipple className={[ currentRoute === ROUTES.donate ? "active" : "", "header-mobile-btn" ].join(" ")}>Donate</Button></Link>
-            </MenuItem>
+            {[ ...links, ...moreLinks ].map((link, i) => <MenuItem key={i} onClick={() => toggleMobileMenu()}>
+              <Link to={link.route}><Button endIcon={link.icon} disableRipple className={[ "header-mobile-btn", currentRoute === link.route ? "active" : "" ].join(" ")}>{link.name}</Button></Link>
+            </MenuItem>)}
           </MobileMenuStyle>
         </div>
       </div>
     </div>
     <div className='container container-right'>
       <div className='container-parts'>
-        <Link to={ROUTES.home}><Button startIcon={<HomeIcon />} disableRipple className={[ currentRoute === ROUTES.home ? "active" : "", "header-btn" ].join(" ")}>Home</Button></Link>
-        <Link to={ROUTES.about}><Button startIcon={<InfoIcon />} disableRipple className={[ currentRoute === ROUTES.about ? "active" : "", "header-btn" ].join(" ")}>About</Button></Link>
-        <Link to={ROUTES.contact}><Button startIcon={<ContactsIcon />} disableRipple className={[ currentRoute === ROUTES.contact ? "active" : "", "header-btn" ].join(" ")}>Contact</Button></Link>
-        <Link to={ROUTES.donate}><Button startIcon={<CardGiftcardIcon />} disableRipple className={[ currentRoute === ROUTES.donate ? "active" : "", "header-btn" ].join(" ")}>Donate</Button></Link>
+        {links.map((link, i) => <Link key={i} to={link.route}><Button startIcon={link.icon} disableRipple className={[ "header-btn", currentRoute === link.route ? "active" : "" ].join(" ")}>{link.name}</Button></Link>)}
+        <div className='burger-menu'>
+          <IconButton id="burger-menu" onClick={toggleMobileMenu}>
+            <MenuIcon sx={{ fill: "#fff" }}></MenuIcon>
+          </IconButton>
+          <MobileMenuStyle
+            disablePortal
+            anchorOrigin={{
+              horizontal: "right",
+              vertical: "bottom", 
+            }}
+            transformOrigin={{
+              horizontal: "right",
+              vertical: "top" 
+            }}
+            MenuListProps={{ "aria-labelledby": "burger-menu", }}
+            anchorEl={mobileMenuAnchor}
+            open={!!mobileMenuAnchor}
+            onClose={() => toggleMobileMenu()}
+          >
+            {moreLinks.map((link, i) => <MenuItem key={i} onClick={() => toggleMobileMenu()}>
+              <Link to={link.route}><Button endIcon={link.icon} disableRipple className={[ "header-mobile-btn", currentRoute === link.route ? "active" : "" ].join(" ")}>{link.name}</Button></Link>
+            </MenuItem>)}
+          </MobileMenuStyle>
+        </div>
       </div>
     </div>
   </HeaderStyle>;
 };
 
 export { Header };
+
+export namespace NHeader {
+	export interface ILink {
+		name: string;
+		route: string;
+		icon?: JSX.Element;
+	}
+}
 
 const MobileMenuStyle = styled(Menu)`
 	.MuiPaper-root {
@@ -123,7 +179,7 @@ const HeaderStyle = styled.div`
 	}
 
 	.header-btn {
-		padding: 15px 25px;
+		padding: 15px 16px;
 		background-color: transparent;
 		border-bottom: 3px solid var(--c-p7);
 		:hover {
@@ -187,6 +243,13 @@ const HeaderStyle = styled.div`
 
 	.mobile-menu {
 		display: none;
+	}
+
+	.burger-menu {
+		margin-left: 20px;
+		.MuiButtonBase-root {
+			margin: 0 !important;
+		}
 	}
 
 	${CSSMediaSize.tablet} {

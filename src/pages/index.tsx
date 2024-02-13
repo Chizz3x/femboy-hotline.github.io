@@ -17,6 +17,7 @@ import Patreon from "./patreon";
 import Coffee from "./coffee";
 import { ROUTES } from "../routes";
 import Home from "./Home";
+import CrashCourse from "./crash-course/crash-course";
 
 const PAGES: RouteProps[] = [
   {
@@ -65,6 +66,12 @@ const PAGES: RouteProps[] = [
     path: ROUTES.coffee,
     element: <Layout>
       <Coffee />
+    </Layout>
+  },
+  {
+    path: ROUTES.crashCourse,
+    element: <Layout>
+      <CrashCourse />
     </Layout>
   }
 ];

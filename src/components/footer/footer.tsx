@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { CSSMediaSize, DISCORD_INVITE, PATREON } from "../../const";
 import { Link } from "react-router-dom";
 import { ROUTES } from "../../routes";
+import { Tooltip } from "@mui/material";
 
 const Footer = () => {
   return <FooterStyle>
@@ -26,7 +27,16 @@ const Footer = () => {
         <span>Femboy hotline for all our Femboys</span>
       </div>
       <div>
-        <span>Made with <span className='love-icon' title="Love">❤</span></span>
+        <span>Made with <Tooltip title="Love" placement="right" arrow slotProps={{
+          popper: {
+            modifiers: [
+              {
+                name: "offset",
+                options: { offset: [ 0, -5 ], },
+              },
+            ],
+          },
+        }}><span className='love-icon'>❤</span></Tooltip></span>
       </div>
       <div className='uwuright'>
         <span>uwuright<span className='uwuright-sign'>u</span> 2022-{new Date().getFullYear()}</span>
@@ -105,7 +115,11 @@ const FooterStyle = styled.div`
 			:not(:last-child) {
 				margin-bottom: 30px;
 			}
+			.link-table {
+				text-align: center;
+			}
 		}
+		.footer-box-left,
 		.footer-box-right {
 			padding: 0;
 		}

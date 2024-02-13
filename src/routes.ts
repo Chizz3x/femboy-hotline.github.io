@@ -6,5 +6,6 @@ export const ROUTES = {
   privacyPolicy: "/privacy-policy",
   coffee: "/coffee",
   patreon: "/patreon",
-  discord: "/discord"
+  discord: "/discord",
+  crashCourse: "/crash-course"
 };
