@@ -36,7 +36,8 @@ const donatorClassNames: NHome.IDonatorClasses = {
   },
   2: { class: "third" } 
 };
-const donatorWall: NHome.IDonatorWall[] = [ { text: "Andy 0-0" }, { text: "Pathy Boi" } ];
+// Donators, if any ever :/
+const donatorWall: NHome.IDonatorWall[] = [];
 
 const Home = () => {
   const [ time, setTime ] = React.useState(0); // seconds
