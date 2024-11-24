@@ -44,8 +44,12 @@
 		>
 	</url>
 	<url>
-		<loc
-			>https:/femboy-hotline.com/?/verify/:token</loc
-		>
+		<loc>https:/femboy-hotline.com/?/verify</loc>
+	</url>
+	<url>
+		<loc>https:/femboy-hotline.com/?/login</loc>
+	</url>
+	<url>
+		<loc>https:/femboy-hotline.com/?/user</loc>
 	</url>
 </urlset>
