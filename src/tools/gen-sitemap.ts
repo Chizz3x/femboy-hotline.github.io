@@ -27,8 +27,7 @@ const OUTPUT_FILE = path.resolve(
 					.map(
 						(route) => `<url>
 					<loc>${path.posix.join(
-						env.PUBLIC_URL,
-						'?',
+						env.REACT_APP_PUBLIC_URL,
 						route,
 					)}</loc>
 				</url>`,

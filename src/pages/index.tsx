@@ -141,22 +141,22 @@ const PAGES: RouteProps[] = [
 ];
 
 const Index = () => {
-	const location = useLocation();
-	const navigate = useNavigate();
-	const [isProper, setIsProper] =
-		React.useState(false);
+	// const location = useLocation();
+	// const navigate = useNavigate();
+	// const [isProper, setIsProper] =
+	//	React.useState(false);
 
-	/** Scripts that have to run on every rerender */
-	uniqueIdManager();
+	/// ** Scripts that have to run on every rerender */
+	// uniqueIdManager();
 
-	React.useEffect(() => {
-		if (location.search.startsWith('?/')) {
-			navigate(location.search.slice(1));
-		}
-		setIsProper(true);
-	}, []);
+	// React.useEffect(() => {
+	//	if (location.search.startsWith('?/')) {
+	//		navigate(location.search.slice(1));
+	//	}
+	//	setIsProper(true);
+	// }, []);
 
-	if (!isProper) return null;
+	// if (!isProper) return null;
 
 	return (
 		<Routes>
@@ -164,7 +164,7 @@ const Index = () => {
 				<Route
 					key={index}
 					{...page}
-					path={`${page.path}`}
+					path={`${page.path?.slice(1)}`}
 				/>
 			))}
 			<Route

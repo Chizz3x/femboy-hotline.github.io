@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom/client';
 import 'react-toastify/dist/ReactToastify.css';
 import './icons.css';
 import { ToastContainer } from 'react-toastify';
-import { BrowserRouter } from 'react-router-dom';
+import { HashRouter } from 'react-router-dom';
 import {
 	ThemeProvider,
 	createTheme,
@@ -109,13 +109,13 @@ root.render(
 				toastStyle={toastStyle}
 				position="bottom-left"
 			/>
-			<BrowserRouter>
-				<ThemeProvider theme={theme}>
-					<AuthProvider>
+			<ThemeProvider theme={theme}>
+				<AuthProvider>
+					<HashRouter>
 						<Index />
-					</AuthProvider>
-				</ThemeProvider>
-			</BrowserRouter>
+					</HashRouter>
+				</AuthProvider>
+			</ThemeProvider>
 		</GoogleReCaptchaProvider>
 	</React.StrictMode>,
 );
