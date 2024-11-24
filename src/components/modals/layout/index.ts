@@ -1,1 +1,1 @@
-export { ModalLayout } from "./layout";
+export { ModalLayout } from './layout';

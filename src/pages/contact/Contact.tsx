@@ -1,21 +1,50 @@
-import styled from "styled-components";
-import React from "react";
-import { CSSMediaSize, DISCORD_INVITE, EMAIL } from "../../const";
-import { CopyButton } from "../../components/copy-button";
+import styled from 'styled-components';
+import React from 'react';
+import {
+	CSSMediaSize,
+	DISCORD_INVITE,
+	EMAIL,
+} from '../../const';
+import { CopyButton } from '../../components/copy-button';
 
 const Contact = () => {
-  return <ContactStyle>
-    <h2>Contact information I am willing to disclose</h2>
-    <p>
-			Email: <a href={`mailto:${EMAIL}`}>{EMAIL}</a><CopyButton data={EMAIL} />
-      <p>Inquiries, direct contact, suggestions, support and so on... (everything and anything)</p>
-    </p>
-    <p>
-			Discord: <a target="_blank" href={DISCORD_INVITE} rel="noreferrer">AnimeCord</a><CopyButton data={DISCORD_INVITE} />
-      <p>Mostly for suggestions, general support (not femboy related server)</p>
-    </p>
-    <p className='gray smol'>Of couse you can find me on other places, that is if you know where to look ;P</p>
-  </ContactStyle>;
+	return (
+		<ContactStyle>
+			<h2>
+				Contact information I am willing to
+				disclose
+			</h2>
+			<p>
+				Email:{' '}
+				<a href={`mailto:${EMAIL}`}>{EMAIL}</a>
+				<CopyButton data={EMAIL} />
+				<p>
+					Inquiries, direct contact, suggestions,
+					support and so on... (everything and
+					anything)
+				</p>
+			</p>
+			<p>
+				Discord:{' '}
+				<a
+					target="_blank"
+					href={DISCORD_INVITE}
+					rel="noreferrer"
+				>
+					AnimeCord
+				</a>
+				<CopyButton data={DISCORD_INVITE} />
+				<p>
+					Mostly for suggestions, general support
+					(not femboy related server)
+				</p>
+			</p>
+			<p className="gray smol">
+				Of couse you can find me on other places,
+				that is if you know where to look ;P
+			</p>
+		</ContactStyle>
+	);
 };
 
 export default Contact;

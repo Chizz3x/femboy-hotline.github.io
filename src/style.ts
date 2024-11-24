@@ -1,5 +1,5 @@
-import { createGlobalStyle } from "styled-components";
-import { CSSMediaSize } from "./const";
+import { createGlobalStyle } from 'styled-components';
+import { CSSMediaSize } from './const';
 
 export default createGlobalStyle`
 	body {
@@ -28,14 +28,14 @@ export default createGlobalStyle`
 		text-decoration: none;
 		color: var(--c-pink1);
 		cursor: pointer;
-		:hover {
+		&:hover {
 			text-decoration: underline;
 		}
 	}
 
 	.icon-table {
 		td {
-			:not(:last-child) {
+			&:not(:last-child) {
 				padding-right: 20px;
 			}
 			[class^="icon-"] {
@@ -45,7 +45,7 @@ export default createGlobalStyle`
 			a {
 				color: var(--c-p8);
 				transition: color .1s;
-				:hover {
+				&:hover {
 					color: var(--c-pink3);
 				}
 			}
@@ -64,12 +64,20 @@ export default createGlobalStyle`
 		padding: 10px 15px;
 		transition: all .1s;
 		font-size: 14px;
-		:hover {
+		&:hover {
 			color: var(--c-pink1) !important;
 		}
 		&.active {
 			color: var(--c-pink3);
 		}
+	}
+
+	h1, h2, h3, h4, h5, h6 {
+		margin: 0;
+	}
+
+	.grecaptcha-badge { 
+    visibility: hidden !important;
 	}
 
 	:root {
@@ -92,11 +100,11 @@ export default createGlobalStyle`
 	}
 
 	::-webkit-scrollbar {
-		background-color: var(--c-p);
+		background-color: var(--c-p1);
 	}
 
 	::-webkit-scrollbar-thumb {
-		background-color: var(--c-p1);
+		background-color: var(--c-p);
 	}
 
 	${CSSMediaSize.tablet} {

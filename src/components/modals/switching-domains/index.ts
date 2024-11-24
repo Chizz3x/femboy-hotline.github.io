@@ -1,1 +1,1 @@
-export * from "./switching-domains";
+export * from './switching-domains';

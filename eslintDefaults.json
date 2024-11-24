@@ -1,0 +1,48 @@
+{
+	"rules": {
+		"@typescript-eslint/no-empty-function": "warn",
+		"no-delete-var": "off",
+		"indent": ["warn", "tab"],
+		"no-console": ["warn", { "allow": ["warn", "error"] }],
+		"linebreak-style": ["warn", "unix"],
+		"quotes": "off",
+		"semi": ["warn", "always"],
+		"no-empty": "warn",
+		"comma-style": ["warn", "last"],
+		"comma-spacing": [
+			"warn",
+			{
+				"before": false,
+				"after": true
+			}
+		],
+		"operator-linebreak": ["error", "after"],
+		"comma-dangle": "off",
+		"no-multi-spaces": "warn",
+		"array-bracket-spacing": ["warn", "always", { "singleValue": false }],
+		"object-curly-spacing": ["warn", "always"],
+		"object-curly-newline": [
+			"warn",
+			{
+				"minProperties": 4,
+				"multiline": true
+			}
+		],
+		"object-property-newline": [
+			"warn",
+			{
+				"allowAllPropertiesOnSameLine": true
+			}
+		],
+		"array-bracket-newline": [
+			"warn",
+			{
+				"multiline": true
+			}
+		],
+		"function-call-argument-newline": ["warn", "consistent"],
+		"arrow-body-style": "off",
+		"no-unused-vars": "off",
+		"react/prop-types": "off"
+	}
+}

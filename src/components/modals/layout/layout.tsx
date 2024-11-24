@@ -1,27 +1,39 @@
-import React from "react";
-import styled from "styled-components";
-import { NModals, changeModals } from "../modals";
+import React from 'react';
+import styled from 'styled-components';
+import { NModals, changeModals } from '../modals';
 
-const ModalLayout = (props: NModalLayout.IProps) => {
-  const { children, name } = props;
+const ModalLayout = (
+	props: NModalLayout.IProps,
+) => {
+	const { children, name } = props;
 
-  const closeModal: React.MouseEventHandler<HTMLDivElement> = (event) => {
-    if(event.currentTarget === event.target) {
-      window.dispatchEvent(changeModals({ [name]: null }));
-    }
-  };
+	const closeModal: React.MouseEventHandler<
+		HTMLDivElement
+	> = (event) => {
+		if (event.currentTarget === event.target) {
+			window.dispatchEvent(
+				changeModals({ [name]: null }),
+			);
+		}
+	};
 
-  return <ModalLayoutStyle className='Modal' onClick={closeModal}>
-    <div className='modal_inner'>
-      {children}
-    </div>
-  </ModalLayoutStyle>;
+	return (
+		<ModalLayoutStyle
+			className="Modal"
+			onClick={closeModal}
+		>
+			<div className="modal_inner">
+				{children}
+			</div>
+		</ModalLayoutStyle>
+	);
 };
 
 export { ModalLayout };
 
 export namespace NModalLayout {
-	export interface IProps extends NModals.IDefaultProps {
+	export interface IProps
+		extends NModals.IDefaultProps {
 		children?: JSX.Element;
 		name: string;
 	}

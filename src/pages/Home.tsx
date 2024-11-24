@@ -1,186 +1,299 @@
-import React from "react";
-import styled from "styled-components";
-import { toast } from "react-toastify";
-import { CSSMediaSize, PATREON } from "../const";
-import weekday from "dayjs/plugin/weekday";
-import duration from "dayjs/plugin/duration";
-import dayjs from "dayjs";
-import useScrollIntoView from "../utils/use-scroll-into-view";
-//import { ConfettiGun } from "../components/confetti-gun";
+import React from 'react';
+import styled from 'styled-components';
+import { toast } from 'react-toastify';
+import weekday from 'dayjs/plugin/weekday';
+import duration from 'dayjs/plugin/duration';
+import dayjs from 'dayjs';
+import { CSSMediaSize, PATREON } from '../const';
+import useScrollIntoView from '../utils/hooks/use-scroll-into-view';
+// import { ConfettiGun } from "../components/confetti-gun";
 
 dayjs.extend(weekday);
 dayjs.extend(duration);
 
 const donatorClassNames: NHome.IDonatorClasses = {
-  0: {
-    class: "first",
-    subtext: "Diamond",
-    children: (props) => {
-      return <img {...props} src="img/materials/diamond.jpg" />;
-    }
-  },
-  1: {
-    class: "second",
-    subtext: "Platinum",
-    children: (props) => <div {...props}>
-      <div className='glare-cursor-1'>
-        <div className='glare-object' />
-      </div>
-      <div className='glare-cursor-2'>
-        <div className='glare-object' />
-      </div>
-      <div className='glare-cursor-3'>
-        <div className='glare-object' />
-      </div>
-    </div>
-  },
-  2: { class: "third" } 
+	0: {
+		class: 'first',
+		subtext: 'Diamond',
+		children: (props) => {
+			return (
+				<img
+					{...props}
+					alt="diamond"
+					src="/img/materials/diamond.jpg"
+				/>
+			);
+		},
+	},
+	1: {
+		class: 'second',
+		subtext: 'Platinum',
+		children: (props) => (
+			<div {...props}>
+				<div className="glare-cursor-1">
+					<div className="glare-object" />
+				</div>
+				<div className="glare-cursor-2">
+					<div className="glare-object" />
+				</div>
+				<div className="glare-cursor-3">
+					<div className="glare-object" />
+				</div>
+			</div>
+		),
+	},
+	2: { class: 'third' },
 };
 // Donators, if any ever :/
 const donatorWall: NHome.IDonatorWall[] = [];
 
 const Home = () => {
-  const [ time, setTime ] = React.useState(0); // seconds
-  const [ timeRemaining, setTimeRemaining ] = React.useState(0);
-  //const confettiState = React.useState(true);
+	const [time, setTime] = React.useState(0); // seconds
+	const [timeRemaining, setTimeRemaining] =
+		React.useState(0);
+	const [flagCols, setFlagCols] =
+		React.useState(8);
+	// const confettiState = React.useState(true);
 
-  const date = dayjs().startOf("day");
-  const weekdayNow = date.weekday();
-  const lastFriday = weekdayNow >= 5 ? date.weekday(5) : date.subtract(1, "week").weekday(5);
-  const nextFriday = weekdayNow < 5 ? date.weekday(5) : date.add(1, "week").weekday(5);
-  const fridayDiff = Math.abs(nextFriday.diff(lastFriday, "second"));
-  const isFriday = weekdayNow === 5;
-  const fridayPercent = isFriday ? 100 : Math.floor(100 / fridayDiff * (fridayDiff - time));
-  const timeRemainingPercent = isFriday ? Math.ceil(100 / 86400 * timeRemaining) : 100;
+	const date = dayjs().startOf('day');
+	const weekdayNow = date.weekday();
+	const lastFriday =
+		weekdayNow >= 5
+			? date.weekday(5)
+			: date.subtract(1, 'week').weekday(5);
+	const nextFriday =
+		weekdayNow < 5
+			? date.weekday(5)
+			: date.add(1, 'week').weekday(5);
+	const fridayDiff = Math.abs(
+		nextFriday.diff(lastFriday, 'second'),
+	);
+	const isFriday = weekdayNow === 5;
+	const fridayPercent = isFriday
+		? 100
+		: Math.floor(
+				(100 / fridayDiff) * (fridayDiff - time),
+		  );
+	const timeRemainingPercent = isFriday
+		? Math.ceil((100 / 86400) * timeRemaining)
+		: 100;
 
-  const fridayRef = React.useRef<HTMLDivElement>(null);
+	const fridayRef =
+		React.useRef<HTMLDivElement>(null);
 
-  const fridayScrollIntoView = useScrollIntoView(fridayRef, 0.6);
+	const fridayScrollIntoView = useScrollIntoView(
+		fridayRef,
+		0.6,
+	);
 
-  React.useEffect(() => {
-    let interval: NodeJS.Timer | undefined;
+	React.useEffect(() => {
+		let interval: NodeJS.Timer | undefined;
 
-    const updateTime = () => {
-      if(isFriday) {
-        if(time !== 0) setTime(0);
-        const dur = Math.abs(dayjs().diff(date.endOf("day"), "second"));
-        setTimeRemaining(dur);
-      } else {
-        if(timeRemaining !== 0) setTimeRemaining(0);
-        const dur = Math.abs(dayjs().diff(nextFriday, "second"));
-        setTime(dur);
-      }
-    };
+		const updateTime = () => {
+			if (isFriday) {
+				if (time !== 0) setTime(0);
+				const dur = Math.abs(
+					dayjs().diff(
+						date.endOf('day'),
+						'second',
+					),
+				);
+				setTimeRemaining(dur);
+			} else {
+				if (timeRemaining !== 0)
+					setTimeRemaining(0);
+				const dur = Math.abs(
+					dayjs().diff(nextFriday, 'second'),
+				);
+				setTime(dur);
+			}
+		};
 
-    const initTimeout = setTimeout(() => {
-      interval = setInterval(updateTime, 1000);
-    }, new Date().getTime() % 1000);
+		const initTimeout = setTimeout(() => {
+			interval = setInterval(updateTime, 1000);
+		}, new Date().getTime() % 1000);
 
-    updateTime();
+		updateTime();
 
-    return () => {
-      clearInterval(initTimeout);
-      clearInterval(interval);
-    };
-  }, []);
+		return () => {
+			clearInterval(initTimeout);
+			clearInterval(interval);
+		};
+	}, []);
 
-  // Unused for now
-  React.useEffect(() => {
-    if(fridayScrollIntoView.scrolledIntoView) {
-      //
-    }
-  }, [fridayScrollIntoView.scrolledIntoView]);
+	React.useEffect(() => {
+		const resizeObserver = new ResizeObserver(
+			() => {
+				setFlagCols(
+					document.documentElement.clientWidth >=
+						897
+						? 8
+						: document.documentElement
+								.clientWidth >= 495
+						? 4
+						: 2,
+				);
+			},
+		);
 
-  return (
-    <HomeStyle id="Home">
-      <div className="image">
-        <img src="img/1.png"></img>
-        <div className='image-text-bottom'>
-          <h2>Hi to Femboys!</h2>
-        </div>
-      </div>
-      <div className='content1'>
-        <div className='content1-inline'>
-          <h3>Femboy Fellaboy Service</h3>
-          <span>Every Femboy is our fella, no matter the color, age, religious and political views.</span>
-        </div>
-        <div className='content1-inline'>
-          <h3>Click n&apos; Call</h3>
-          <span>Quick and simple way to get in touch with our Femboy friends, just click n&apos; call!</span>
-        </div>
-        <div className='content1-inline'>
-          <h3>Spread AIDS with us!</h3>
-          <span>Who cares about reproduction, right?<br/>WE WANT MEN!</span>
-        </div>
-      </div>
-      <div className="image">
-        <img src="img/2.png"></img>
-        <div className='image-text'>
-          <div className='image-text-box image-text-box-right'>
-            <h2>About us</h2>
-            <span>Our goal is to support Femboys in this cruel and unforgiving world.</span>
-          </div>
-        </div>
-      </div>
-      <div className="image">
-        <img src="img/3.png"></img>
-        <div className='image-text'>
-          <div className='image-text-box image-text-box-left'>
-            <h2>Why???</h2>
-            <span>Femboys...</span>
-          </div>
-        </div>
-      </div>
-      <div className='content2'>
-        <div className='content2-box'>
-          <div className='content2-sub-box'>
-            <span className='content2-box-header'>350 Mil</span>
-            <span className='content2-box-info'>Femboys worldwide</span>
-          </div>
-          <div className='content2-sub-box'>
-            <span className='content2-box-header'>100%</span>
-            <span className='content2-box-info'>Femboys using Linux</span>
-          </div>
-          <div className='content2-sub-box'>
-            <span className='content2-box-header'>Since 1990</span>
-            <span className='content2-box-info'>Still exist</span>
-          </div>
-        </div>
-      </div>
-      <div className='content3'>
-        <div className='content3-profile-box'>
-          <div className='content3-profile-icon-box'>
-            <img src='img/p1.png' />
-          </div>
-          <div className='content3-profile-info-box'>
-            <span className='content3-profile-quote'>&quot;Best hotline ever! Be the reason their Bussy quivers.&quot;</span>
-            <span className='content3-profile-name'>A-wut Suparat</span>
-            <span className='content3-profile-country'>- Phichit, Thailand</span>
-          </div>
-        </div>
-        <div className='content3-profile-box'>
-          <div className='content3-profile-icon-box'>
-            <img src='img/p2.png' />
-          </div>
-          <div className='content3-profile-info-box'>
-            <span className='content3-profile-quote'>&quot;Never thought I&apos;d meet that much daily buttplug enjoyers. Thanks Femboy Hotline!&quot;</span>
-            <span className='content3-profile-name'>Aabheer Juntasa</span>
-            <span className='content3-profile-country'>- Loei, Thailand</span>
-          </div>
-        </div>
-        <div className='content3-profile-box'>
-          <div className='content3-profile-icon-box'>
-            <img src='img/p3.png' />
-          </div>
-          <div className='content3-profile-info-box'>
-            <span className='content3-profile-quote'>&quot;Gave a call, was not disappointed&quot;</span>
-            <span className='content3-profile-name'>Walter Hartwell White</span>
-            <span className='content3-profile-country'>- Albuquerque, New Mexico</span>
-          </div>
-        </div>
-      </div>
-      <div ref={fridayRef} className='femboy-day-schedule'>
-        {/*<ConfettiGun
+		resizeObserver?.observe(
+			document.documentElement,
+		);
+
+		return () => {
+			resizeObserver?.disconnect();
+		};
+	}, []);
+
+	// Unused for now
+	React.useEffect(() => {
+		if (fridayScrollIntoView.scrolledIntoView) {
+			//
+		}
+	}, [fridayScrollIntoView.scrolledIntoView]);
+
+	return (
+		<HomeStyle id="Home">
+			<div className="image">
+				<img alt="1" src="/img/1.png" />
+				<div className="image-text-bottom">
+					<h2>Hi to Femboys!</h2>
+				</div>
+			</div>
+			<div className="content1">
+				<div className="content1-inline">
+					<h3>Femboy Fellaboy Service</h3>
+					<span>
+						Every Femboy is our fella, no matter
+						the color, age, religious and
+						political views.
+					</span>
+				</div>
+				<div className="content1-inline">
+					<h3>Click n&apos; Call</h3>
+					<span>
+						Quick and simple way to get in touch
+						with our Femboy friends, just click
+						n&apos; call!
+					</span>
+				</div>
+				<div className="content1-inline">
+					<h3>Spread AIDS with us!</h3>
+					<span>
+						Who cares about reproduction, right?
+						<br />
+						WE WANT MEN!
+					</span>
+				</div>
+			</div>
+			<div className="image">
+				<img alt="2" src="/img/2.png" />
+				<div className="image-text">
+					<div className="image-text-box image-text-box-right">
+						<h2>About us</h2>
+						<span>
+							Our goal is to support Femboys in
+							this cruel and unforgiving world.
+						</span>
+					</div>
+				</div>
+			</div>
+			<div className="image">
+				<img alt="3" src="/img/3.png" />
+				<div className="image-text">
+					<div className="image-text-box image-text-box-left">
+						<h2>Why???</h2>
+						<span>Femboys...</span>
+					</div>
+				</div>
+			</div>
+			<div className="content2">
+				<div className="content2-box">
+					<div className="content2-sub-box">
+						<span className="content2-box-header">
+							350 Mil
+						</span>
+						<span className="content2-box-info">
+							Femboys worldwide
+						</span>
+					</div>
+					<div className="content2-sub-box">
+						<span className="content2-box-header">
+							100%
+						</span>
+						<span className="content2-box-info">
+							Femboys using Linux
+						</span>
+					</div>
+					<div className="content2-sub-box">
+						<span className="content2-box-header">
+							Since 1990
+						</span>
+						<span className="content2-box-info">
+							Still exist
+						</span>
+					</div>
+				</div>
+			</div>
+			<div className="content3">
+				<div className="content3-profile-box">
+					<div className="content3-profile-icon-box">
+						<img alt="p1" src="/img/p1.png" />
+					</div>
+					<div className="content3-profile-info-box">
+						<span className="content3-profile-quote">
+							&quot;Best hotline ever! Be the
+							reason their Bussy quivers.&quot;
+						</span>
+						<span className="content3-profile-name">
+							A-wut Suparat
+						</span>
+						<span className="content3-profile-country">
+							- Phichit, Thailand
+						</span>
+					</div>
+				</div>
+				<div className="content3-profile-box">
+					<div className="content3-profile-icon-box">
+						<img alt="p2" src="/img/p2.png" />
+					</div>
+					<div className="content3-profile-info-box">
+						<span className="content3-profile-quote">
+							&quot;Never thought I&apos;d meet
+							that much daily buttplug enjoyers.
+							Thanks Femboy Hotline!&quot;
+						</span>
+						<span className="content3-profile-name">
+							Aabheer Juntasa
+						</span>
+						<span className="content3-profile-country">
+							- Loei, Thailand
+						</span>
+					</div>
+				</div>
+				<div className="content3-profile-box">
+					<div className="content3-profile-icon-box">
+						<img alt="p3" src="/img/p3.png" />
+					</div>
+					<div className="content3-profile-info-box">
+						<span className="content3-profile-quote">
+							&quot;Gave a call, was not
+							disappointed&quot;
+						</span>
+						<span className="content3-profile-name">
+							Walter Hartwell White
+						</span>
+						<span className="content3-profile-country">
+							- Albuquerque, New Mexico
+						</span>
+					</div>
+				</div>
+			</div>
+			<div
+				ref={fridayRef}
+				className="femboy-day-schedule"
+			>
+				{/* <ConfettiGun
           className='confetti-gun-bottom-left'
           state={confettiState}
           portal={document.body}
@@ -188,65 +301,166 @@ const Home = () => {
             top: "50%",
             left: "50%"
           }}
-        />*/}
-        <div className='femboy-day-schedule-box'>
-          <span className='femboy-day-title'>{isFriday ? "It is" : "Time left until"} <span className='pinkish-text'>Femboy Friday</span>!</span>
-          <span className='femboy-day-time-text'>{isFriday ? `Literally now [ ${date.format("YYYY-MM-DD")} ]` : dayjs.duration(time, "seconds").format("D [days] H [hours] m [minutes] s [seconds]")}</span>
-          {isFriday ? <span className='femboy-day-remaining-text'>Remaining of Femboy Friday</span> : null}
-          <div className='process-bar-box'>
-            <div className='progress-bar'>
-              <div className='progress-bar-fill' style={{ width: `${isFriday ? timeRemainingPercent : fridayPercent}%` }} />
-              <div className='progress-bar-text'>
-                <span>{isFriday ? timeRemainingPercent : fridayPercent}%</span>
-              </div>
-            </div>
-          </div>
-          <span>Let us celebrate each Friday like it is the last one!</span>
-        </div>
-      </div>
-      <div className='country-ranks-box'>
-        <h3>Country ranking by visits</h3>
-        <span>Here you can see which countries visit this site the most!</span>
-        <a target="_blank" href="https://info.flagcounter.com/LOnc" rel="noreferrer"><img src="https://s01.flagcounter.com/countxl/LOnc/bg_404040/txt_FFFFFF/border_404040/columns_2/maxflags_10/viewers_0/labels_1/pageviews_0/flags_0/percent_0/" alt="Flag Counter" /></a>
-      </div>
-      <div className="image image-end">
-        <img src="img/4.png"></img>
-        <div className='image-text'>
-          <div className='image-text-box'>
-            <h2>It is time to join us</h2>
-            <span>Call us now! <span className='fake-link' onClick={() => toast("Or maybe not...", { type: "info" })}>+48 123 123 69</span></span>
-          </div>
-        </div>
-      </div>
-      <div className='content4'>
-        <h2>Donator wall!</h2>
-        <span className='smol gray'>Here is our donators and what they left to hang</span>
-        <span><a className='link' href={PATREON} target="_blank" rel="noreferrer">Join Now!</a></span>
-        {
-          donatorWall.length
-            ? donatorWall.map((m, i) => {
-              const cn = donatorClassNames[i] || "";
-              return <div key={i} className={[ "donator-box", `${cn.class}-donator` ].join(" ")}>
-                <div className={[ "donator-name", m.comment ? "has-comment" : "" ].join(" ")}>
-                  <p>{m.text}</p>
-                </div>
-                {m.comment ?
-                  <div className='donator-comment'>
-                    <span>{m.comment}</span>
-                  </div>
-                  : null}
-                {cn.subtext ? <div className='donator-subtext'><span>{cn.subtext}</span></div> : null}
-                {cn.children ? <cn.children className={`${cn.class}-child`} /> : null}
-              </div>;
-            })
-            : <>
-              <p>Oh well, they didn&apos;t leave anything after all...</p>
-              <span>:(</span>
-            </>
-        }
-      </div>
-    </HomeStyle>
-  );
+        /> */}
+				<div className="femboy-day-schedule-box">
+					<span className="femboy-day-title">
+						{isFriday
+							? 'It is'
+							: 'Time left until'}{' '}
+						<span className="pinkish-text">
+							Femboy Friday
+						</span>
+						!
+					</span>
+					<span className="femboy-day-time-text">
+						{isFriday
+							? `Literally now [ ${date.format(
+									'YYYY-MM-DD',
+							  )} ]`
+							: dayjs
+									.duration(time, 'seconds')
+									.format(
+										'D [days] H [hours] m [minutes] s [seconds]',
+									)}
+					</span>
+					{isFriday ? (
+						<span className="femboy-day-remaining-text">
+							Remaining of Femboy Friday
+						</span>
+					) : null}
+					<div className="process-bar-box">
+						<div className="progress-bar">
+							<div
+								className="progress-bar-fill"
+								style={{
+									width: `${
+										isFriday
+											? timeRemainingPercent
+											: fridayPercent
+									}%`,
+								}}
+							/>
+							<div className="progress-bar-text">
+								<span>
+									{isFriday
+										? timeRemainingPercent
+										: fridayPercent}
+									%
+								</span>
+							</div>
+						</div>
+					</div>
+					<span>
+						Let us celebrate each Friday like it
+						is the last one!
+					</span>
+				</div>
+			</div>
+			<div className="country-ranks-box">
+				<h3>Country ranking by visits</h3>
+				<span>
+					Here you can see which countries visit
+					this site the most!
+				</span>
+				<a
+					target="_blank"
+					href="https://info.flagcounter.com/LOnc"
+					rel="noreferrer"
+				>
+					<img
+						src={`https://s01.flagcounter.com/countxl/LOnc/bg_404040/txt_FFFFFF/border_404040/columns_${flagCols}/maxflags_40/viewers_0/labels_1/pageviews_0/flags_0/percent_0/`}
+						alt="Flag Counter"
+					/>
+				</a>
+			</div>
+			<div className="image image-end">
+				<img alt="4" src="/img/4.png" />
+				<div className="image-text">
+					<div className="image-text-box">
+						<h2>It is time to join us</h2>
+						<span>
+							Call us now!{' '}
+							<span
+								className="fake-link"
+								onClick={() =>
+									toast('Or maybe not...', {
+										type: 'info',
+									})
+								}
+							>
+								+48 123 123 69
+							</span>
+						</span>
+					</div>
+				</div>
+			</div>
+			<div className="content4">
+				<h2>Donator wall!</h2>
+				<span className="smol gray">
+					Here is our donators and what they left
+					to hang
+				</span>
+				<span>
+					<a
+						className="link"
+						href={PATREON}
+						target="_blank"
+						rel="noreferrer"
+					>
+						Join Now!
+					</a>
+				</span>
+				{donatorWall.length ? (
+					donatorWall.map((m, i) => {
+						const cn = donatorClassNames[i] || '';
+						return (
+							<div
+								key={i}
+								className={[
+									'donator-box',
+									`${cn.class}-donator`,
+								].join(' ')}
+							>
+								<div
+									className={[
+										'donator-name',
+										m.comment
+											? 'has-comment'
+											: '',
+									].join(' ')}
+								>
+									<p>{m.text}</p>
+								</div>
+								{m.comment ? (
+									<div className="donator-comment">
+										<span>{m.comment}</span>
+									</div>
+								) : null}
+								{cn.subtext ? (
+									<div className="donator-subtext">
+										<span>{cn.subtext}</span>
+									</div>
+								) : null}
+								{cn.children ? (
+									<cn.children
+										className={`${cn.class}-child`}
+									/>
+								) : null}
+							</div>
+						);
+					})
+				) : (
+					<>
+						<p>
+							Oh well, they didn&apos;t leave
+							anything after all...
+						</p>
+						<span>:(</span>
+					</>
+				)}
+			</div>
+		</HomeStyle>
+	);
 };
 
 export namespace NHome {
@@ -259,7 +473,7 @@ export namespace NHome {
 			class: string;
 			subtext?: string;
 			children?: React.FunctionComponent<any>;
-		}
+		};
 	}
 }
 
@@ -315,13 +529,13 @@ const HomeStyle = styled.div`
 			height: 100%;
 			display: flex;
 			align-items: center;
-			:has(.image-text-box-right) {
+			&:has(.image-text-box-right) {
 				justify-content: right;
 			}
 			.image-text-box {
 				background-color: var(--c-p1-aa);
-				padding: 0 30px;
-				padding-bottom: 30px;
+				padding: 20px 30px;
+				/*padding-bottom: 30px;*/
 				max-width: 400px;
 				min-width: 300px;
 				&.image-text-box-right {
@@ -341,13 +555,17 @@ const HomeStyle = styled.div`
 		}
 
 		.image-text-bottom {
-			background-image: linear-gradient(transparent, var(--c-p1) 90%);
+			background-image: linear-gradient(
+				transparent,
+				var(--c-p1) 90%
+			);
 			width: 100%;
 			position: absolute;
 			bottom: 0;
 			left: 0;
 			text-align: center;
 			color: var(--c-pink1);
+			padding-bottom: 20px;
 			> h2 {
 				font-size: 42px;
 				-webkit-text-stroke: 2px var(--c-p1);
@@ -385,31 +603,43 @@ const HomeStyle = styled.div`
 		justify-content: center;
 		@keyframes glow {
 			0% {
-				box-shadow: 0 -5px 6px -4px var(--c-pink1), 0 5px 6px -4px var(--c-pink3);
+				box-shadow:
+					0 -5px 6px -4px var(--c-pink1),
+					0 5px 6px -4px var(--c-pink3);
 			}
 			25% {
-				box-shadow: 0 -5px 10px -4px var(--c-pink1), 0 5px 10px -4px var(--c-pink3);
+				box-shadow:
+					0 -5px 10px -4px var(--c-pink1),
+					0 5px 10px -4px var(--c-pink3);
 			}
 			50% {
-				box-shadow: 0 -5px 7px -4px var(--c-pink1), 0 5px 7px -4px var(--c-pink3);
+				box-shadow:
+					0 -5px 7px -4px var(--c-pink1),
+					0 5px 7px -4px var(--c-pink3);
 			}
 			75% {
-				box-shadow: 0 -5px 6px -4px var(--c-pink1), 0 5px 6px -4px var(--c-pink3);
+				box-shadow:
+					0 -5px 6px -4px var(--c-pink1),
+					0 5px 6px -4px var(--c-pink3);
 			}
 			100% {
-				box-shadow: 0 -5px 5px -4px var(--c-pink1), 0 5px 5px -4px var(--c-pink3);
+				box-shadow:
+					0 -5px 5px -4px var(--c-pink1),
+					0 5px 5px -4px var(--c-pink3);
 			}
 		}
 		.content2-box {
 			padding: 10px 30px;
 			background-color: var(--c-p2);
 			min-width: 400px;
-			animation: glow 5s cubic-bezier(0.5, 0, 0.5, 1) 0s infinite alternate;
+			animation: glow 5s
+				cubic-bezier(0.5, 0, 0.5, 1) 0s infinite
+				alternate;
 			.content2-sub-box {
 				text-align: center;
 				display: flex;
 				flex-direction: column;
-				:not(:last-child) {
+				&:not(:last-child) {
 					margin-bottom: 20px;
 				}
 				.content2-box-header {
@@ -478,7 +708,7 @@ const HomeStyle = styled.div`
 		> span {
 			margin-bottom: 10px;
 			display: block;
-			:last-of-type {
+			&:last-of-type {
 				margin-bottom: 40px;
 			}
 		}
@@ -488,13 +718,17 @@ const HomeStyle = styled.div`
 			position: relative;
 			max-width: 500px;
 			background-color: var(--c-p2);
-			background-image: linear-gradient(45deg, var(--c-p1) 0%, var(--c-p2) 100%);
+			background-image: linear-gradient(
+				45deg,
+				var(--c-p1) 0%,
+				var(--c-p2) 100%
+			);
 			border-radius: 10px;
 			padding: 15px 0;
-			:not(:last-child) {
+			&:not(:last-child) {
 				margin-bottom: 30px;
 			}
-			:has([class$="-child"]) {
+			&:has([class$='-child']) {
 				background-image: none;
 				background-color: rgba(0, 0, 0, 0.2);
 			}
@@ -526,19 +760,24 @@ const HomeStyle = styled.div`
 
 			@keyframes shine {
 				0% {
-					filter: invert(0) hue-rotate(0) contrast(0.8) brightness(1.1);
+					filter: invert(0) hue-rotate(0)
+						contrast(0.8) brightness(1.1);
 				}
 				25% {
-					filter: invert(0.1) hue-rotate(90deg) contrast(0.9) brightness(1.5);
+					filter: invert(0.1) hue-rotate(90deg)
+						contrast(0.9) brightness(1.5);
 				}
 				50% {
-					filter: invert(0.2) hue-rotate(45deg) contrast(0.8) brightness(1.4);
+					filter: invert(0.2) hue-rotate(45deg)
+						contrast(0.8) brightness(1.4);
 				}
 				75% {
-					filter: invert(0) hue-rotate(130deg) contrast(0.7) brightness(1.5);
+					filter: invert(0) hue-rotate(130deg)
+						contrast(0.7) brightness(1.5);
 				}
 				100% {
-					filter: invert(0.2) hue-rotate(180deg) contrast(1.5) brightness(1.2);
+					filter: invert(0.2) hue-rotate(180deg)
+						contrast(1.5) brightness(1.2);
 				}
 			}
 
@@ -553,7 +792,7 @@ const HomeStyle = styled.div`
 				}
 			}
 
-			[class$="-child"] {
+			[class$='-child'] {
 				position: absolute;
 				top: 0;
 				left: 0;
@@ -565,11 +804,14 @@ const HomeStyle = styled.div`
 			.${donatorClassNames[0]?.class}-child {
 				object-position: center;
 				object-fit: cover;
-				animation: shine 6s ease-in-out infinite alternate;
+				animation: shine 6s ease-in-out infinite
+					alternate;
 			}
 			&.${donatorClassNames[0]?.class}-donator {
-				color: rgba(0,0,0,0.7);
-				box-shadow: 0 0 10px white, 0 0 20px rgb(180,180,255);
+				color: rgba(0, 0, 0, 0.7);
+				box-shadow:
+					0 0 10px white,
+					0 0 20px rgb(180, 180, 255);
 				.donator-name {
 					font-weight: 700;
 				}
@@ -580,7 +822,8 @@ const HomeStyle = styled.div`
 					width: 0;
 					height: 0;
 					position: relative;
-					animation: glare 6s ease-in-out infinite alternate;
+					animation: glare 6s ease-in-out infinite
+						alternate;
 					transform: rotate(70deg);
 					> .glare-object {
 						position: absolute;
@@ -594,7 +837,8 @@ const HomeStyle = styled.div`
 					width: 0;
 					height: 0;
 					position: relative;
-					animation: glare 5.5s ease-in-out infinite alternate;
+					animation: glare 5.5s ease-in-out
+						infinite alternate;
 					transform: rotate(70deg);
 					> .glare-object {
 						position: absolute;
@@ -609,7 +853,8 @@ const HomeStyle = styled.div`
 					width: 0;
 					height: 0;
 					position: relative;
-					animation: glare 6s ease-in-out infinite alternate;
+					animation: glare 6s ease-in-out infinite
+						alternate;
 					transform: rotate(70deg);
 					> .glare-object {
 						position: absolute;
@@ -622,8 +867,10 @@ const HomeStyle = styled.div`
 				}
 			}
 			&.${donatorClassNames[1]?.class}-donator {
-				color: rgba(0,0,0,0.7);
-				box-shadow: 0 0 10px white, 0 0 20px rgb(180,180,180);
+				color: rgba(0, 0, 0, 0.7);
+				box-shadow:
+					0 0 10px white,
+					0 0 20px rgb(180, 180, 180);
 				.donator-name {
 					font-weight: 600;
 				}
@@ -680,7 +927,7 @@ const HomeStyle = styled.div`
 			flex-direction: column;
 			align-items: center;
 			* {
-				:not(:last-child) {
+				&:not(:last-child) {
 					margin-bottom: 10px;
 				}
 				text-align: center;
@@ -721,7 +968,8 @@ const HomeStyle = styled.div`
 			margin: 0;
 		}
 		> span {
-			color: var(--c-p5)
+			color: var(--c-p5);
+			text-align: center;
 		}
 		> a {
 			margin-top: 20px;
@@ -735,6 +983,13 @@ const HomeStyle = styled.div`
 		.content1 {
 			flex-direction: column;
 			align-items: center;
+
+			.content1-inline {
+				max-width: 400px;
+				&:not(:last-child) {
+					margin-bottom: 15px;
+				}
+			}
 		}
 		.image-text {
 			flex-grow: 1;
@@ -761,7 +1016,7 @@ const HomeStyle = styled.div`
 		.content3 {
 			flex-direction: column;
 			.content3-profile-box {
-				:not(:last-child) {
+				&:not(:last-child) {
 					margin-bottom: 50px;
 				}
 				.content3-profile-icon-box {

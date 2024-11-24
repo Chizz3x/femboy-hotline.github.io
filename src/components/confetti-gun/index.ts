@@ -1,1 +1,1 @@
-export { ConfettiGun } from "./confetti-gun";
+export { ConfettiGun } from './confetti-gun';

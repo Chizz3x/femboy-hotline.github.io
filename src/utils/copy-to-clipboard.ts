@@ -1,3 +1,3 @@
 export default (data: string) => {
-  navigator.clipboard.writeText(data);
+	navigator.clipboard.writeText(data);
 };

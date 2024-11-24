@@ -1,31 +1,35 @@
-import styled from "styled-components";
-import React from "react";
+import styled from 'styled-components';
+import React from 'react';
 
-const text = "Redirecting";
+const text = 'Redirecting';
 
 const RedirectPage = () => {
-  const ref = React.useRef<HTMLDivElement>(null);
-  const [ count, setCount ] = React.useState(0);
+	const ref = React.useRef<HTMLDivElement>(null);
+	const [count, setCount] = React.useState(0);
 
-  React.useEffect(() => {
-    const interval = setInterval(() => {
-      setCount(count => (count + 1) % 4);
-    }, 500);
+	React.useEffect(() => {
+		const interval = setInterval(() => {
+			setCount((cnt) => (cnt + 1) % 4);
+		}, 500);
 
-    return () => {
-      clearInterval(interval);
-    };
-  }, []);
+		return () => {
+			clearInterval(interval);
+		};
+	}, []);
 
-  React.useEffect(() => {
-    if(ref?.current) {
-      ref.current.innerHTML = `${text}${".".repeat(count)}`;
-    }
-  }, [count]);
+	React.useEffect(() => {
+		if (ref?.current) {
+			ref.current.innerHTML = `${text}${'.'.repeat(
+				count,
+			)}`;
+		}
+	}, [count]);
 
-  return <RedirectPageStyle>
-    <h2 ref={ref}>{text}</h2>
-  </RedirectPageStyle>;
+	return (
+		<RedirectPageStyle>
+			<h2 ref={ref}>{text}</h2>
+		</RedirectPageStyle>
+	);
 };
 
 export { RedirectPage };

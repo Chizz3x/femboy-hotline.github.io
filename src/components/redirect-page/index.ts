@@ -1,1 +1,1 @@
-export { RedirectPage } from "./redirect-page";
+export { RedirectPage } from './redirect-page';

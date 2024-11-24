@@ -1,1 +1,1 @@
-export { default } from "./Patreon";
+export { default } from './Patreon';

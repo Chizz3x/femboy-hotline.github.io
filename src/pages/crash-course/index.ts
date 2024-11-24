@@ -1,1 +1,1 @@
-export { default } from "./crash-course";
+export { default } from './crash-course';

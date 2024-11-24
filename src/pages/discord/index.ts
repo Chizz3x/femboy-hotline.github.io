@@ -1,1 +1,1 @@
-export { default } from "./Discord";
+export { default } from './Discord';
