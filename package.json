@@ -2,6 +2,7 @@
   "name": "femboy-hotline",
   "version": "0.1.0",
   "private": false,
+	"homepage": "https://femboy-hotline.com",
   "scripts": {
     "dev": "react-scripts start",
     "build": "npm run gen-sitemap && react-scripts build",
