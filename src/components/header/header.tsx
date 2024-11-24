@@ -201,7 +201,35 @@ const Header = () => {
 							id="mobile-menu"
 							onClick={toggleMobileMenu}
 						>
-							<MenuIcon sx={{ fill: '#fff' }} />
+							{authed && user ? (
+								<Badge
+									overlap="circular"
+									anchorOrigin={{
+										vertical: 'bottom',
+										horizontal: 'right',
+									}}
+									badgeContent={
+										<MenuIcon
+											className="menu-icon-on-avatar"
+											sx={{
+												fill: '#fff',
+												padding: '3px',
+												height: '18px',
+												width: '18px',
+											}}
+										/>
+									}
+								>
+									<Avatar
+										alt={user.username}
+										src={`/img/pictures/${
+											user.picture || '1.png'
+										}`}
+									/>
+								</Badge>
+							) : (
+								<MenuIcon sx={{ fill: '#fff' }} />
+							)}
 						</IconButton>
 						<MobileMenuStyle
 							disablePortal
@@ -438,6 +466,9 @@ const MobileMenuStyle = styled(Menu)`
 				justify-content: flex-end;
 			}
 		}
+	}
+	::-webkit-scrollbar-thumb {
+		background-color: var(--c-pink1);
 	}
 `;
 
