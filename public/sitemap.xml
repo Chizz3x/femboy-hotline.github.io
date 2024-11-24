@@ -3,51 +3,53 @@
 	xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
 >
 	<url>
-		<loc>https:/femboy-hotline.com/</loc>
+		<loc>https:/femboy-hotline.com/#/</loc>
 	</url>
 	<url>
-		<loc>https:/femboy-hotline.com/about</loc>
+		<loc>https:/femboy-hotline.com/#/about</loc>
 	</url>
 	<url>
-		<loc>https:/femboy-hotline.com/contact</loc>
+		<loc>https:/femboy-hotline.com/#/contact</loc>
 	</url>
 	<url>
-		<loc>https:/femboy-hotline.com/donate</loc>
-	</url>
-	<url>
-		<loc
-			>https:/femboy-hotline.com/privacy-policy</loc
-		>
-	</url>
-	<url>
-		<loc>https:/femboy-hotline.com/coffee</loc>
-	</url>
-	<url>
-		<loc>https:/femboy-hotline.com/patreon</loc>
-	</url>
-	<url>
-		<loc>https:/femboy-hotline.com/discord</loc>
+		<loc>https:/femboy-hotline.com/#/donate</loc>
 	</url>
 	<url>
 		<loc
-			>https:/femboy-hotline.com/crash-course</loc
+			>https:/femboy-hotline.com/#/privacy-policy</loc
 		>
 	</url>
 	<url>
-		<loc>https:/femboy-hotline.com/register</loc>
+		<loc>https:/femboy-hotline.com/#/coffee</loc>
+	</url>
+	<url>
+		<loc>https:/femboy-hotline.com/#/patreon</loc>
+	</url>
+	<url>
+		<loc>https:/femboy-hotline.com/#/discord</loc>
 	</url>
 	<url>
 		<loc
-			>https:/femboy-hotline.com/terms-of-service</loc
+			>https:/femboy-hotline.com/#/crash-course</loc
 		>
 	</url>
 	<url>
-		<loc>https:/femboy-hotline.com/verify</loc>
+		<loc
+			>https:/femboy-hotline.com/#/register</loc
+		>
 	</url>
 	<url>
-		<loc>https:/femboy-hotline.com/login</loc>
+		<loc
+			>https:/femboy-hotline.com/#/terms-of-service</loc
+		>
 	</url>
 	<url>
-		<loc>https:/femboy-hotline.com/user</loc>
+		<loc>https:/femboy-hotline.com/#/verify</loc>
+	</url>
+	<url>
+		<loc>https:/femboy-hotline.com/#/login</loc>
+	</url>
+	<url>
+		<loc>https:/femboy-hotline.com/#/user</loc>
 	</url>
 </urlset>

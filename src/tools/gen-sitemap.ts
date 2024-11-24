@@ -28,6 +28,7 @@ const OUTPUT_FILE = path.resolve(
 						(route) => `<url>
 					<loc>${path.posix.join(
 						env.REACT_APP_PUBLIC_URL,
+						'#',
 						route,
 					)}</loc>
 				</url>`,

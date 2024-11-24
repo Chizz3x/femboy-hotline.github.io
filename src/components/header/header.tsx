@@ -1,7 +1,11 @@
 import React from 'react';
 import { toast } from 'react-toastify';
 import styled from 'styled-components';
-import { Link } from 'react-router-dom';
+import {
+	Link,
+	useLocation,
+	useNavigate,
+} from 'react-router-dom';
 import {
 	IconButton,
 	MenuItem,
@@ -29,85 +33,10 @@ import { useAuth } from '../contexts/auth';
 import { Auth } from '../../utils/auth';
 import { getUniqueId } from '../../scripts/unique-id-manager';
 
-const getLinks = (exclude: string[] = []) => {
-	return [
-		{
-			id: 'goHome',
-			name: 'Home',
-			route: ROUTES.home,
-			icon: <HomeIcon />,
-		},
-		{
-			id: 'goAbout',
-			name: 'About',
-			route: ROUTES.about,
-			icon: <InfoIcon />,
-		},
-		{
-			id: 'goContact',
-			name: 'Contact',
-			route: ROUTES.contact,
-			icon: <ContactsIcon />,
-		},
-		{
-			id: 'goDonate',
-			name: 'Donate',
-			route: ROUTES.donate,
-			icon: <CardGiftcardIcon />,
-		},
-	].filter(
-		(f) => f.route && !exclude.includes(f.route),
-	) as NHeader.ILink[];
-};
-
-const getMoreLinks = (exclude: string[] = []) => {
-	return [
-		{
-			id: 'goCrashCourse',
-			name: 'Crash course',
-			route: ROUTES.crashCourse,
-			icon: <AutoStoriesIcon />,
-		},
-		{
-			id: 'goRegister',
-			name: 'Register',
-			route: ROUTES.register,
-			icon: <PersonAddIcon />,
-		},
-		{
-			id: 'goLogin',
-			name: 'Login',
-			route: ROUTES.login,
-			icon: <LoginIcon />,
-		},
-		{
-			id: 'doLogout',
-			name: 'Logout',
-			icon: <LogoutIcon />,
-			fn: async () => {
-				if (typeof window !== 'undefined') {
-					await axios.post(
-						API_ROUTES.logout,
-						undefined,
-						{
-							headers: {
-								Authorization: `Bearer ${Auth.getToken()}`,
-							},
-						},
-					);
-
-					Auth.deleteAuth();
-
-					window.location.assign(ROUTES.home);
-				}
-			},
-		},
-	].filter(
-		(f) => f.id && !exclude.includes(f.id),
-	) as NHeader.ILink[];
-};
-
 const Header = () => {
+	const location = useLocation();
+	const navigate = useNavigate();
+
 	const [currentRoute, setCurrentRoute] =
 		React.useState('');
 	const [mobileMenuAnchor, setMobileMenuAnchor] =
@@ -118,6 +47,87 @@ const Header = () => {
 	const linkExclusions = authed
 		? ['goRegister', 'goLogin']
 		: ['doLogout'];
+
+	const getLinks = (exclude: string[] = []) => {
+		return [
+			{
+				id: 'goHome',
+				name: 'Home',
+				route: ROUTES.home,
+				icon: <HomeIcon />,
+			},
+			{
+				id: 'goAbout',
+				name: 'About',
+				route: ROUTES.about,
+				icon: <InfoIcon />,
+			},
+			{
+				id: 'goContact',
+				name: 'Contact',
+				route: ROUTES.contact,
+				icon: <ContactsIcon />,
+			},
+			{
+				id: 'goDonate',
+				name: 'Donate',
+				route: ROUTES.donate,
+				icon: <CardGiftcardIcon />,
+			},
+		].filter(
+			(f) =>
+				f.route && !exclude.includes(f.route),
+		) as NHeader.ILink[];
+	};
+
+	const getMoreLinks = (
+		exclude: string[] = [],
+	) => {
+		return [
+			{
+				id: 'goCrashCourse',
+				name: 'Crash course',
+				route: ROUTES.crashCourse,
+				icon: <AutoStoriesIcon />,
+			},
+			{
+				id: 'goRegister',
+				name: 'Register',
+				route: ROUTES.register,
+				icon: <PersonAddIcon />,
+			},
+			{
+				id: 'goLogin',
+				name: 'Login',
+				route: ROUTES.login,
+				icon: <LoginIcon />,
+			},
+			{
+				id: 'doLogout',
+				name: 'Logout',
+				icon: <LogoutIcon />,
+				fn: async () => {
+					if (typeof window !== 'undefined') {
+						await axios.post(
+							API_ROUTES.logout,
+							undefined,
+							{
+								headers: {
+									Authorization: `Bearer ${Auth.getToken()}`,
+								},
+							},
+						);
+
+						Auth.deleteAuth();
+
+						navigate(ROUTES.home);
+					}
+				},
+			},
+		].filter(
+			(f) => f.id && !exclude.includes(f.id),
+		) as NHeader.ILink[];
+	};
 
 	const moreLinks = getMoreLinks(linkExclusions);
 	const links = getLinks(linkExclusions);
@@ -146,10 +156,10 @@ const Header = () => {
 	};
 
 	React.useEffect(() => {
-		if (window?.location?.pathname) {
-			setCurrentRoute(window.location.pathname);
+		if (location.pathname) {
+			setCurrentRoute(location.pathname);
 		}
-	}, [window?.location?.pathname]);
+	}, [location.pathname]);
 
 	React.useEffect(() => {
 		if (authed) {
