@@ -7,6 +7,8 @@ import {
 	MenuItem,
 	Menu,
 	Button,
+	Badge,
+	Avatar,
 } from '@mui/material';
 import {
 	CardGiftcard as CardGiftcardIcon,
@@ -20,10 +22,12 @@ import {
 	Logout as LogoutIcon,
 } from '@mui/icons-material';
 import axios from 'axios';
+import useAxios from 'axios-hooks';
 import { CSSMediaSize } from '../../const';
 import { API_ROUTES, ROUTES } from '../../routes';
 import { useAuth } from '../contexts/auth';
 import { Auth } from '../../utils/auth';
+import { getUniqueId } from '../../scripts/unique-id-manager';
 
 const getLinks = (exclude: string[] = []) => {
 	return [
@@ -118,6 +122,21 @@ const Header = () => {
 	const moreLinks = getMoreLinks(linkExclusions);
 	const links = getLinks(linkExclusions);
 
+	const [{ data: userData }, getUser] = useAxios(
+		{
+			method: 'POST',
+			url: API_ROUTES.getMe,
+			headers: {
+				Authorization: `Bearer ${Auth.getToken()}`,
+			},
+			data: {
+				uniqueId: getUniqueId(),
+			},
+		},
+		{ manual: true, autoCancel: true },
+	);
+	const user = userData?.data?.user;
+
 	const toggleMobileMenu = (
 		event?: React.MouseEvent<HTMLElement>,
 	) => {
@@ -131,6 +150,12 @@ const Header = () => {
 			setCurrentRoute(window.location.pathname);
 		}
 	}, [window?.location?.pathname]);
+
+	React.useEffect(() => {
+		if (authed) {
+			getUser();
+		}
+	}, [authed]);
 
 	return (
 		<HeaderStyle>
@@ -283,7 +308,35 @@ const Header = () => {
 							id="burger-menu"
 							onClick={toggleMobileMenu}
 						>
-							<MenuIcon sx={{ fill: '#fff' }} />
+							{authed && user ? (
+								<Badge
+									overlap="circular"
+									anchorOrigin={{
+										vertical: 'bottom',
+										horizontal: 'right',
+									}}
+									badgeContent={
+										<MenuIcon
+											className="menu-icon-on-avatar"
+											sx={{
+												fill: '#fff',
+												padding: '3px',
+												height: '18px',
+												width: '18px',
+											}}
+										/>
+									}
+								>
+									<Avatar
+										alt={user.username}
+										src={`/img/pictures/${
+											user.picture || '1.png'
+										}`}
+									/>
+								</Badge>
+							) : (
+								<MenuIcon sx={{ fill: '#fff' }} />
+							)}
 						</IconButton>
 						<MobileMenuStyle
 							disablePortal
@@ -393,6 +446,11 @@ const HeaderStyle = styled.div`
 
 	a {
 		text-decoration: none;
+	}
+
+	.menu-icon-on-avatar {
+		background-color: var(--c-p1);
+		border-radius: 50%;
 	}
 
 	.header-btn {

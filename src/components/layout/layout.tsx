@@ -6,6 +6,7 @@ import {
 	NModals,
 	modals as allModals,
 } from '../modals/modals';
+import { sessionStorageSet } from '../../utils/session-storage';
 
 const Layout = (props: NLayout.IProps) => {
 	const {
@@ -13,6 +14,12 @@ const Layout = (props: NLayout.IProps) => {
 		showHeader = true,
 		showFooter = true,
 	} = props;
+
+	const hasRun = React.useRef(false);
+	const firstVisit = sessionStorage.getItem(
+		'first-visit',
+	);
+
 	// const query = new URLSearchParams(
 	//	window.location.search,
 	// );
@@ -20,15 +27,29 @@ const Layout = (props: NLayout.IProps) => {
 	// const shouldShowSwitchingDomains =
 	//	!localStorage.getItem('switching-domains') &&
 	//	query.has('switching-domains');
+	const shouldShowChangelog =
+		!localStorage.getItem('changelog-hide') &&
+		firstVisit !== 'false';
 
 	const [modals, setModals] =
 		React.useState<NModals.TModals>({
-			// ...(shouldShowSwitchingDomains
-			//	? {
-			//			ModalSwitchingDomains: { open: true },
-			//	  }
-			//	: {}),
+			...(shouldShowChangelog
+				? {
+						ModalChangelog: { open: true },
+				  }
+				: {}),
 		});
+
+	React.useEffect(() => {
+		if (!hasRun.current) {
+			hasRun.current = true;
+			if (
+				!sessionStorage.getItem('first-visit')
+			) {
+				sessionStorageSet('first-visit', 'false');
+			}
+		}
+	}, []);
 
 	React.useEffect(() => {
 		const changeModals = (

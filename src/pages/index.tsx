@@ -146,6 +146,7 @@ const Index = () => {
 	const [isProper, setIsProper] =
 		React.useState(false);
 
+	/** Scripts that have to run on every rerender */
 	uniqueIdManager();
 
 	React.useEffect(() => {

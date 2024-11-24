@@ -1,7 +1,11 @@
 import { ComponentProps } from 'react';
 import * as ModalSwitchingDomains from './switching-domains';
+import * as ModalChangelog from './changelog';
 
-export const modals = [ModalSwitchingDomains];
+export const modals = [
+	ModalSwitchingDomains,
+	ModalChangelog,
+];
 
 export const changeModals = <
 	D extends NModals.TModals,
@@ -15,6 +19,9 @@ export const changeModals = <
 export namespace NModals {
 	export interface IDefaultProps {
 		open?: string | boolean | null;
+		title?: string;
+		showHeader?: boolean;
+		centerHeader?: boolean;
 	}
 	export type TModals = Partial<
 		Record<

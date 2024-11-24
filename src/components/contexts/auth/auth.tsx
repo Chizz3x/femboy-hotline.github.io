@@ -50,6 +50,7 @@ export const AuthProvider: React.FC<
 
 		(async () => {
 			const isAuthed = await Auth.isAuthed();
+			console.log('dataSession', dataSession);
 			const token =
 				(isAuthed
 					? dataLocal.data.token ||

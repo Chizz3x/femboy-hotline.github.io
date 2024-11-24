@@ -6,10 +6,8 @@ export default <WithData extends boolean = false>(
 ): NWatchLocalStorageChange.TRes<WithData> => {
 	const { keys, type, withData } = props;
 
-	const [
-		localStorageChanged,
-		setLocalStorageChanged,
-	] = React.useState<string>('');
+	const [storageChanged, setStorageChanged] =
+		React.useState<string>('');
 
 	React.useEffect(() => {
 		const watchStorage = (
@@ -23,11 +21,11 @@ export default <WithData extends boolean = false>(
 							sessionStorage)) &&
 				keys.includes(event.key as string)
 			) {
-				setLocalStorageChanged(uuid());
+				setStorageChanged(uuid());
 			}
 		};
 
-		setLocalStorageChanged(uuid());
+		setStorageChanged(uuid());
 
 		window.addEventListener(
 			'storage',
@@ -44,16 +42,19 @@ export default <WithData extends boolean = false>(
 
 	if (withData)
 		return {
-			seed: localStorageChanged,
+			seed: storageChanged,
 			data: keys.reduce(
 				(p, c) => ({
 					...p,
-					[c]: localStorage.getItem(c),
+					[c]: (type === 'local'
+						? localStorage
+						: sessionStorage
+					).getItem(c),
 				}),
 				{},
 			) as NWatchLocalStorageChange.TData,
 		} as NWatchLocalStorageChange.TRes<WithData>;
-	return localStorageChanged as NWatchLocalStorageChange.TRes<WithData>;
+	return storageChanged as NWatchLocalStorageChange.TRes<WithData>;
 };
 
 export namespace NWatchLocalStorageChange {
