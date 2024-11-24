@@ -63,7 +63,6 @@ const Register = () => {
 				const token = await executeRecaptcha?.(
 					'register',
 				);
-				console.log('token', token);
 
 				if (token) {
 					const resp = await axios.post(
