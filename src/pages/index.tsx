@@ -24,6 +24,9 @@ import Verify from './verify';
 import Login from './login';
 import uniqueIdManager from '../scripts/unique-id-manager';
 import User from './user';
+import ResendVerification from './resend-verification';
+import ForgotPassword from './forgot-password';
+import ResetPassword from './reset-password';
 
 const PAGES: RouteProps[] = [
 	{
@@ -135,6 +138,30 @@ const PAGES: RouteProps[] = [
 		element: (
 			<Layout>
 				<User />
+			</Layout>
+		),
+	},
+	{
+		path: ROUTES.resendVerification,
+		element: (
+			<Layout>
+				<ResendVerification />
+			</Layout>
+		),
+	},
+	{
+		path: ROUTES.forgotPassword,
+		element: (
+			<Layout>
+				<ForgotPassword />
+			</Layout>
+		),
+	},
+	{
+		path: ROUTES.resetPassword,
+		element: (
+			<Layout>
+				<ResetPassword />
 			</Layout>
 		),
 	},

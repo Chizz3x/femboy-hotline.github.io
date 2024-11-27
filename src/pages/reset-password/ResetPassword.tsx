@@ -2,10 +2,15 @@ import React from 'react';
 import { useForm } from 'react-hook-form';
 import styled from 'styled-components';
 import {
+	useNavigate,
+	useParams,
+	useSearchParams,
+} from 'react-router-dom';
+import axios from 'axios';
+import { StatusCodes } from 'http-status-codes';
+import { toast } from 'react-toastify';
+import {
 	Button,
-	ButtonBase,
-	Checkbox,
-	FormControlLabel,
 	IconButton,
 	InputAdornment,
 	TextField,
@@ -14,34 +19,31 @@ import {
 	Visibility as VisibilityIcon,
 	VisibilityOff as VisibilityOffIcon,
 } from '@mui/icons-material';
-import { useGoogleReCaptcha } from 'react-google-recaptcha-v3';
-import axios from 'axios';
-import { StatusCodes } from 'http-status-codes';
-import { useNavigate } from 'react-router-dom';
-import { toast } from 'react-toastify';
-import yupValidationResolver from '../../utils/yupValidationResolver';
-import schema from './schema';
-import { CSSMediaSize } from '../../const';
 import { API_ROUTES, ROUTES } from '../../routes';
-import { getUniqueId } from '../../scripts/unique-id-manager';
-import { Auth } from '../../utils/auth';
+import schema from './schema';
+import yupValidationResolver from '../../utils/yupValidationResolver';
+import { CSSMediaSize } from '../../const';
+import omit from '../../utils/omit';
 
-const getDefaultForm = (): NLogin.IForm => {
-	return {
-		usernameOrEmail: '',
-		password: '',
-		rememberMe: false,
+const getDefaultForm =
+	(): NResetPassword.IForm => {
+		return {
+			password: '',
+			repeatPassword: '',
+		};
 	};
-};
 
-const Login = () => {
+const ResetPassword = () => {
+	const [params] = useSearchParams();
 	const navigate = useNavigate();
+	const token = params.get('token');
 
 	const [showPassword, setShowPassword] =
 		React.useState(false);
-
-	const { executeRecaptcha } =
-		useGoogleReCaptcha();
+	const [
+		showRepeatPassword,
+		setShowRepeatPassword,
+	] = React.useState(false);
 
 	const {
 		register,
@@ -51,7 +53,7 @@ const Login = () => {
 			errors: formErrors,
 		},
 		reset: resetForm,
-	} = useForm<NLogin.IForm>({
+	} = useForm<NResetPassword.IForm>({
 		resolver: yupValidationResolver(schema()),
 		defaultValues: getDefaultForm(),
 	});
@@ -59,21 +61,12 @@ const Login = () => {
 	const onSubmit = handleSubmit(
 		async (values) => {
 			try {
-				const token = await executeRecaptcha?.(
-					'login',
-				);
-
 				if (token) {
 					const resp = await axios.post(
-						API_ROUTES.login,
+						API_ROUTES.resetPassword,
 						{
-							...values,
-							uniqueId: getUniqueId(),
-						},
-						{
-							headers: {
-								'grecaptcha-token': token,
-							},
+							...omit(values, ['repeatPassword']),
+							token,
 						},
 					);
 
@@ -82,14 +75,9 @@ const Login = () => {
 						StatusCodes.OK
 					) {
 						resetForm(getDefaultForm());
-						Auth.setAuth(
-							resp?.data?.data?.token,
-							values.rememberMe,
-						);
-						navigate(ROUTES.home);
+						navigate(ROUTES.login);
 					} else throw Error(resp?.data?.message);
-				} else
-					throw Error('Google Recaptcha failed');
+				}
 			} catch (error: any) {
 				console.error(error);
 				toast(error.message || 'Unknown error', {
@@ -99,36 +87,15 @@ const Login = () => {
 		},
 	);
 
-	const onForgotPassword = () => {
-		navigate(ROUTES.forgotPassword);
-	};
-
 	return (
-		<LoginStyle>
-			<div className="login-container">
-				<h2>Login</h2>
+		<ResetPasswordStyle>
+			<div className="reset-password-container">
+				<h2>Reset password</h2>
 				<form
-					className="login-form"
+					className="reset-password-form"
 					onSubmit={onSubmit}
 				>
 					<div className="fields">
-						<div className="row">
-							<TextField
-								helperText={
-									formErrors.usernameOrEmail
-										?.message
-								}
-								error={
-									!!formErrors.usernameOrEmail
-										?.message
-								}
-								size="small"
-								label="Username or Email"
-								inputProps={{
-									...register('usernameOrEmail'),
-								}}
-							/>
-						</div>
 						<div className="row">
 							<TextField
 								helperText={
@@ -173,22 +140,49 @@ const Login = () => {
 							/>
 						</div>
 						<div className="row">
-							<FormControlLabel
-								control={
-									<Checkbox
-										{...register('rememberMe')}
-									/>
+							<TextField
+								helperText={
+									formErrors.repeatPassword
+										?.message
 								}
-								label="Remember me"
+								error={
+									!!formErrors.repeatPassword
+										?.message
+								}
+								size="small"
+								label="Repeat password"
+								type={
+									showRepeatPassword
+										? 'text'
+										: 'password'
+								}
+								InputProps={{
+									...register('repeatPassword'),
+									endAdornment: (
+										<InputAdornment position="end">
+											<IconButton
+												aria-label="toggle password visibility"
+												onClick={() =>
+													setShowRepeatPassword(
+														(v) => !v,
+													)
+												}
+												onMouseDown={() =>
+													setShowRepeatPassword(
+														(v) => !v,
+													)
+												}
+											>
+												{showRepeatPassword ? (
+													<VisibilityIcon />
+												) : (
+													<VisibilityOffIcon />
+												)}
+											</IconButton>
+										</InputAdornment>
+									),
+								}}
 							/>
-						</div>
-						<div className="row">
-							<ButtonBase
-								disableRipple
-								onClick={onForgotPassword}
-							>
-								Forgot password?
-							</ButtonBase>
 						</div>
 					</div>
 					<div className="buttons">
@@ -196,26 +190,25 @@ const Login = () => {
 							type="submit"
 							disabled={isFormLoading}
 						>
-							Log in
+							Reset
 						</Button>
 					</div>
 				</form>
 			</div>
-		</LoginStyle>
+		</ResetPasswordStyle>
 	);
 };
 
-export namespace NLogin {
+export default ResetPassword;
+
+export namespace NResetPassword {
 	export interface IForm {
-		usernameOrEmail: string;
 		password: string;
-		rememberMe: boolean;
+		repeatPassword: string;
 	}
 }
 
-export default Login;
-
-const LoginStyle = styled.div`
+const ResetPasswordStyle = styled.div`
 	flex-shrink: 0;
 	flex-grow: 1;
 	padding: 20px 50px;
@@ -223,14 +216,14 @@ const LoginStyle = styled.div`
 	align-items: center;
 	justify-content: center;
 
-	.login-container {
+	.reset-password-container {
 		background-color: var(--c-p2);
 		padding: 20px 30px;
 		border-radius: 10px;
 		width: 100%;
 		max-width: 500px;
 
-		.login-form {
+		.reset-password-form {
 			margin: 20px 0;
 
 			.fields {

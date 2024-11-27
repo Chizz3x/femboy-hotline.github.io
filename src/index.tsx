@@ -15,7 +15,7 @@ import { GRECAPTCHA_ID } from './const';
 import { AuthProvider } from './components/contexts/auth';
 
 const toastStyle: React.CSSProperties = {
-	background: 'var(--c-p1-aa)',
+	background: 'var(--c-p1)',
 };
 
 const root = ReactDOM.createRoot(

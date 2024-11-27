@@ -2,6 +2,7 @@ import styled from 'styled-components';
 import React from 'react';
 import {
 	Button,
+	ButtonBase,
 	IconButton,
 	InputAdornment,
 	TextField,
@@ -15,7 +16,8 @@ import {
 } from '@mui/icons-material';
 import { StatusCodes } from 'http-status-codes';
 import { toast } from 'react-toastify';
-import { API_ROUTES } from '../../routes';
+import { useNavigate } from 'react-router-dom';
+import { API_ROUTES, ROUTES } from '../../routes';
 import omit from '../../utils/omit';
 import yupValidationResolver from '../../utils/yupValidationResolver';
 import schema from './schema';
@@ -32,6 +34,8 @@ const getDefaultForm = (): NRegister.IForm => {
 };
 
 const Register = () => {
+	const navigate = useNavigate();
+
 	const [success, setSuccess] =
 		React.useState(false);
 	const [showPassword, setShowPassword] =
@@ -93,6 +97,10 @@ const Register = () => {
 			}
 		},
 	);
+
+	const onResendVerification = () => {
+		navigate(ROUTES.resendVerification);
+	};
 
 	return (
 		<RegisterStyle>
@@ -236,6 +244,14 @@ const Register = () => {
 										...register('claimKey'),
 									}}
 								/>
+							</div>
+							<div className="row">
+								<ButtonBase
+									disableRipple
+									onClick={onResendVerification}
+								>
+									Resend verification link
+								</ButtonBase>
 							</div>
 						</div>
 						<div className="buttons">

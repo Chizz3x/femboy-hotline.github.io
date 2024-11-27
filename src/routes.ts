@@ -15,6 +15,9 @@ export const ROUTES = {
 	verify: '/verify',
 	login: '/login',
 	user: '/user',
+	resendVerification: '/resend-verification',
+	forgotPassword: '/forgot-password',
+	resetPassword: '/reset-password',
 };
 
 export const API_ROUTES = {
@@ -26,4 +29,7 @@ export const API_ROUTES = {
 	verify: `${API_URL}/user/verify`,
 	verifyAuth: `${API_URL}/user/verify-auth`,
 	logout: `${API_URL}/user/logout`,
+	resendVerification: `${API_URL}/user/resend-verification`,
+	forgotPassword: `${API_URL}/user/forgot-password`,
+	resetPassword: `${API_URL}/user/reset-password`,
 };

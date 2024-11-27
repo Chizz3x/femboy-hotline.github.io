@@ -1,11 +1,12 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import styled from 'styled-components';
+import { useGoogleReCaptcha } from 'react-google-recaptcha-v3';
+import axios from 'axios';
+import { StatusCodes } from 'http-status-codes';
+import { toast } from 'react-toastify';
 import {
 	Button,
-	ButtonBase,
-	Checkbox,
-	FormControlLabel,
 	IconButton,
 	InputAdornment,
 	TextField,
@@ -14,29 +15,20 @@ import {
 	Visibility as VisibilityIcon,
 	VisibilityOff as VisibilityOffIcon,
 } from '@mui/icons-material';
-import { useGoogleReCaptcha } from 'react-google-recaptcha-v3';
-import axios from 'axios';
-import { StatusCodes } from 'http-status-codes';
-import { useNavigate } from 'react-router-dom';
-import { toast } from 'react-toastify';
-import yupValidationResolver from '../../utils/yupValidationResolver';
+import { API_ROUTES } from '../../routes';
 import schema from './schema';
+import yupValidationResolver from '../../utils/yupValidationResolver';
 import { CSSMediaSize } from '../../const';
-import { API_ROUTES, ROUTES } from '../../routes';
-import { getUniqueId } from '../../scripts/unique-id-manager';
-import { Auth } from '../../utils/auth';
 
-const getDefaultForm = (): NLogin.IForm => {
-	return {
-		usernameOrEmail: '',
-		password: '',
-		rememberMe: false,
+const getDefaultForm =
+	(): NResendVerification.IForm => {
+		return {
+			email: '',
+			password: '',
+		};
 	};
-};
 
-const Login = () => {
-	const navigate = useNavigate();
-
+const ResendVerification = () => {
 	const [showPassword, setShowPassword] =
 		React.useState(false);
 
@@ -51,7 +43,7 @@ const Login = () => {
 			errors: formErrors,
 		},
 		reset: resetForm,
-	} = useForm<NLogin.IForm>({
+	} = useForm<NResendVerification.IForm>({
 		resolver: yupValidationResolver(schema()),
 		defaultValues: getDefaultForm(),
 	});
@@ -60,16 +52,13 @@ const Login = () => {
 		async (values) => {
 			try {
 				const token = await executeRecaptcha?.(
-					'login',
+					'resend_verification',
 				);
 
 				if (token) {
 					const resp = await axios.post(
-						API_ROUTES.login,
-						{
-							...values,
-							uniqueId: getUniqueId(),
-						},
+						API_ROUTES.resendVerification,
+						values,
 						{
 							headers: {
 								'grecaptcha-token': token,
@@ -82,14 +71,11 @@ const Login = () => {
 						StatusCodes.OK
 					) {
 						resetForm(getDefaultForm());
-						Auth.setAuth(
-							resp?.data?.data?.token,
-							values.rememberMe,
-						);
-						navigate(ROUTES.home);
+						toast('Please check your email', {
+							type: 'success',
+						});
 					} else throw Error(resp?.data?.message);
-				} else
-					throw Error('Google Recaptcha failed');
+				}
 			} catch (error: any) {
 				console.error(error);
 				toast(error.message || 'Unknown error', {
@@ -99,33 +85,32 @@ const Login = () => {
 		},
 	);
 
-	const onForgotPassword = () => {
-		navigate(ROUTES.forgotPassword);
-	};
-
 	return (
-		<LoginStyle>
-			<div className="login-container">
-				<h2>Login</h2>
+		<ResendVerificationStyle>
+			<div className="resend-verification-container">
+				<h2>Resend verification</h2>
+				<span>
+					Use this page to resend verification
+					link if by any chance you have not
+					received it after registration.
+				</span>
 				<form
-					className="login-form"
+					className="resend-verification-form"
 					onSubmit={onSubmit}
 				>
 					<div className="fields">
 						<div className="row">
 							<TextField
 								helperText={
-									formErrors.usernameOrEmail
-										?.message
+									formErrors.email?.message
 								}
 								error={
-									!!formErrors.usernameOrEmail
-										?.message
+									!!formErrors.email?.message
 								}
 								size="small"
-								label="Username or Email"
+								label="Email"
 								inputProps={{
-									...register('usernameOrEmail'),
+									...register('email'),
 								}}
 							/>
 						</div>
@@ -172,50 +157,31 @@ const Login = () => {
 								}}
 							/>
 						</div>
-						<div className="row">
-							<FormControlLabel
-								control={
-									<Checkbox
-										{...register('rememberMe')}
-									/>
-								}
-								label="Remember me"
-							/>
-						</div>
-						<div className="row">
-							<ButtonBase
-								disableRipple
-								onClick={onForgotPassword}
-							>
-								Forgot password?
-							</ButtonBase>
-						</div>
 					</div>
 					<div className="buttons">
 						<Button
 							type="submit"
 							disabled={isFormLoading}
 						>
-							Log in
+							Send
 						</Button>
 					</div>
 				</form>
 			</div>
-		</LoginStyle>
+		</ResendVerificationStyle>
 	);
 };
 
-export namespace NLogin {
+export namespace NResendVerification {
 	export interface IForm {
-		usernameOrEmail: string;
+		email: string;
 		password: string;
-		rememberMe: boolean;
 	}
 }
 
-export default Login;
+export default ResendVerification;
 
-const LoginStyle = styled.div`
+const ResendVerificationStyle = styled.div`
 	flex-shrink: 0;
 	flex-grow: 1;
 	padding: 20px 50px;
@@ -223,14 +189,14 @@ const LoginStyle = styled.div`
 	align-items: center;
 	justify-content: center;
 
-	.login-container {
+	.resend-verification-container {
 		background-color: var(--c-p2);
 		padding: 20px 30px;
 		border-radius: 10px;
 		width: 100%;
 		max-width: 500px;
 
-		.login-form {
+		.resend-verification-form {
 			margin: 20px 0;
 
 			.fields {
