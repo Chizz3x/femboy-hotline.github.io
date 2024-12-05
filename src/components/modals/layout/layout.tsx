@@ -101,7 +101,7 @@ const ModalLayoutStyle = styled.div<{
 			showHeader ? '0' : '20px'};
 
 		> .header {
-			padding: 10px 15px;
+			padding: 10px 0;
 			display: ${({ showHeader }) =>
 				showHeader ? 'flex' : 'none'};
 			justify-content: space-evenly;
@@ -112,17 +112,19 @@ const ModalLayoutStyle = styled.div<{
 			> * {
 				flex-grow: 1;
 				flex-basis: 0;
+				white-space: nowrap;
 			}
 			> .header-left {
 				display: flex;
 			}
-			> .header-right {
-				display: flex;
-				justify-content: flex-end;
-			}
 			> .header-center {
 				display: flex;
 				justify-content: center;
+			}
+			> .header-right {
+				display: flex;
+				justify-content: flex-end;
+				margin-left: 10px;
 			}
 		}
 	}

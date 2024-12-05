@@ -1,38 +1,95 @@
 import styled from 'styled-components';
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import {
+	useNavigate,
+	useParams,
+} from 'react-router-dom';
 import useAxios from 'axios-hooks';
+import { PhotoCamera as PhotoCameraIcon } from '@mui/icons-material';
 import { useAuth } from '../../components/contexts/auth';
 import { API_ROUTES, ROUTES } from '../../routes';
 import { CSSMediaSize } from '../../const';
 import { Auth } from '../../utils/auth';
 import { getUniqueId } from '../../scripts/unique-id-manager';
+import buildRoute from '../../utils/build-route';
+import { changeModals } from '../../components/modals/modals';
 
 const User = () => {
 	const navigate = useNavigate();
 	const authed = useAuth();
+	const params = useParams();
 
-	const [
-		{ data: userData, loading: userLoading },
-	] = useAxios({
-		method: 'POST',
-		url: API_ROUTES.getMe,
-		headers: {
-			Authorization: `Bearer ${Auth.getToken()}`,
+	const otherId = params.id;
+
+	const [{ data: userDataMe }, getMe] = useAxios(
+		{
+			method: 'POST',
+			url: API_ROUTES.getMe,
 		},
-		data: {
-			uniqueId: getUniqueId(),
+		{ manual: true, autoCancel: true },
+	);
+	const [{ data: userData }, getUser] = useAxios(
+		{
+			method: 'GET',
 		},
-	});
-	const user = userData?.data?.user;
+		{ manual: true, autoCancel: true },
+	);
+	const user =
+		userDataMe?.data?.user ||
+		userData?.data?.user;
+
+	const onChangePicture = () => {
+		window.dispatchEvent(
+			changeModals({
+				ModalChangePicture: {
+					open: true,
+					showHeader: true,
+					title: 'Change picture',
+				},
+			}),
+		);
+	};
+
+	const onChangeBanner = () => {
+		window.dispatchEvent(
+			changeModals({
+				ModalChangeBanner: {
+					open: true,
+					showHeader: true,
+					title: 'Change banner',
+				},
+			}),
+		);
+	};
 
 	React.useEffect(() => {
-		if (authed.loaded) {
-			if (!authed.authed) {
-				navigate(ROUTES.login);
+		if (!otherId) {
+			if (authed.loaded) {
+				if (!authed.authed) {
+					navigate(ROUTES.login);
+				} else {
+					getMe({
+						headers: {
+							Authorization: `Bearer ${Auth.getToken()}`,
+						},
+						data: {
+							uniqueId: getUniqueId(),
+						},
+					});
+				}
 			}
+		} else {
+			getUser({
+				url: buildRoute(
+					API_ROUTES.getUser,
+					undefined,
+					{
+						id: otherId,
+					},
+				),
+			});
 		}
-	}, [authed.loaded]);
+	}, [authed.loaded, authed.seed, otherId]);
 
 	return (
 		<UserStyle>
@@ -46,6 +103,15 @@ const User = () => {
 							}')`,
 						}}
 					/>
+					{!otherId ? (
+						<div
+							className="editable-overlay"
+							onClick={onChangeBanner}
+						>
+							<PhotoCameraIcon />
+							<span>Change</span>
+						</div>
+					) : null}
 				</div>
 				<div className="banner-content-box">
 					<div className="profile-box">
@@ -57,6 +123,15 @@ const User = () => {
 								}')`,
 							}}
 						/>
+						{!otherId ? (
+							<div
+								className="editable-overlay"
+								onClick={onChangePicture}
+							>
+								<PhotoCameraIcon />
+								<span>Change</span>
+							</div>
+						) : null}
 					</div>
 					<div className="profile-name-box">
 						<div className="profile-name-box-inner">
@@ -88,6 +163,7 @@ const UserStyle = styled.div`
 	.banner-container {
 		flex-grow: 1;
 		.banner-box {
+			position: relative;
 			.banner {
 				background-repeat: no-repeat;
 				background-size: cover;
@@ -95,12 +171,36 @@ const UserStyle = styled.div`
 				width: 100%;
 				height: 400px;
 			}
+
+			.editable-overlay {
+				cursor: pointer;
+				display: flex;
+				flex-direction: column;
+				align-items: center;
+				justify-content: center;
+				position: absolute;
+				top: 0;
+				left: 0;
+				width: 100%;
+				height: 100%;
+				background-color: var(--c-p1-aa);
+				transition: opacity 0.2s;
+				opacity: 0;
+				&:hover {
+					opacity: 1;
+				}
+				> svg {
+					width: 48px;
+					height: 48px;
+				}
+			}
 		}
 		.banner-content-box {
 			transform: translateY(-50%);
 			padding: 0 50px;
 			display: flex;
 			.profile-box {
+				position: relative;
 				.profile-picture {
 					background-repeat: no-repeat;
 					background-size: cover;
@@ -109,6 +209,31 @@ const UserStyle = styled.div`
 					height: 128px;
 					border-radius: 50%;
 					border: 5px solid var(--c-p1);
+				}
+				.editable-overlay {
+					--margin: 5px;
+					cursor: pointer;
+					display: flex;
+					flex-direction: column;
+					align-items: center;
+					justify-content: center;
+					border-radius: 50%;
+					position: absolute;
+					top: 0;
+					left: 0;
+					width: calc(100% - var(--margin) * 2);
+					height: calc(100% - var(--margin) * 2);
+					margin: var(--margin);
+					background-color: var(--c-p1-aa);
+					transition: opacity 0.2s;
+					opacity: 0;
+					&:hover {
+						opacity: 1;
+					}
+					> svg {
+						width: 32px;
+						height: 32px;
+					}
 				}
 			}
 			.profile-name-box-inner {

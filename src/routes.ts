@@ -15,6 +15,7 @@ export const ROUTES = {
 	verify: '/verify',
 	login: '/login',
 	user: '/user',
+	userId: '/user/:id',
 	resendVerification: '/resend-verification',
 	forgotPassword: '/forgot-password',
 	resetPassword: '/reset-password',
@@ -32,4 +33,6 @@ export const API_ROUTES = {
 	resendVerification: `${API_URL}/user/resend-verification`,
 	forgotPassword: `${API_URL}/user/forgot-password`,
 	resetPassword: `${API_URL}/user/reset-password`,
+	changePicture: `${API_URL}/user/change-picture`,
+	changeBanner: `${API_URL}/user/change-banner`,
 };

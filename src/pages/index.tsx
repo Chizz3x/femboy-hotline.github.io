@@ -142,6 +142,14 @@ const PAGES: RouteProps[] = [
 		),
 	},
 	{
+		path: ROUTES.userId,
+		element: (
+			<Layout>
+				<User />
+			</Layout>
+		),
+	},
+	{
 		path: ROUTES.resendVerification,
 		element: (
 			<Layout>

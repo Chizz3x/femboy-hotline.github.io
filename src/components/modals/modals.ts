@@ -1,10 +1,14 @@
 import { ComponentProps } from 'react';
 import * as ModalSwitchingDomains from './switching-domains';
 import * as ModalChangelog from './changelog';
+import * as ModalChangePicture from './change-picture';
+import * as ModalChangeBanner from './change-banner';
 
 export const modals = [
 	ModalSwitchingDomains,
 	ModalChangelog,
+	ModalChangePicture,
+	ModalChangeBanner,
 ];
 
 export const changeModals = <
@@ -28,7 +32,7 @@ export namespace NModals {
 			(typeof modals)[number]['name'],
 			ComponentProps<
 				(typeof modals)[number]['Modal']
-			>
+			> | null
 		>
 	>;
 }

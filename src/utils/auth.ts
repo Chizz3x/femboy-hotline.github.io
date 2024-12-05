@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { StatusCodes } from 'http-status-codes';
 import { API_ROUTES } from '../routes';
 import { getUniqueId } from '../scripts/unique-id-manager';
 import {
@@ -73,9 +74,14 @@ export class Auth {
 			console.error(error);
 		}
 
+		const is404 =
+			localValid?.status ===
+			StatusCodes.NOT_FOUND;
+
 		const valid = !!localValid?.data?.data?.valid;
 
-		if (!valid) localStorageRemove('token');
+		if (!valid && !is404)
+			localStorageRemove('token');
 
 		return valid;
 	}
@@ -109,10 +115,15 @@ export class Auth {
 			console.error(error);
 		}
 
+		const is404 =
+			sessionValid?.status ===
+			StatusCodes.NOT_FOUND;
+
 		const valid =
 			!!sessionValid?.data?.data?.valid;
 
-		if (!valid) sessionStorageRemove('token');
+		if (!valid && !is404)
+			sessionStorageRemove('token');
 
 		return valid;
 	}
@@ -132,14 +143,10 @@ export class Auth {
 			);
 		}
 
-		if (tokenSession) {
-			if (!valid) {
-				valid = await this.isAuthedSession(
-					tokenSession,
-				);
-			} else {
-				sessionStorageRemove('token');
-			}
+		if (tokenSession && !valid) {
+			valid = await this.isAuthedSession(
+				tokenSession,
+			);
 		}
 
 		return valid;

@@ -24,6 +24,7 @@ import {
 	PersonAdd as PersonAddIcon,
 	Login as LoginIcon,
 	Logout as LogoutIcon,
+	Person as PersonIcon,
 } from '@mui/icons-material';
 import axios from 'axios';
 import useAxios from 'axios-hooks';
@@ -42,7 +43,7 @@ const Header = () => {
 	const [mobileMenuAnchor, setMobileMenuAnchor] =
 		React.useState<null | HTMLElement>(null);
 
-	const { authed } = useAuth();
+	const { authed, seed: authedSeed } = useAuth();
 
 	const linkExclusions = authed
 		? ['goRegister', 'goLogin']
@@ -84,6 +85,12 @@ const Header = () => {
 		exclude: string[] = [],
 	) => {
 		return [
+			{
+				id: 'goProfile',
+				name: 'Profile',
+				route: ROUTES.user,
+				icon: <PersonIcon />,
+			},
 			{
 				id: 'goCrashCourse',
 				name: 'Crash course',
@@ -165,7 +172,7 @@ const Header = () => {
 		if (authed) {
 			getUser();
 		}
-	}, [authed]);
+	}, [authed, authedSeed]);
 
 	return (
 		<HeaderStyle>

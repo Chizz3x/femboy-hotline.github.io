@@ -3,11 +3,9 @@ import React, {
 	useContext,
 	useState,
 } from 'react';
-import useAxios from 'axios-hooks';
+import { v4 as uuid } from 'uuid';
 import useWatchStorage from '../../../utils/hooks/use-watch-storage';
 import { Auth } from '../../../utils/auth';
-import { API_ROUTES } from '../../../routes';
-import { getUniqueId } from '../../../scripts/unique-id-manager';
 
 const getAuthValue = (
 	override?: Partial<NAuthContext.IValue>,
@@ -16,6 +14,7 @@ const getAuthValue = (
 		token: null,
 		authed: false,
 		loaded: false,
+		seed: 'init',
 		...override,
 	};
 };
@@ -44,29 +43,50 @@ export const AuthProvider: React.FC<
 		withData: true,
 	});
 
+	const setAuthData = async () => {
+		const isAuthed = await Auth.isAuthed();
+		const token =
+			(isAuthed
+				? dataLocal.data.token ||
+				  dataSession.data.token
+				: null) || null;
+		setValue(
+			getAuthValue({
+				token: token || null,
+				authed: !!token,
+				loaded: true,
+				seed: uuid(),
+			}),
+		);
+
+		checking.current = false;
+	};
+
 	React.useEffect(() => {
 		if (checking.current) return;
 		checking.current = true;
-
-		(async () => {
-			const isAuthed = await Auth.isAuthed();
-			console.log('dataSession', dataSession);
-			const token =
-				(isAuthed
-					? dataLocal.data.token ||
-					  dataSession.data.token
-					: null) || null;
-			setValue(
-				getAuthValue({
-					token: token || null,
-					authed: !!token,
-					loaded: true,
-				}),
-			);
-
-			checking.current = false;
-		})();
+		setAuthData();
 	}, [dataLocal.seed, dataSession.seed]);
+
+	React.useEffect(() => {
+		const checkAuth = () => {
+			if (checking.current) return;
+			checking.current = true;
+			setAuthData();
+		};
+
+		window.addEventListener(
+			'checkAuth',
+			checkAuth,
+		);
+
+		return () => {
+			window.removeEventListener(
+				'checkAuth',
+				checkAuth,
+			);
+		};
+	}, []);
 
 	return (
 		<AuthContext.Provider value={value}>
@@ -91,5 +111,6 @@ export namespace NAuthContext {
 		token: string | null;
 		authed: boolean;
 		loaded: boolean;
+		seed: string;
 	}
 }
