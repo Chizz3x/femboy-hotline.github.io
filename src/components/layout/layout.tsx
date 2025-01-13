@@ -5,6 +5,7 @@ import { Footer } from '../footer';
 import {
 	NModals,
 	modals as allModals,
+	changeModals,
 } from '../modals/modals';
 import { sessionStorageSet } from '../../utils/session-storage';
 
@@ -15,10 +16,10 @@ const Layout = (props: NLayout.IProps) => {
 		showFooter = true,
 	} = props;
 
-	const hasRun = React.useRef(false);
-	const firstVisit = sessionStorage.getItem(
-		'first-visit',
-	);
+	const [hasRun, setHasRun] =
+		React.useState<boolean>(false);
+	const [modalsInit, setModalsInit] =
+		React.useState<boolean>(false);
 
 	// const query = new URLSearchParams(
 	//	window.location.search,
@@ -27,32 +28,56 @@ const Layout = (props: NLayout.IProps) => {
 	// const shouldShowSwitchingDomains =
 	//	!localStorage.getItem('switching-domains') &&
 	//	query.has('switching-domains');
-	const shouldShowChangelog =
-		!localStorage.getItem('changelog-hide') &&
-		firstVisit !== 'false';
 
 	const [modals, setModals] =
-		React.useState<NModals.TModals>({
-			...(shouldShowChangelog
-				? {
-						ModalChangelog: { open: true },
-				  }
-				: {}),
-		});
+		React.useState<NModals.TModals>({});
+
+	// React.useEffect(() => {
+	//	const firstVisit = sessionStorage.getItem(
+	//		'first-visit',
+	//	);
+	//	const shouldShowChangelog =
+	//		!localStorage.getItem('changelog-hide') &&
+	//		firstVisit !== 'false';
+
+	//	if (shouldShowChangelog) {
+	//		window.dispatchEvent(
+	//			changeModals({
+	//				ModalChangelog: { open: true },
+	//			}),
+	//		);
+	//	}
+	// }, []);
 
 	React.useEffect(() => {
-		if (!hasRun.current) {
-			hasRun.current = true;
-			if (
-				!sessionStorage.getItem('first-visit')
-			) {
-				sessionStorageSet('first-visit', 'false');
+		if (modalsInit) {
+			if (!hasRun) {
+				setHasRun(true);
+				if (
+					!sessionStorage.getItem('first-visit')
+				) {
+					sessionStorageSet(
+						'first-visit',
+						'false',
+					);
+					const shouldShowChangelog =
+						!localStorage.getItem(
+							'changelog-hide',
+						);
+					if (shouldShowChangelog) {
+						window.dispatchEvent(
+							changeModals({
+								ModalChangelog: { open: true },
+							}),
+						);
+					}
+				}
 			}
 		}
-	}, []);
+	}, [modalsInit]);
 
 	React.useEffect(() => {
-		const changeModals = (
+		const changeModalsInner = (
 			event: WindowEventMap['changeModals'],
 		) => {
 			setModals({
@@ -66,12 +91,15 @@ const Layout = (props: NLayout.IProps) => {
 
 		window.addEventListener(
 			'changeModals',
-			changeModals,
+			changeModalsInner,
 		);
+
+		setModalsInit(true);
+
 		return () => {
 			window.removeEventListener(
 				'changeModals',
-				changeModals,
+				changeModalsInner,
 			);
 		};
 	}, []);
