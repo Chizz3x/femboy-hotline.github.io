@@ -18,6 +18,10 @@ const images: NModalChangeBanner.IImage[] = [
 		name: 'Simple Astolfo',
 		fileName: 'astolfo-1.png',
 	},
+	{
+		name: 'Horny',
+		fileName: 'horny.png',
+	},
 ];
 
 const name = 'ModalChangeBanner';

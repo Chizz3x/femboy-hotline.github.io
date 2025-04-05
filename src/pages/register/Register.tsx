@@ -21,7 +21,10 @@ import { API_ROUTES, ROUTES } from '../../routes';
 import omit from '../../utils/omit';
 import yupValidationResolver from '../../utils/yupValidationResolver';
 import schema from './schema';
-import { CSSMediaSize } from '../../const';
+import {
+	CSSMediaSize,
+	DISCORD_INVITE,
+} from '../../const';
 
 const getDefaultForm = (): NRegister.IForm => {
 	return {
@@ -40,6 +43,8 @@ const Register = () => {
 		React.useState(false);
 	const [showPassword, setShowPassword] =
 		React.useState(false);
+	const [registering, setRegistering] =
+		React.useState<boolean>(false);
 	const [
 		showRepeatPassword,
 		setShowRepeatPassword,
@@ -63,6 +68,8 @@ const Register = () => {
 
 	const onSubmit = handleSubmit(
 		async (values) => {
+			setRegistering(true);
+
 			try {
 				const token = await executeRecaptcha?.(
 					'register',
@@ -95,6 +102,8 @@ const Register = () => {
 					type: 'error',
 				});
 			}
+
+			setRegistering(false);
 		},
 	);
 
@@ -231,6 +240,18 @@ const Register = () => {
 								/>
 							</div>
 							<div className="row">
+								<span className="small-info">
+									If you do not have the key, one
+									can be obtained by joining our{' '}
+									<a
+										target="_blank"
+										href={DISCORD_INVITE}
+										rel="noreferrer"
+									>
+										Discord
+									</a>{' '}
+									and asking to enlist in testing.
+								</span>
 								<TextField
 									helperText={
 										formErrors.claimKey?.message
@@ -257,7 +278,9 @@ const Register = () => {
 						<div className="buttons">
 							<Button
 								type="submit"
-								disabled={isFormLoading}
+								disabled={
+									isFormLoading || registering
+								}
 							>
 								Register
 							</Button>
@@ -299,6 +322,11 @@ const RegisterStyle = styled.div`
 	display: flex;
 	align-items: center;
 	justify-content: center;
+
+	.small-info {
+		font-size: 12px;
+		color: var(--c-p6);
+	}
 
 	.register-container {
 		background-color: var(--c-p2);

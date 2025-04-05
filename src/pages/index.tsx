@@ -4,7 +4,6 @@ import {
 	RouteProps,
 	Routes,
 	useLocation,
-	useNavigate,
 } from 'react-router-dom';
 import P404 from './404';
 import { Layout } from '../components/layout';
@@ -22,11 +21,13 @@ import Register from './register';
 import TermsOfService from './terms-of-service';
 import Verify from './verify';
 import Login from './login';
-import uniqueIdManager from '../scripts/unique-id-manager';
 import User from './user';
 import ResendVerification from './resend-verification';
 import ForgotPassword from './forgot-password';
 import ResetPassword from './reset-password';
+import Forums from './forums';
+import ForumPost from './forum-post';
+import ForumPostNew from './forum-post-new';
 
 const PAGES: RouteProps[] = [
 	{
@@ -173,10 +174,34 @@ const PAGES: RouteProps[] = [
 			</Layout>
 		),
 	},
+	{
+		path: ROUTES.forums,
+		element: (
+			<Layout>
+				<Forums />
+			</Layout>
+		),
+	},
+	{
+		path: ROUTES.forumPost,
+		element: (
+			<Layout>
+				<ForumPost />
+			</Layout>
+		),
+	},
+	{
+		path: ROUTES.forumPostNew,
+		element: (
+			<Layout>
+				<ForumPostNew />
+			</Layout>
+		),
+	},
 ];
 
 const Index = () => {
-	// const location = useLocation();
+	const location = useLocation();
 	// const navigate = useNavigate();
 	// const [isProper, setIsProper] =
 	//	React.useState(false);
@@ -192,6 +217,12 @@ const Index = () => {
 	// }, []);
 
 	// if (!isProper) return null;
+
+	React.useEffect(() => {
+		document
+			.getElementById('root-container')
+			?.scrollTo(0, 0);
+	}, [location.pathname]);
 
 	return (
 		<Routes>

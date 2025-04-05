@@ -19,6 +19,9 @@ export const ROUTES = {
 	resendVerification: '/resend-verification',
 	forgotPassword: '/forgot-password',
 	resetPassword: '/reset-password',
+	forums: '/forums',
+	forumPost: '/forums/:id',
+	forumPostNew: '/forums/new',
 };
 
 export const API_ROUTES = {

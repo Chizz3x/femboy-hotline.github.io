@@ -6,6 +6,7 @@ import {
 } from 'react-router-dom';
 import useAxios from 'axios-hooks';
 import { PhotoCamera as PhotoCameraIcon } from '@mui/icons-material';
+import { Skeleton } from '@mui/material';
 import { useAuth } from '../../components/contexts/auth';
 import { API_ROUTES, ROUTES } from '../../routes';
 import { CSSMediaSize } from '../../const';
@@ -21,14 +22,20 @@ const User = () => {
 
 	const otherId = params.id;
 
-	const [{ data: userDataMe }, getMe] = useAxios(
+	const [
+		{ data: userDataMe, loading: loadingMe },
+		getMe,
+	] = useAxios(
 		{
 			method: 'POST',
 			url: API_ROUTES.getMe,
 		},
 		{ manual: true, autoCancel: true },
 	);
-	const [{ data: userData }, getUser] = useAxios(
+	const [
+		{ data: userData, loading: loadingUser },
+		getUser,
+	] = useAxios(
 		{
 			method: 'GET',
 		},
@@ -95,15 +102,23 @@ const User = () => {
 		<UserStyle>
 			<div className="banner-container">
 				<div className="banner-box">
-					<div
-						className="banner"
-						style={{
-							backgroundImage: `url('/img/banners/${
-								user?.banner || 'astolfo-1.png'
-							}')`,
-						}}
-					/>
-					{!otherId ? (
+					{loadingMe || loadingUser ? (
+						<Skeleton
+							variant="rectangular"
+							width="100%"
+							height="400px"
+						/>
+					) : (
+						<div
+							className="banner"
+							style={{
+								backgroundImage: `url('/img/banners/${
+									user?.banner || 'astolfo-1.png'
+								}')`,
+							}}
+						/>
+					)}
+					{!otherId && !loadingMe ? (
 						<div
 							className="editable-overlay"
 							onClick={onChangeBanner}
@@ -115,15 +130,26 @@ const User = () => {
 				</div>
 				<div className="banner-content-box">
 					<div className="profile-box">
-						<div
-							className="profile-picture"
-							style={{
-								backgroundImage: `url('/img/pictures/${
-									user?.picture || '1.png'
-								}')`,
-							}}
-						/>
-						{!otherId ? (
+						{loadingMe || loadingUser ? (
+							<Skeleton
+								variant="circular"
+								width="128px"
+								height="128px"
+								style={{
+									border: '5px solid var(--c-p1)',
+								}}
+							/>
+						) : (
+							<div
+								className="profile-picture"
+								style={{
+									backgroundImage: `url('/img/pictures/${
+										user?.picture || '1.png'
+									}')`,
+								}}
+							/>
+						)}
+						{!otherId && !loadingMe ? (
 							<div
 								className="editable-overlay"
 								onClick={onChangePicture}
@@ -199,6 +225,10 @@ const UserStyle = styled.div`
 			transform: translateY(-50%);
 			padding: 0 50px;
 			display: flex;
+			pointer-events: none;
+			> * {
+				pointer-events: all;
+			}
 			.profile-box {
 				position: relative;
 				.profile-picture {
