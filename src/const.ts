@@ -34,3 +34,5 @@ export const GRECAPTCHA_ID = IS_DEV
 export const API_URL = IS_DEV
 	? 'http://localhost:3001'
 	: 'https://api.femboy-hotline.com';
+
+export const TEST = 'test';
