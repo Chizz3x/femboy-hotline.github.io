@@ -11,7 +11,7 @@ import { sessionStorageSet } from '../../utils/session-storage';
 
 const Layout = (props: NLayout.IProps) => {
 	const {
-		children,
+		children = null,
 		showHeader = true,
 		showFooter = true,
 	} = props;
@@ -105,7 +105,7 @@ const Layout = (props: NLayout.IProps) => {
 	}, []);
 
 	return (
-		<LayoutStyle>
+		<LayoutStyle id="root-container">
 			{allModals.map((modal, index) =>
 				modal.name in modals &&
 				modals?.[modal.name] ? (

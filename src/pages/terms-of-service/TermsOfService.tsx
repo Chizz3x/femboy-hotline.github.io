@@ -4,7 +4,7 @@ import dayjs from 'dayjs';
 import { Link } from 'react-router-dom';
 import { ROUTES } from '../../routes';
 
-const effectiveDate = dayjs('2024-11-08');
+const effectiveDate = dayjs('2025-02-11');
 
 const Privacy = () => {
 	return (
@@ -27,7 +27,17 @@ const Privacy = () => {
 				website.
 			</p>
 
-			<h2>User Responsibilities:</h2>
+			<h2>Age Restriction</h2>
+			<p>
+				This website is not intended for
+				individuals under the age of 18. By
+				accessing or using femboy-hotline.com, you
+				confirm that you are at least 18 years
+				old. If you are under 18, you are not
+				permitted to view or use this website.
+			</p>
+
+			<h2>User Responsibilities</h2>
 			<p>
 				Users are solely responsible for any
 				content they post, upload, or share on
@@ -39,7 +49,7 @@ const Privacy = () => {
 				laws or third-party rights.
 			</p>
 
-			<h2>Content Liability:</h2>
+			<h2>Content Liability</h2>
 			<p>
 				The owner of femboy-hotline.com does not
 				assume responsibility for user-generated
@@ -53,7 +63,7 @@ const Privacy = () => {
 				so that appropriate action may be taken.
 			</p>
 
-			<h2>Content Moderation:</h2>
+			<h2>Content Moderation</h2>
 			<p>
 				We reserve the right to review, moderate,
 				or remove any content that, in our sole
@@ -66,7 +76,7 @@ const Privacy = () => {
 			</p>
 
 			<h2>
-				Third-Party Links and Advertisements:
+				Third-Party Links and Advertisements
 			</h2>
 			<p>
 				This website may display ads or contain
@@ -79,7 +89,7 @@ const Privacy = () => {
 				they visit.
 			</p>
 
-			<h2>Disclaimer of Warranties:</h2>
+			<h2>Disclaimer of Warranties</h2>
 			<p>
 				femboy-hotline.com is provided on an
 				&quot;as is&quot; basis without warranties
@@ -91,7 +101,7 @@ const Privacy = () => {
 				omissions.
 			</p>
 
-			<h2>Limitation of Liability:</h2>
+			<h2>Limitation of Liability</h2>
 			<p>
 				Under no circumstances shall the owner of
 				femboy-hotline.com be liable for any
@@ -102,7 +112,7 @@ const Privacy = () => {
 				the possibility of such damages.
 			</p>
 
-			<h2>Changes to These Terms:</h2>
+			<h2>Changes to These Terms</h2>
 			<p>
 				We may update these Terms of Service at
 				any time. Any changes will be posted on
@@ -112,7 +122,7 @@ const Privacy = () => {
 				the new terms.
 			</p>
 
-			<h2>Contact Us:</h2>
+			<h2>Contact Us</h2>
 			<p>
 				If you have any questions about these
 				Terms of Service or encounter any legal
@@ -130,4 +140,14 @@ const PrivacyStyle = styled.div`
 	flex-shrink: 0;
 	flex-grow: 1;
 	padding: 20px 50px;
+	display: flex;
+	flex-direction: column;
+	text-align: center;
+	align-items: center;
+	> * {
+		max-width: 500px;
+	}
+	> p {
+		text-align: justify;
+	}
 `;

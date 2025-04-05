@@ -39,6 +39,8 @@ const Login = () => {
 
 	const [showPassword, setShowPassword] =
 		React.useState(false);
+	const [loggingIn, setLoggingIn] =
+		React.useState<boolean>(false);
 
 	const { executeRecaptcha } =
 		useGoogleReCaptcha();
@@ -58,6 +60,8 @@ const Login = () => {
 
 	const onSubmit = handleSubmit(
 		async (values) => {
+			setLoggingIn(true);
+
 			try {
 				const token = await executeRecaptcha?.(
 					'login',
@@ -96,6 +100,8 @@ const Login = () => {
 					type: 'error',
 				});
 			}
+
+			setLoggingIn(false);
 		},
 	);
 
@@ -194,7 +200,9 @@ const Login = () => {
 					<div className="buttons">
 						<Button
 							type="submit"
-							disabled={isFormLoading}
+							disabled={
+								isFormLoading || loggingIn
+							}
 						>
 							Log in
 						</Button>

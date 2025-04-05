@@ -11,7 +11,7 @@ import { ROUTES } from '../../routes';
 
 const Footer = () => {
 	return (
-		<FooterStyle>
+		<FooterStyle id="root-footer">
 			<div className="footer-box footer-box-left">
 				<table className="link-table">
 					<tbody>
@@ -78,7 +78,9 @@ const Footer = () => {
 					<span>
 						uwuright
 						<span className="uwuright-sign">
-							u
+							<span className="uwuright-letter">
+								u
+							</span>
 						</span>{' '}
 						2022-
 						{new Date().getFullYear()}
@@ -170,15 +172,24 @@ const FooterStyle = styled.div`
 		color: var(--c-p3);
 	}
 
+	.uwuright {
+		> span {
+			display: inline-flex;
+		}
+	}
 	.uwuright-sign {
-		font-size: 12px;
+		margin-top: 1px;
+		font-size: 10px;
 		border: 1px solid var(--c-p8);
 		border-radius: 50%;
-		height: 12px;
-		aspect-ratio: 1/1;
+		height: 9px;
+		width: 9px;
 		display: inline-flex;
 		align-items: center;
 		justify-content: center;
+		.uwuright-letter {
+			transform: translate(-0.5px, -1.8px);
+		}
 	}
 
 	.love-icon {

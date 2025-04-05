@@ -85,6 +85,7 @@ export default createGlobalStyle`
 		--c-p1: #202020;
 		--c-p1-aa: #202020aa;
 		--c-p2: #404040;
+		--c-p2-66: #40404066;
 		--c-p3: #606060;
 		--c-p4: #808080;
 		--c-p5: #9F9F9F;

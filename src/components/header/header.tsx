@@ -13,6 +13,7 @@ import {
 	Button,
 	Badge,
 	Avatar,
+	Skeleton,
 } from '@mui/material';
 import {
 	CardGiftcard as CardGiftcardIcon,
@@ -25,6 +26,7 @@ import {
 	Login as LoginIcon,
 	Logout as LogoutIcon,
 	Person as PersonIcon,
+	DragHandle as DragHandleIcon,
 } from '@mui/icons-material';
 import axios from 'axios';
 import useAxios from 'axios-hooks';
@@ -139,7 +141,10 @@ const Header = () => {
 	const moreLinks = getMoreLinks(linkExclusions);
 	const links = getLinks(linkExclusions);
 
-	const [{ data: userData }, getUser] = useAxios(
+	const [
+		{ data: userData, loading: userDataLoading },
+		getUser,
+	] = useAxios(
 		{
 			method: 'POST',
 			url: API_ROUTES.getMe,
@@ -148,15 +153,18 @@ const Header = () => {
 			},
 			data: {
 				uniqueId: getUniqueId(),
+				withRP: true,
 			},
 		},
 		{ manual: true, autoCancel: true },
 	);
 	const user = userData?.data?.user;
+	const userRP = userData?.data?.rp;
 
 	const toggleMobileMenu = (
 		event?: React.MouseEvent<HTMLElement>,
 	) => {
+		if (userDataLoading) return;
 		setMobileMenuAnchor((state) =>
 			state ? null : event?.currentTarget || null,
 		);
@@ -175,7 +183,26 @@ const Header = () => {
 	}, [authed, authedSeed]);
 
 	return (
-		<HeaderStyle>
+		<HeaderStyle id="root-header">
+			{authed && userData ? (
+				<div className="rep-data">
+					<div className="rep-data-handle">
+						<DragHandleIcon />
+					</div>
+					<table className="rep-data-table">
+						<tbody>
+							<tr>
+								<td>Rep</td>
+								<td>{user?.rep || 0}</td>
+							</tr>
+							<tr>
+								<td>RP</td>
+								<td>{userRP?.rp || 0}</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			) : null}
 			<div className="container container-left">
 				<Link to={ROUTES.home}>
 					<div className="container-parts">
@@ -208,7 +235,8 @@ const Header = () => {
 							id="mobile-menu"
 							onClick={toggleMobileMenu}
 						>
-							{authed && user ? (
+							{authed &&
+							(user || userDataLoading) ? (
 								<Badge
 									overlap="circular"
 									anchorOrigin={{
@@ -227,12 +255,20 @@ const Header = () => {
 										/>
 									}
 								>
-									<Avatar
-										alt={user.username}
-										src={`/img/pictures/${
-											user.picture || '1.png'
-										}`}
-									/>
+									{userDataLoading ? (
+										<Skeleton
+											variant="circular"
+											width={40}
+											height={40}
+										/>
+									) : (
+										<Avatar
+											alt={user.username}
+											src={`/img/pictures/${
+												user.picture || '1.png'
+											}`}
+										/>
+									)}
 								</Badge>
 							) : (
 								<MenuIcon sx={{ fill: '#fff' }} />
@@ -265,43 +301,34 @@ const Header = () => {
 								(link) =>
 									link.route || link.fn ? (
 										<MenuItem
+											className="menu-item"
 											key={link.id}
 											onClick={() =>
 												toggleMobileMenu()
 											}
 										>
-											{link.route ? (
-												<Link to={link.route}>
-													<Button
-														endIcon={link.icon}
-														disableRipple
-														className={[
-															'header-mobile-btn',
-															currentRoute ===
-															link.route
-																? 'active'
-																: '',
-														].join(' ')}
-													>
-														{link.name}
-													</Button>
-												</Link>
-											) : (
-												<Button
-													endIcon={link.icon}
-													disableRipple
-													className={[
-														'header-mobile-btn',
-														currentRoute ===
-														link.route
-															? 'active'
-															: '',
-													].join(' ')}
-													onClick={link.fn}
-												>
-													{link.name}
-												</Button>
-											)}
+											<Button
+												endIcon={link.icon}
+												disableRipple
+												className={[
+													'header-mobile-btn',
+													currentRoute ===
+													link.route
+														? 'active'
+														: '',
+												].join(' ')}
+												onClick={
+													link.fn ||
+													(() => {
+														navigate(
+															link.route ||
+																ROUTES.home,
+														);
+													})
+												}
+											>
+												{link.name}
+											</Button>
 										</MenuItem>
 									) : null,
 							)}
@@ -353,7 +380,8 @@ const Header = () => {
 							id="burger-menu"
 							onClick={toggleMobileMenu}
 						>
-							{authed && user ? (
+							{authed &&
+							(user || userDataLoading) ? (
 								<Badge
 									overlap="circular"
 									anchorOrigin={{
@@ -372,12 +400,20 @@ const Header = () => {
 										/>
 									}
 								>
-									<Avatar
-										alt={user.username}
-										src={`/img/pictures/${
-											user.picture || '1.png'
-										}`}
-									/>
+									{userDataLoading ? (
+										<Skeleton
+											variant="circular"
+											width={40}
+											height={40}
+										/>
+									) : (
+										<Avatar
+											alt={user.username}
+											src={`/img/pictures/${
+												user.picture || '1.png'
+											}`}
+										/>
+									)}
 								</Badge>
 							) : (
 								<MenuIcon sx={{ fill: '#fff' }} />
@@ -403,43 +439,34 @@ const Header = () => {
 							{moreLinks.map((link) =>
 								link.route || link.fn ? (
 									<MenuItem
+										className="menu-item"
 										key={link.id}
 										onClick={() =>
 											toggleMobileMenu()
 										}
 									>
-										{link.route ? (
-											<Link to={link.route}>
-												<Button
-													endIcon={link.icon}
-													disableRipple
-													className={[
-														'header-mobile-btn',
-														currentRoute ===
-														link.route
-															? 'active'
-															: '',
-													].join(' ')}
-												>
-													{link.name}
-												</Button>
-											</Link>
-										) : (
-											<Button
-												endIcon={link.icon}
-												disableRipple
-												className={[
-													'header-mobile-btn',
-													currentRoute ===
-													link.route
-														? 'active'
-														: '',
-												].join(' ')}
-												onClick={link.fn}
-											>
-												{link.name}
-											</Button>
-										)}
+										<Button
+											endIcon={link.icon}
+											disableRipple
+											className={[
+												'header-mobile-btn',
+												currentRoute ===
+												link.route
+													? 'active'
+													: '',
+											].join(' ')}
+											onClick={
+												link.fn ||
+												(() => {
+													navigate(
+														link.route ||
+															ROUTES.home,
+													);
+												})
+											}
+										>
+											{link.name}
+										</Button>
 									</MenuItem>
 								) : null,
 							)}
@@ -492,8 +519,59 @@ const HeaderStyle = styled.div`
 	flex-direction: row;
 	padding: 10px 20px;
 
+	.rep-data {
+		border-radius: 0 0 0 10px;
+		position: absolute;
+		right: 0;
+		top: 100%;
+		min-width: 50px;
+		min-height: 20px;
+		background-color: var(--c-p1);
+		padding: 5px 10px;
+		padding-left: 0;
+		font-size: 12px;
+		display: flex;
+		transform: translateX(calc(100% - 24px));
+		transition: transform 0.1s ease-in-out;
+
+		&:hover {
+			transform: translateX(0);
+		}
+
+		.rep-data-handle {
+			display: flex;
+			align-items: center;
+			> * {
+				transform: rotate(90deg);
+			}
+		}
+
+		.rep-data-table {
+			tr {
+				> td:first-child {
+					font-weight: 700;
+					padding-right: 5px;
+				}
+			}
+		}
+	}
+
 	a {
 		text-decoration: none;
+	}
+
+	.menu-item {
+		padding: 0;
+		text-align: right;
+		> button,
+		> a {
+			padding: 6px 16px;
+		}
+		> * {
+			justify-content: flex-end;
+			width: 100%;
+			height: 100%;
+		}
 	}
 
 	.menu-icon-on-avatar {

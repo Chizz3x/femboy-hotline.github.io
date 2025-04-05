@@ -56,6 +56,7 @@
 		"no-restricted-imports": "off",
 		"no-restricted-exports": "off",
 		"no-plusplus": "off",
-		"no-param-reassign": "off"
+		"no-param-reassign": "off",
+		"@typescript-eslint/ban-ts-comment": "off"
 	}
 }
