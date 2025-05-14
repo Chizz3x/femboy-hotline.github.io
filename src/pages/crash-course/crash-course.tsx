@@ -9,39 +9,67 @@ const CrashCourse = () => {
 				<h2>Introduction</h2>
 				<p>
 					The goal of this crash course is to
-					explain what a femboy is, what they do
-					and everything else that needs to be
-					known.
+					explain what a femboy is, what they do,
+					how to become one and everything else
+					that needs to be known.
 				</p>
 				<span>
 					In the following sections we will be
 					going through:
 				</span>
 				<ul>
-					<li>How to identify a femboy</li>
+					<li>What is a femboy?</li>
+					<li>How to identify a wild femboy</li>
 					<li>
 						How to communicate with a femboy
 					</li>
-					<li>Typical femboy vocabulary guide</li>
 					<li>
-						Words of warning regarding femboys
+						Esterotypical femboy vocabulary guide
 					</li>
-					<li>Femboy subtypes</li>
+					<li>Femboy archetypes</li>
+					<li>How to become a femboy</li>
+					<li>How to eliminate a femboy</li>
 				</ul>
 			</div>
 			<div className="section">
-				<h2>How to identify a femboy</h2>
+				<h2>What is a femboy?</h2>
+				<p>
+					Like the word says, &quot;fem&quot;
+					means means feminine and &quot;boy&quot;
+					means male. A femboy is a human male
+					that expresses himself in a typically
+					feminine manner. Often by choice of
+					clothing, mannerisms, hairstyle,
+					hobbies, or any activity or behaviour
+					usually associated with the female
+					female gender.
+				</p>
+			</div>
+			<div className="section">
+				<h2>How to identify a wild femboy</h2>
 				<p>
 					First and foremost, identifying a femboy
 					might not be as hard as you think. While
 					it is true that they have distinct dress
 					code, they usually do not advertise it
-					in any way. Hence they have that
-					introverted, shy personality.
+					in any way. Hence they can also have an
+					introverted, shy personality. Remember
+					that femboys are also people! They have
+					tastes, preferences and differences
+					personalities!
 				</p>
 				<p>
-					Here are a few specific ways you can
-					identify a femboy:
+					Also remember that because of S O C I E
+					T Y, not all femboys choose to exhibit
+					the most typical signs of identifying a
+					femboy. Choosing to keep the
+					&quot;femboyism&quot; a secret.
+					We&apos;ll see this in more detail
+					ahead.
+				</p>
+				<p>
+					Here are a few specific tip you can use
+					to identify a femboy:
 				</p>
 				<table>
 					<tbody>
