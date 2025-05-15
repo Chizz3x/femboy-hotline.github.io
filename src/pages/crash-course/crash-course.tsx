@@ -44,6 +44,12 @@ const CrashCourse = () => {
 					usually associated with the female
 					female gender.
 				</p>
+				<p>
+					As you can see, this doesn&apos;t mean
+					that being a femboy comes with a defined
+					sexuality, personality or any other
+					trait, other than being girly boy!
+				</p>
 			</div>
 			<div className="section">
 				<h2>How to identify a wild femboy</h2>
@@ -54,15 +60,13 @@ const CrashCourse = () => {
 					code, they usually do not advertise it
 					in any way. Hence they can also have an
 					introverted, shy personality. Remember
-					that femboys are also people! They have
-					tastes, preferences and differences
-					personalities!
+					that femboys are also people!
 				</p>
 				<p>
 					Also remember that because of S O C I E
 					T Y, not all femboys choose to exhibit
 					the most typical signs of identifying a
-					femboy. Choosing to keep the
+					femboy, choosing to keep the
 					&quot;femboyism&quot; a secret.
 					We&apos;ll see this in more detail
 					ahead.
@@ -76,14 +80,25 @@ const CrashCourse = () => {
 						<tr>
 							<td>Clothes</td>
 							<td>
-								Femboys often choose clothing
+								Femboys can often choose clothing
 								typically associated with
 								femininity, such as dresses,
 								skirts, blouses, or other garments
 								that may be considered
-								traditionally feminine.
+								traditionally feminine. But this
+								is not always the case.
+							</td>
+							<td>
+								Some femboys prefer to keep their
+								femininity to themselves for any
+								reason. Resulting in them choosing
+								a more neutral and androgynous set
+								of clothes like oversized hoodies,
+								cargo pants, or anything that is
+								not traditionally gendered.
 							</td>
 						</tr>
+						<p />
 						<tr>
 							<td>Mannerisms and behavior</td>
 							<td>
@@ -93,23 +108,39 @@ const CrashCourse = () => {
 								gestures, speech patterns, or body
 								language.
 							</td>
+							<td>
+								Other femboys might exhibit more
+								masculine paterns of behaviour.
+								Remember that the behaviour that
+								we traddionally call feminine is
+								not a defined set of behaviours,
+								but rather depend on customs, so
+								femboys from different parts of
+								the world will behave differently
+							</td>
 						</tr>
+						<p />
 						<tr>
 							<td>Hairstyle and Grooming</td>
 							<td>
 								Femboys may prefer hairstyles or
 								grooming practices that are
 								associated with femininity, such
-								as long hair, makeup, or manicured
-								nails. Nowadays though, this might
-								not be the case, a lot of femboys
-								try to keep their general looks
-								manly as usual because changes on
+								as long hair, haircuts typically
+								seen as girly, subtle makeup,
+								skincare or manicured nails.
+							</td>
+							<td>
+								Nowadays however, a lot of femboys
+								might try to keep their general
+								looks manly because changes on
 								hair or their skin are more
-								permanent than just swapping
-								clothing.
+								permanent and noticeable than just
+								swapping clothing, with no room
+								for hiding.
 							</td>
 						</tr>
+						<p />
 						<tr>
 							<td>
 								Interest in feminine activities
@@ -122,6 +153,7 @@ const CrashCourse = () => {
 								considered &quot;girly.&quot;
 							</td>
 						</tr>
+						<p />
 						<tr>
 							<td>Self-Identification</td>
 							<td>
@@ -129,10 +161,11 @@ const CrashCourse = () => {
 								to identify a femboy is through
 								self-identification. If an
 								individual identifies as a femboy,
-								respects their identity and
-								pronouns accordingly.
+								respect their identity
+								accordingly.
 							</td>
 						</tr>
+						<p />
 					</tbody>
 				</table>
 				<p>
