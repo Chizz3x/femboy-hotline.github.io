@@ -77,7 +77,7 @@ const CrashCourse = () => {
 				</p>
 				<table>
 					<tbody>
-						<tr>
+						<tr className="caution">
 							<td>Clothes</td>
 							<td>
 								Femboys can often choose clothing
@@ -99,7 +99,7 @@ const CrashCourse = () => {
 							</td>
 						</tr>
 						<p />
-						<tr>
+						<tr className="caution">
 							<td>Mannerisms and behavior</td>
 							<td>
 								They may exhibit mannerisms or
@@ -120,7 +120,7 @@ const CrashCourse = () => {
 							</td>
 						</tr>
 						<p />
-						<tr>
+						<tr className="caution">
 							<td>Hairstyle and Grooming</td>
 							<td>
 								Femboys may prefer hairstyles or
@@ -141,7 +141,7 @@ const CrashCourse = () => {
 							</td>
 						</tr>
 						<p />
-						<tr>
+						<tr className="caution">
 							<td>
 								Interest in feminine activities
 							</td>
@@ -151,10 +151,25 @@ const CrashCourse = () => {
 								with femininity, such as fashion,
 								makeup, or activities typically
 								considered &quot;girly.&quot;
+								However, femboys can totally have
+								masculine interests as well! Being
+								a femboys is not a strict label.
+								They can like posting edgy memes,
+								cars, weapons and any other
+								typically masculine activites.
+							</td>
+							<td>
+								So, we can conclude that liking
+								certain activites doesn&apos;t
+								make you or anyone else less of a
+								femboy and that we shouldn&apos;t
+								assume identities. But we can
+								still have fun classifying
+								ourselves.
 							</td>
 						</tr>
 						<p />
-						<tr>
+						<tr className="caution">
 							<td>Self-Identification</td>
 							<td>
 								Ultimately, the most reliable way
@@ -168,10 +183,6 @@ const CrashCourse = () => {
 						<p />
 					</tbody>
 				</table>
-				<p>
-					Keep in mind that some of these are not
-					necessarily true.
-				</p>
 			</div>
 			<div className="section">
 				<h2>How to communicate with a femboy</h2>
