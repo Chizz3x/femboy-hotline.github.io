@@ -8,31 +8,65 @@ const CrashCourse = () => {
 			<div className="section">
 				<h2>Introduction</h2>
 				<p>
-					The goal of this crash course is to
-					explain what a femboy is, what they do,
-					how to become one and everything else
-					that needs to be known.
+					In the economy of today, there is a lot
+					to learn about gender, sex and gender
+					expression. And this can be very
+					confusing for the common man. Add this
+					to the plagues of the modern times. Like
+					anime, politics, memes and the USA and
+					it&apos;s no wonder why most of you feel
+					confused. So, as the proud owner&apos;s
+					of the world&apos; first Femboy-Hotline,
+					we feel is part of our responsability to
+					you about the basics tools to survive
+					today&apos; world of sexual madness. Nya
+					Nya
+				</p>
+				<p>Rawr xd</p>
+				<p>
+					This is why we have created the Femboy
+					Crash Course. An especialized course of
+					Gender Studies that has the goal of
+					providing you with the tools necessary
+					so you can critically analyse, study and
+					engage in any subject related to
+					&quot;femboys&quot; :3
 				</p>
 				<span>
-					In the following sections we will be
-					going through:
+					By the end of this course, you will be
+					able to:
 				</span>
 				<ul>
-					<li>What is a femboy?</li>
-					<li>How to identify a wild femboy</li>
 					<li>
-						How to communicate with a femboy
+						Answer basic conceptual questions such
+						as &quot;What is a woman?&quot; and
+						&quot;What is a femboy?&quot;
 					</li>
 					<li>
-						Esterotypical femboy vocabulary guide
+						Understand the basics of gender
+						expression
 					</li>
-					<li>Femboy archetypes</li>
-					<li>How to become a femboy</li>
-					<li>How to eliminate a femboy</li>
+					<li>
+						Critically analyze human gender
+						expression in today&apos; society by
+						using a femboyish perspective
+					</li>
+					<li>
+						Engage in a critical analysis of
+						gender and sex with a femboy viewpoint
+					</li>
+					<li>
+						Learn how to become a femboy using
+						your own gender expression
+					</li>
 				</ul>
+				<p>
+					Remember all of this! Because there will
+					be a test! :3
+				</p>
 			</div>
 			<div className="section">
-				<h2>What is a femboy?</h2>
+				<h2>Course Overview</h2>
 				<p>
 					Like the word says, &quot;fem&quot;
 					means means feminine and &quot;boy&quot;
