@@ -12,7 +12,7 @@ const CrashCourse = () => {
 					to learn about gender, sex and gender
 					expression. And this can be very
 					confusing for the common man. Add this
-					to the plagues of the modern times. Like
+					to the plagues of the modern times, like
 					anime, politics, memes and the USA and
 					it&apos;s no wonder why most of you feel
 					confused. So, as the proud owner&apos;s
@@ -64,565 +64,441 @@ const CrashCourse = () => {
 					Remember all of this! Because there will
 					be a test! :3
 				</p>
+				<p>
+					As a side note: Remember that ultimately
+					your desire to learn more about these
+					subjects is what will determine how
+					useful this course will be. Just like
+					any other course.
+				</p>
 			</div>
 			<div className="section">
 				<h2>Course Overview</h2>
 				<p>
-					Like the word says, &quot;fem&quot;
-					means means feminine and &quot;boy&quot;
-					means male. A femboy is a human male
-					that expresses himself in a typically
-					feminine manner. Often by choice of
-					clothing, mannerisms, hairstyle,
-					hobbies, or any activity or behaviour
-					usually associated with the female
-					female gender.
+					This course explores the fundamental
+					principles of gender, sex and their
+					expression in contemporary society
+					fostering a place where critical
+					thinking is encouraged. Additionally,
+					the course will walk you through the
+					physical, social, emotional, and
+					aesthetic aspects of
+					&quot;becoming&quot; a femboy.
 				</p>
-				<p>
-					As you can see, this doesn&apos;t mean
-					that being a femboy comes with a defined
-					sexuality, personality or any other
-					trait, other than being girly boy!
-				</p>
-			</div>
-			<div className="section">
-				<h2>How to identify a wild femboy</h2>
-				<p>
-					First and foremost, identifying a femboy
-					might not be as hard as you think. While
-					it is true that they have distinct dress
-					code, they usually do not advertise it
-					in any way. Hence they can also have an
-					introverted, shy personality. Remember
-					that femboys are also people!
-				</p>
-				<p>
-					Also remember that because of S O C I E
-					T Y, not all femboys choose to exhibit
-					the most typical signs of identifying a
-					femboy, choosing to keep the
-					&quot;femboyism&quot; a secret.
-					We&apos;ll see this in more detail
-					ahead.
-				</p>
-				<p>
-					Here are a few specific tip you can use
-					to identify a femboy:
-				</p>
-				<table>
-					<tbody>
-						<tr className="caution">
-							<td>Clothes</td>
-							<td>
-								Femboys can often choose clothing
-								typically associated with
-								femininity, such as dresses,
-								skirts, blouses, or other garments
-								that may be considered
-								traditionally feminine. But this
-								is not always the case.
-							</td>
-							<td>
-								Some femboys prefer to keep their
-								femininity to themselves for any
-								reason. Resulting in them choosing
-								a more neutral and androgynous set
-								of clothes like oversized hoodies,
-								cargo pants, or anything that is
-								not traditionally gendered.
-							</td>
-						</tr>
-						<p />
-						<tr className="caution">
-							<td>Mannerisms and behavior</td>
-							<td>
-								They may exhibit mannerisms or
-								behaviors that are perceived as
-								traditionally feminine, such as
-								gestures, speech patterns, or body
-								language.
-							</td>
-							<td>
-								Other femboys might exhibit more
-								masculine paterns of behaviour.
-								Remember that the behaviour that
-								we traddionally call feminine is
-								not a defined set of behaviours,
-								but rather depend on customs, so
-								femboys from different parts of
-								the world will behave differently
-							</td>
-						</tr>
-						<p />
-						<tr className="caution">
-							<td>Hairstyle and Grooming</td>
-							<td>
-								Femboys may prefer hairstyles or
-								grooming practices that are
-								associated with femininity, such
-								as long hair, haircuts typically
-								seen as girly, subtle makeup,
-								skincare or manicured nails.
-							</td>
-							<td>
-								Nowadays however, a lot of femboys
-								might try to keep their general
-								looks manly because changes on
-								hair or their skin are more
-								permanent and noticeable than just
-								swapping clothing, with no room
-								for hiding.
-							</td>
-						</tr>
-						<p />
-						<tr className="caution">
-							<td>
-								Interest in feminine activities
-							</td>
-							<td>
-								They may have interests or hobbies
-								that are traditionally associated
-								with femininity, such as fashion,
-								makeup, or activities typically
-								considered &quot;girly.&quot;
-								However, femboys can totally have
-								masculine interests as well! Being
-								a femboys is not a strict label.
-								They can like posting edgy memes,
-								cars, weapons and any other
-								typically masculine activites.
-							</td>
-							<td>
-								So, we can conclude that liking
-								certain activites doesn&apos;t
-								make you or anyone else less of a
-								femboy and that we shouldn&apos;t
-								assume identities. But we can
-								still have fun classifying
-								ourselves.
-							</td>
-						</tr>
-						<p />
-						<tr className="caution">
-							<td>Self-Identification</td>
-							<td>
-								Ultimately, the most reliable way
-								to identify a femboy is through
-								self-identification. If an
-								individual identifies as a femboy,
-								respect their identity
-								accordingly.
-							</td>
-						</tr>
-						<p />
-					</tbody>
-				</table>
-			</div>
-			<div className="section">
-				<h2>How to communicate with a femboy</h2>
-				<table>
-					<tbody>
-						<tr>
-							<td>Pronoun Power</td>
-							<td>
-								Use the pronouns they throw your
-								way. If you&apos;re lost in
-								pronoun land, just ask politely.
-								It&apos;s like a fun game of
-								&quot;Guess the Pronoun,&quot; but
-								with less pressure and more
-								understanding.
-							</td>
-						</tr>
-						<tr>
-							<td>Embrace the Identity Parade</td>
-							<td>
-								Think of it like a fashion show
-								where everyone gets to be
-								themselves! No judgment, just
-								fabulousness. So, strut your stuff
-								and let them strut theirs.
-							</td>
-						</tr>
-						<tr>
-							<td>
-								Keep Calm and Open Your Mind
-							</td>
-							<td>
-								We&apos;re all floating in this
-								crazy gender galaxy together, so
-								why not embrace the diversity?
-								It&apos;s like a buffet of
-								identities – try a little of
-								everything, and see what tickles
-								your taste buds!
-							</td>
-						</tr>
-						<tr>
-							<td>
-								Active Listening Level: Expert
-							</td>
-							<td>
-								Lean in, nod your head, and give
-								them the stage. It&apos;s like
-								watching a riveting one-person
-								show – you never know what plot
-								twist or fabulous monologue might
-								come next!
-							</td>
-						</tr>
-						<tr>
-							<td>Language Remix</td>
-							<td>
-								Keep it cool, keep it kind, and
-								sprinkle in some hip slang.
-								It&apos;s like a linguistic dance
-								party, and everyone&apos;s invited
-								to bust a move!
-							</td>
-						</tr>
-						<tr>
-							<td>Support Squad Goals</td>
-							<td>
-								Be their cheerleader, their hype
-								person, their confetti cannon of
-								encouragement. Because life&apos;s
-								too short not to celebrate each
-								other&apos;s fabulousness!
-							</td>
-						</tr>
-						<tr>
-							<td>Curiosity is Key</td>
-							<td>
-								If you&apos;re curious about their
-								gender journey, ask with a
-								sprinkle of sass and a dash of
-								charm. It&apos;s like diving into
-								a mystery novel – who knows what
-								twists and turns you&apos;ll
-								uncover!
-							</td>
-						</tr>
-						<tr>
-							<td>Boundaries Boulevard</td>
-							<td>
-								Respect their space like it&apos;s
-								a VIP section at a fancy club. No
-								uninvited guests allowed, just
-								good vibes and mutual respect.
-							</td>
-						</tr>
-					</tbody>
-				</table>
-			</div>
-			<div className="section">
-				<h2>Typical femboy vocabulary guide</h2>
-				<table>
-					<tbody>
-						<tr>
-							<td>Femtastic</td>
-							<td>
-								An exclamation of fabulousness and
-								empowerment, used to describe
-								something awesome or amazing.
-							</td>
-						</tr>
-						<tr>
-							<td>Slay</td>
-							<td>
-								To effortlessly and confidently
-								excel at something, often used in
-								the context of fashion or
-								self-expression.
-							</td>
-						</tr>
-						<tr>
-							<td>Snatched</td>
-							<td>
-								Looking incredibly good or
-								stylish, often used to describe
-								someone&apos;s appearance or
-								outfit.
-							</td>
-						</tr>
-						<tr>
-							<td>Yas Queen</td>
-							<td>
-								An enthusiastic expression of
-								support or admiration, often used
-								to cheer someone on or celebrate
-								their success.
-							</td>
-						</tr>
-						<tr>
-							<td>Serving Looks</td>
-							<td>
-								To present oneself in a striking
-								or fashionable manner, often used
-								to describe someone who is owning
-								their style.
-							</td>
-						</tr>
-						<tr>
-							<td>Kiki</td>
-							<td>
-								A gathering of friends for
-								laughter, gossip, and good times,
-								often centered around
-								self-expression and creativity.
-							</td>
-						</tr>
-						<tr>
-							<td>Beat</td>
-							<td>
-								To apply makeup flawlessly, often
-								used to describe a perfectly done
-								face of makeup.
-							</td>
-						</tr>
-						<tr>
-							<td>Diva</td>
-							<td>
-								A term of endearment for someone
-								who is confident, fabulous, and
-								unapologetically themselves.
-							</td>
-						</tr>
-						<tr>
-							<td>Fierce</td>
-							<td>
-								To be bold, confident, and
-								unafraid to express oneself
-								authentically, often used to
-								describe someone&apos;s
-								personality or style.
-							</td>
-						</tr>
-					</tbody>
-				</table>
 			</div>
 			<div className="section">
 				<h2>
-					Words of warning regarding femboys
+					CHAPTER 1: Introduction to basic
+					concepts
 				</h2>
-				<table>
-					<tbody>
-						<tr className="caution">
-							<td>
-								Caution: May Cause Fabulousness
-								Overload
-							</td>
-							<td>
-								Interacting with femboys may
-								result in an influx of glamour,
-								sass, and fierce fashion sense.
-								Proceed with caution!
-							</td>
-						</tr>
-						<tr className="warning">
-							<td>
-								Warning: High Levels of Confidence
-								Detected
-							</td>
-							<td>
-								Femboys are known for their
-								unapologetic self-expression and
-								confidence. Be prepared for a
-								boost in self-esteem!
-							</td>
-						</tr>
-						<tr className="alert">
-							<td>Alert: Slayage Ahead</td>
-							<td>
-								Approach femboys with caution, as
-								they are experts in the art of
-								slaying. Your fashion game may
-								never be the same!
-							</td>
-						</tr>
-						<tr className="notice">
-							<td>
-								Notice: Potential for
-								Uncontrollable Sassiness
-							</td>
-							<td>
-								Engaging with femboys may result
-								in an increase in sass levels.
-								Side effects may include
-								spontaneous hair flips and fierce
-								comebacks!
-							</td>
-						</tr>
-						<tr className="warning">
-							<td>
-								Warning: May Inspire
-								Self-Expression
-							</td>
-							<td>
-								Exposure to femboys may ignite a
-								desire to express yourself
-								authentically and boldly. Embrace
-								your inner diva!
-							</td>
-						</tr>
-						<tr className="caution">
-							<td>
-								Caution: Resistance to Glamour is
-								Futile
-							</td>
-							<td>
-								Resistance is futile when faced
-								with the glamour and fabulousness
-								of femboys. Prepare to be dazzled!
-							</td>
-						</tr>
-						<tr className="alert">
-							<td>
-								Alert: Potential for Friendship
-								Explosion
-							</td>
-							<td>
-								Interacting with femboys may lead
-								to an explosion of friendship,
-								laughter, and fabulous adventures.
-								Get ready for a fabulous ride!
-							</td>
-						</tr>
-						<tr className="notice">
-							<td>
-								Notice: Beware of Envy Epidemic
-							</td>
-							<td>
-								Exposure to femboys may result in
-								envy from those lacking in
-								fabulousness. Remember,
-								there&apos;s enough fabulousness
-								to go around!
-							</td>
-						</tr>
-						<tr className="warning">
-							<td>
-								Warning: May Cause Sudden Fashion
-								Epiphanies
-							</td>
-							<td>
-								Engaging with femboys may lead to
-								sudden bursts of fashion
-								inspiration and a newfound
-								appreciation for bold
-								self-expression. Embrace the slay!
-							</td>
-						</tr>
-					</tbody>
-				</table>
+				<p>
+					Before we teach you what it means to be
+					submissive and breedable. We are going
+					to learn some core concepts that we are
+					going to be using forward.
+				</p>
+				<p>Sex:</p>
+				<p>
+					Used to refer to the biological
+					attributes that determine whether you
+					are a male, female or intersex.
+					Genitals, chromosomes, etc. In Gender
+					Studies, we will be using it to refer to
+					what an individual is assigned at birth.
+					Usually male, Assigned Male At Birth
+					(AMAB) or female, Assigned Female At
+					Birth (AFAB).
+				</p>
+				<p>Gender:</p>
+				<p>
+					Gender is how you understand yourself
+					internally. It is based on how you feel,
+					what you think yourself as, the ideas
+					you live your life around, but not how
+					others label you. So, technically
+					speaking, gender can be anything.
+				</p>
+				<p>Gender Expression:</p>
+				<p>
+					Is the way you present yourself and what
+					you expect others to perceive you as.
+					This is determined by clothes,
+					mannerisms, voice, hairstyle, etc.
+				</p>
+				<p>Sexuality:</p>
+				<p>
+					Refers to how a person experiences and
+					expresses sexual and romantic
+					attraction. In this course, we will be
+					using it as is how you label your
+					pattern of attraction: heterosexual,
+					homosexual, bisexual, asexual, etc.
+				</p>
+				<p>
+					Why does learning these concepts
+					matters?
+				</p>
+				<p>
+					Because of the constant confusion and
+					stigma there is about the subject around
+					the world. So understanding these can
+					help you build your own identity better
+					and understand other people better too.
+				</p>
 			</div>
 			<div className="section">
-				<h2>Femboy subtypes</h2>
-				<table>
-					<tbody>
-						<tr>
-							<td>
-								<strong>Subtype</strong>
-							</td>
-							<td>
-								<strong>Description</strong>
-							</td>
-						</tr>
-						<tr>
-							<td>Glitter Guru</td>
-							<td>
-								The Glitter Guru is all about
-								sparkle, shimmer, and shine!
-								They&apos;re the life of the
-								party, spreading joy and glamour
-								wherever they go.
-							</td>
-						</tr>
-						<tr>
-							<td>Pastel Prince/ss</td>
-							<td>
-								The Pastel Prince/ss is a vision
-								in soft hues and delicate fabrics.
-								They exude a gentle and ethereal
-								charm, like a fairy tale character
-								come to life.
-							</td>
-						</tr>
-						<tr>
-							<td>Gothic Glamour</td>
-							<td>
-								The Gothic Glamour femboy embraces
-								dark aesthetics and dramatic
-								flair. They&apos;re mysterious,
-								bold, and unafraid to make a
-								statement with their style.
-							</td>
-						</tr>
-						<tr>
-							<td>Geek Chic</td>
-							<td>
-								The Geek Chic femboy is a master
-								of combining nerdy interests with
-								fashionable flair. They&apos;re
-								intelligent, witty, and
-								effortlessly cool.
-							</td>
-						</tr>
-						<tr>
-							<td>Retro Rebel</td>
-							<td>
-								The Retro Rebel femboy channels
-								vintage vibes with a modern twist.
-								They&apos;re nostalgic, stylish,
-								and always ahead of the curve when
-								it comes to retro fashion.
-							</td>
-						</tr>
-						<tr>
-							<td>Artistic Adventurer</td>
-							<td>
-								The Artistic Adventurer femboy is
-								a creative force to be reckoned
-								with. They&apos;re experimental,
-								eclectic, and unafraid to push the
-								boundaries of fashion and
-								self-expression.
-							</td>
-						</tr>
-						<tr>
-							<td>Bohemian Beauty</td>
-							<td>
-								The Bohemian Beauty femboy is
-								free-spirited, earthy, and
-								effortlessly chic. They&apos;re a
-								breath of fresh air, embracing
-								natural beauty and boho vibes.
-							</td>
-						</tr>
-						<tr>
-							<td>Urban Enigma</td>
-							<td>
-								The Urban Enigma femboy is edgy,
-								urban, and enigmatic. They&apos;re
-								a captivating blend of street
-								style and high fashion, with an
-								air of mystery that draws people
-								in.
-							</td>
-						</tr>
-						<tr>
-							<td>Mermaid Maven</td>
-							<td>
-								The Mermaid Maven femboy is a
-								creature of the sea, with a love
-								for all things oceanic and
-								iridescent. They&apos;re
-								enchanting, mystical, and utterly
-								mesmerizing.
-							</td>
-						</tr>
-					</tbody>
-				</table>
+				<h2>
+					CHAPTER 2: Introduction to Femboys and
+					other concepts and questions
+				</h2>
+				<p>So, what is a femboy?</p>
+				<p>
+					Like the word says, &quot;fem&quot;
+					means means feminine and &quot;boy&quot;
+					means male. So, for general purposes, we
+					will define a femboy like a human that
+					was AMAB and expresses his gender in a
+					feminine way. Often by choice, however
+					it can happen accidentally too. As can
+					see, the definition doesn&apos;t mean
+					anything in respect to gender or sexual
+					attraction.
+				</p>
+				<p>
+					In the same way, we can find other
+					definitions. For example:
+				</p>
+				<p>What is a woman?</p>
+				<p>
+					A person that was Assigned Female At
+					Birth
+				</p>
+				<p>What is a tomboy?</p>
+				<p>
+					A person that was Assigned Female At
+					Birth and expresses her gender identity
+					in a masculine way
+				</p>
+				<p>What is a trans woman?</p>
+				<p>
+					A person that was Assigned Male At Birth
+					and genders herself as female.
+				</p>
+				<p>What is a boymodder?</p>
+				<p>
+					A person that was Assigned Male At
+					Birth, genders herself as female but
+					expresses her gender identity in a
+					masculine way.
+				</p>
+				<p>What is a trans woman?</p>
+				<p>
+					A person that was Assigned Male At Birth
+					and genders herself as female.
+				</p>
+				<p>And we can go on and go on.</p>
+				<p>
+					But, wait a second! if I can gender
+					myself as anything I want, and that
+					affects every term you&apos;ve presented
+					before, can I just name myself one thing
+					today and another tomorrow?
+				</p>
+				<p>
+					Yes. Remember that struggle with
+					identity is something that every person
+					has gone through, one way or another.
+					Additionally, remember our side note.
+					The whole point of this course is to
+					teach you these concepts and motivate
+					you to use your own critical thinking to
+					use said concepts. Even though these
+					ideas were put together with the intent
+					of explaining gender and sex nowadays,
+					it is ultimately you who decides how to
+					use these concepts. And like any ideas,
+					these are open to criticism and change.
+				</p>
+				<p>
+					Wait a second second! I am a trans man
+					and I am a real man. I don&apos;t agree
+					with saying that a man is someone who
+					doesn&apos;t gender themselves as a man.
+				</p>
+				<p>
+					Just like any set of ideas, these are
+					prone to change, depending on the
+					society they are. There is no much sense
+					in defining what a femboy is for a
+					Sixteenth century french soldier. If you
+					would change the definition to &quot;A
+					person that was Assigned Female At Birth
+					and genders himself as male&quot; or
+					simply &quot;A person that genders
+					themself as male&quot; because you think
+					it&apos;s a better representative of the
+					world you live in, don&apos;t be
+					intimidated or offended by a different
+					definition. Instead be open to dialogue!
+				</p>
+				<p>But... What about pronouns?</p>
+				<p>
+					Any person, in the internet or in real
+					life, can be called names they are not
+					going to like, independently of their
+					gender, sex, race, nationality, etc. If
+					someone uses prefered pronouns, the
+					decision to use them comes down to
+					respect.
+				</p>
+				<p>
+					If you want to be respected, act
+					respectfully!
+				</p>
+				<p>
+					Don&apos;t be an asshole! Respect
+					people&apos;s pronouns!
+				</p>
+			</div>
+			<div className="section">
+				<h2>
+					CHAPTER 3: Becoming a femboy! Glow up!
+					Skincare, diet and basic bodily care
+				</h2>
+				<p>
+					Enough boring sociology talk! Let&apos;s
+					do something more fun!
+				</p>
+				<p>
+					But before becoming a femboy, we need to
+					learn what&apos;s beneath of a femboy.
+					Under all the
+					slutty/cute/revealing/fabulous clothes
+					you&apos;ll be wearing, you&apos;ll
+					still be a person that needs to take
+					care of their body.
+				</p>
+				<p>
+					Luckily for us, most of the knowledge we
+					need has already been discovered! So you
+					can find more about each respective
+					subject by doing your own research.
+				</p>
+				<p>SKINCARE:</p>
+				<p>Why is skincare important?</p>
+				<p>
+					Because it will keep your skin clear and
+					smooth. Not to mention, reduce oiliness,
+					dryness, acne and other imperfections.
+					And, improves the look of makeup!
+				</p>
+				<p>And because it&apos;s healthy!</p>
+				<p>
+					We&apos;ll show you a very basic, easy
+					to replicate skincare routine you can
+					start since now!
+				</p>
+				<ul>
+					<li>Cleansing (Washing your face)</li>
+					<p>
+						Don&apos;t use common dishwasher soap!
+						The skin in your face is delicate! Use
+						a especialized face cleanser.
+					</p>
+					<p>
+						How do I do it? Put a little of the
+						cleanser on your fingers and wash your
+						face rubbing in circular motions for
+						about 30 seconds, but don&apos;t scrub
+						too hard!
+					</p>
+					<p>
+						What do I use? Preferably use lukewarm
+						water, cold water is alright, just
+						never too hot!
+					</p>
+					<p>
+						When do I do it? Once when you wake up
+						in the morning and once before
+						sleeping
+					</p>
+					<p>
+						What kind of cleanser should I buy?
+						The type of cleanser you should use
+						depends on your type of skin.
+						Cleansers are usually advertized for
+						specifics kinds of skin: Oily, dry,
+						sensitive, normal or a combination of
+						the previous. The name are pretty
+						self-explanatories. And, in case of
+						combinated skin, use a cleanser that
+						covers the majority of your face.
+					</p>
+					<p>
+						Not only your face, don&apos;t forget
+						the upper part of your neck!
+					</p>
+				</ul>
+				<ul>
+					<li>
+						Exfoliating (Cleaning your face)
+					</li>
+					<p>
+						Exfoliating removes the dead skin that
+						accumulates over time. Have you ever
+						heard your skin changes every couple
+						of years? Well, it doesn&apos;t go
+						away on its own, we have to remove it!
+					</p>
+					<p>
+						When do I do it? Usually, it is done
+						after 2 or 3 days since overdoing can
+						remove important bacteria in your
+						pretty face, just like overcleansing.
+						But you can also experiment to find
+						the timeframe that fits your desired
+						results.
+					</p>
+				</ul>
+				<ul>
+					<li>
+						Moisturizing (Hydrating your face)
+					</li>
+					<p>
+						Just like cleanser, buy a especialized
+						moisturizer for your skin and
+						experiment with products you see
+						results with!
+					</p>
+					<p>
+						When do I do it? Right after washing
+						your face
+					</p>
+					<p>
+						How much? You will have to experiment
+						with what feels right for your skin.
+						Usually, use the amount that makes you
+						feel refreshed. All kinds are
+						different!
+					</p>
+				</ul>
+				<ul>
+					<li>
+						Sunscreening (Protecting your face)
+					</li>
+					<p>
+						Finally, time to shield your pretty
+						face from the UV light from the
+						outside.
+					</p>
+					<p>
+						When do I do it? Once every morning
+						for skincare purposes. If you live in
+						a really sunny place, everytime you go
+						outside. And not only in your face;
+						arms, legs, hands and any part that
+						might be exposed to the sun for
+						prolonged periods of time
+					</p>
+					<p>
+						What kind of protection? Suncreen is
+						sold by SPF protection. Usually a SPF
+						of 50 is enough. But if sun is not
+						super strong where you live, you can
+						use one of 30.
+					</p>
+					<p>
+						If you&apos;re going to spend long
+						periods of time in the sun, it might
+						not be a bad idea to carry some of
+						your sunscreen to re-apply it.
+					</p>
+				</ul>
+				<p>
+					Remember skincare is a routine, not a
+					miracle! You will not see results
+					overnight!
+				</p>
+				<p>
+					Additionally, don&apos;t forget to make
+					your own research! We haven&apos;t
+					delved into the most famous products and
+					extra beauty products, like serum and
+					toner, because they will be part of your
+					own enthusiastic findings to become the
+					best version of yourself!
+				</p>
+				<p>DIET:</p>
+				<p>Why is important to have a diet?</p>
+				<p>
+					Because if you have reached this point
+					of the course, you probably have an
+					image in mind of what you want to body
+					to look like. And exercise does helps
+					getting a healthy body, but the food you
+					eat everyday helps more!
+				</p>
+				<p>
+					Usually, keeping your meals to three a
+					day and avoiding copious amounts of junk
+					food works just fine. Especially if you
+					do some kind of physical activity.
+				</p>
+				<p>
+					Since dieting and caloric intake is an
+					another theme entirely, we won&apos;t
+					deal with it here. But we will give you
+					some tips to improve yourself dietary
+					wise.
+				</p>
+				<ul>
+					<li>
+						Avoid binge/depression/anxiety eating
+						as much as you can. If you need help,
+						don&apos;t be scared to ask for
+						psychological help.
+					</li>
+					<li>
+						Keep your diet balanced, it
+						doesn&apos; have to be perfect. You
+						can have a snack here and there, as
+						long you don&apos;t do it frequently.
+					</li>
+					<li>
+						Consider doing a physical activity!
+						Sports are a great way to get you
+						invested and excited about it, but any
+						activity will do! Gymnastic,
+						stretches, yoga, running, hiking,
+						cycling, anything that makes you move!
+					</li>
+					<li>
+						Stay hydrated! Drink the necessary
+						amount of water during the day.
+					</li>
+					<li>
+						Listen to your body! The goal of being
+						a femboy shouldn&apos;t starve you!
+						But also make sure you&apos;re not
+						eating if you don&apos;t need to.
+					</li>
+				</ul>
+				<p>DEALING WITH BODY HAIR:</p>
+				<p>
+					You will probably want to remove all of
+					it, or at the very least, from your
+					face, arms and legs.
+				</p>
+				<p>
+					You will probably want to remove all of
+					it, or at the very least, from your
+					face, arms and legs.
+				</p>
+				<p>
+					You will probably want to remove all of
+					it, or at the very least, from your
+					face, arms and legs.
+				</p>
 			</div>
 			<div className="section">
 				<h2>The End</h2>
