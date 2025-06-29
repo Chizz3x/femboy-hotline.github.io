@@ -262,7 +262,7 @@ const CrashCourse = () => {
 			</div>
 			<div className="section">
 				<h2>
-					CHAPTER 3: Becoming a femboy! Glow up!
+					CHAPTER 3: Becoming a femboy! Basics!
 					Skincare, diet and basic bodily care
 				</h2>
 				<p>
@@ -490,14 +490,172 @@ const CrashCourse = () => {
 					face, arms and legs.
 				</p>
 				<p>
-					You will probably want to remove all of
-					it, or at the very least, from your
-					face, arms and legs.
+					You will probably feel that you need to
+					remove all of it, or at the very least,
+					from your face, arms and legs. But it
+					truly depends on your personal
+					preference and how thick your body hair
+					is.
 				</p>
 				<p>
-					You will probably want to remove all of
-					it, or at the very least, from your
-					face, arms and legs.
+					Let&apos;s start with razors. Shaving
+					could be a tedious task, depending on
+					how fast your hair grows. And depending
+					on how thick your hair is, you might not
+					need to shave completely.
+				</p>
+				<p>
+					Consider including a trimmer in your
+					inventory. If your hair grows extremely
+					quickly or it&apos;s the first time you
+					shave, a trimmer can cut the hair to
+					manageable length.
+				</p>
+				<p>
+					When it comes to shaving, depending on
+					the orientation of your hair, you can
+					shave with it or against it. Shaving
+					against the hair (or against the grain)
+					can give you the smoothest result, but
+					there is a higher chance you cut
+					yourself. While going with it, might
+					leave some hair that the razor could not
+					catch. For most people, starting with
+					one shave with the grain, and then one
+					shave against it gets a consistent
+					smooth result.
+				</p>
+				<p>
+					How do I do it? Use a shaving cream and
+					warm water. After cleaning the area you
+					want to shave, use your trimmer if you
+					have one. Then, you&apos;ll want to
+					apply some shaving cream in the area and
+					cut with the grain, then a second time
+					against the grain.
+				</p>
+				<p>
+					The skin is a very sensitive organ, so
+					don&apos;t push the razor against your
+					skin. You might feel that it makes it
+					work better, but it does NOT! It only
+					hurts your skin and makes you more
+					likely to get cut.
+				</p>
+				<p>
+					What do I use? There is no need of
+					buying women&apos;s razors to shave,
+					they&apos;re not really that different
+					from the men&apos;s ones and
+					they&apos;re usually more expensive. For
+					shaving creams, some people like the
+					mentol feeling in their face and body,
+					we would recommend a more gentle one
+					(natural ingredients like aloe vera) if
+					it&apos;s your first time shaving. And
+					PLEASE don&apos;t use mentolated or
+					cooling cream in your nether regions!
+					But you can use it in pretty much the
+					rest of your body, just beware any
+					irration or allergic reaction! And DO
+					NOT use soap to shave instead of shaving
+					cream. Your skin will get damaged and
+					you will get cut more often.
+				</p>
+				<p>
+					If you have the money or the act of
+					shaving is too tedious, there are other
+					more expensive alternatives. Like
+					epilating, waxing and laser hair
+					removal. In my experience (yes, the
+					author&apos;s experience), waxing at
+					home is ineffective and I recommend
+					doing it at an established store that
+					fits your needs. Not only that, but
+					they&apos;re also more effective methods
+					and more permanent. Since there&apos;s
+					not really much else we can tell you to
+					do especifically, other than ask for
+					prices and follow the instructions they
+					give you, we&apos;ll leave it to you to
+					find out about more about these three
+					methods.
+				</p>
+			</div>
+			<div className="section">
+				<h2>
+					CHAPTER 4: Becoming a femboy! Glow up!
+					Clothes, hair and mannerisms
+				</h2>
+				<p>
+					Final and funniest chapter! Be ready to
+					find your style as a femboy!
+				</p>
+				<p>CLOTHES:</p>
+				<p>
+					Now we have the goal of dressing pretty
+					and femboyant. Just like there are
+					infinite clothing styles, there are
+					infinite ways of dressing femboyish! You
+					have to find your style and find what
+					suits you!
+				</p>
+				<p>
+					Here are some clothing items that any
+					femboy needs to have:
+				</p>
+				<ul>
+					<li>Skirts:</li>
+					<p>They feel cute and give u breeze!</p>
+					<li>High thighs:</li>
+					<p>To accentuate your legs!</p>
+					<li>Choker:</li>
+					<p>Something to snap~</p>
+					<li>Oversized hoodie:</li>
+					<p>To feel warm and cozy!</p>
+				</ul>
+				<p>HAIR:</p>
+				<p>
+					For now, try to looks for hairstyles you
+					might like and would look good on you.
+					Not everyone can pull off long straight
+					hair or a tomboy haircut, look into a
+					mirror and try brushing your hair,
+					playing with it until you get an idea of
+					what you want.
+				</p>
+				<p>
+					Shampoo: Essential to keep your hair
+					clean. Most of the time, you actually
+					don&apos;t want to use it everyday,
+					because it might damage your scalp.
+					Using it still depends on your
+					particular hair. Usually, you can use it
+					every other day. Remember to focus on
+					your scalp and not the hair itself when
+					applying.
+				</p>
+				<p>
+					Conditioner: Essential to keep your hair
+					healthy. You can use it everyday,
+					focusing on the hair instead of the
+					scalp. Leaving for 1 minute and washing
+					with cold water.
+				</p>
+				<p>MANNERISMS:</p>
+				<p>
+					If you have read everything up until
+					this point, just be yourself. We&apos;re
+					sure there&apos;s enough gay in you.
+				</p>
+			</div>
+			<div className="section">
+				<h2>GRADUATION</h2>
+				<p>
+					Before we teach you what it means to be
+					submissive and breedable. We are going
+					to learn some core concepts that we are
+					going to be using forward.
 				</p>
 			</div>
 			<div className="section">
