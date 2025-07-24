@@ -25,9 +25,10 @@ import User from './user';
 import ResendVerification from './resend-verification';
 import ForgotPassword from './forgot-password';
 import ResetPassword from './reset-password';
-import Forums from './forums';
+import Forum from './forum';
 import ForumPost from './forum-post';
 import ForumPostNew from './forum-post-new';
+import SafePlace from './safe-place';
 
 const PAGES: RouteProps[] = [
 	{
@@ -175,10 +176,10 @@ const PAGES: RouteProps[] = [
 		),
 	},
 	{
-		path: ROUTES.forums,
+		path: ROUTES.forum,
 		element: (
 			<Layout>
-				<Forums />
+				<Forum />
 			</Layout>
 		),
 	},
@@ -195,6 +196,14 @@ const PAGES: RouteProps[] = [
 		element: (
 			<Layout>
 				<ForumPostNew />
+			</Layout>
+		),
+	},
+	{
+		path: ROUTES.safePlace,
+		element: (
+			<Layout>
+				<SafePlace />
 			</Layout>
 		),
 	},

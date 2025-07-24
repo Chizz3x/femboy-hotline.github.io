@@ -10,19 +10,22 @@ import {
 	localStorageRemove,
 	localStorageSet,
 } from '../../../utils/local-storage';
-import { CSSMediaSize } from '../../../const';
+import {
+	CSSMediaSize,
+	VERSION,
+} from '../../../const';
 
-const CHANGELOG_DATE = dayjs('2024-11-24');
+const CHANGELOG_DATE = dayjs('2025-07-15');
 const CHANGELOG: NModalChangelog.IChangelogEntry[] =
 	[
 		{
-			title: 'Accounts',
-			text: 'Now you can create your own anonymous account for future use. For now account registration is locked under some special keys. If you wish to register on this website, please join our Discord server and claim one of the keys that are not yet taken!',
-			images: ['accounts.png'],
+			title: 'Forum',
+			text: "Registered users can now visit our forum and start a conversation with other users. Users who don't have an account, can only view certain posts that are marked public by authors. If you wish to comment on posts or reply to comments, please register an account on this platform!",
+			images: ['forum.png'],
 		},
 		{
-			title: 'Changelogs',
-			text: 'From now on, you will be met by this modal showing the latest big changes on this website. Keep an eye for it!',
+			title: 'Accounts',
+			text: 'From now on anyone can register on this website and view, participate in the activities related to this website.',
 		},
 	];
 
@@ -37,14 +40,18 @@ const Modal = (props: NModalChangelog.IProps) => {
 		checked: boolean,
 	) => {
 		if (checked) {
-			localStorageSet('changelog-hide', 'true');
+			localStorageSet('changelog-hide', VERSION);
 		} else {
 			localStorageRemove('changelog-hide');
 		}
 	};
 
 	return (
-		<ModalLayout {...props} name={name}>
+		<ModalLayout
+			{...props}
+			showHeader
+			name={name}
+		>
 			<ModalChangelogStyle>
 				<span className="smol gray">
 					{CHANGELOG_DATE.format('YYYY-MM-DD')}
@@ -108,7 +115,6 @@ export namespace NModalChangelog {
 }
 
 const ModalChangelogStyle = styled.div`
-	max-width: 500px;
 	text-align: center;
 	.row {
 		> h3 {
@@ -116,15 +122,15 @@ const ModalChangelogStyle = styled.div`
 		}
 		> .images {
 			margin-top: 10px;
+			display: flex;
+			flex-direction: column;
+			row-gap: 10px;
 			> .image {
 				height: 200px;
 				width: 100%;
 				background-size: contain;
 				background-position: center;
 				background-repeat: no-repeat;
-				&:not(:last-child) {
-					margin-bottom: 10px;
-				}
 			}
 		}
 	}

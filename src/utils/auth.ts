@@ -61,12 +61,11 @@ export class Auth {
 		try {
 			localValid = await axios.post(
 				API_ROUTES.verifyAuth,
-				{
-					uniqueId: getUniqueId(),
-				},
+				undefined,
 				{
 					headers: {
 						authorization: `Bearer ${tl}`,
+						uniqueId: getUniqueId(),
 					},
 				},
 			);
@@ -102,12 +101,11 @@ export class Auth {
 		try {
 			sessionValid = await axios.post(
 				API_ROUTES.verifyAuth,
-				{
-					uniqueId: getUniqueId(),
-				},
+				undefined,
 				{
 					headers: {
 						authorization: `Bearer ${ts}`,
+						uniqueId: getUniqueId(),
 					},
 				},
 			);

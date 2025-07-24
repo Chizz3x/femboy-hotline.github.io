@@ -37,14 +37,16 @@ const CopyButton = (
 	return (
 		<CopyButtonStyle className="copy-button">
 			<Tooltip
+				arrow
 				PopperProps={{
 					sx: {
 						'.MuiTooltip-tooltip': {
-							margin: '0 !important',
+							margin: '5px !important',
 						},
 					},
 				}}
 				title={titleText}
+				placement="right"
 				{...tooltipProps}
 			>
 				<IconButton
@@ -66,7 +68,7 @@ export { CopyButton };
 export namespace NCopyButton {
 	export interface IProps {
 		data: string;
-		tooltipProps?: TooltipProps;
+		tooltipProps?: Partial<TooltipProps>;
 		iconButtonProps?: IconButtonProps;
 		icon?: JSX.Element;
 	}

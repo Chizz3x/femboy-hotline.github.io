@@ -2,12 +2,46 @@ import styled from 'styled-components';
 import React from 'react';
 import {
 	CSSMediaSize,
-	PATREON,
+	DONATION,
 } from '../../const';
+import { CopyButton } from '../../components/copy-button';
+import { ROUTES } from '../../routes';
+import {
+	Guide,
+	NGuide,
+} from '../../components/guide';
+
+const guidePath: NGuide.IGuidePathItem[] = [
+	{
+		name: 'Home',
+		route: ROUTES.home,
+	},
+	{
+		name: 'Donate',
+		route: ROUTES.donate,
+	},
+];
 
 const Donate = () => {
+	const [cryptos, setCryptos] = React.useState<
+		typeof DONATION
+	>([]);
+	const [links, setLinks] = React.useState<
+		typeof DONATION
+	>([]);
+
+	React.useEffect(() => {
+		setCryptos(
+			DONATION.filter((f) => f.type === 'crypto'),
+		);
+		setLinks(
+			DONATION.filter((f) => f.type === 'link'),
+		);
+	}, []);
+
 	return (
 		<DonateStyle>
+			<Guide path={guidePath} />
 			<h2>Support femboy-hotline.com</h2>
 
 			<p>
@@ -49,7 +83,7 @@ const Donate = () => {
 			</p>
 
 			<div className="donate-links">
-				<a
+				{/* <a
 					target="_blank"
 					href={PATREON}
 					rel="noreferrer"
@@ -67,7 +101,60 @@ const Donate = () => {
 							src="/img/donate/patreon.png"
 						/>
 					</div>
-				</a>
+				</a> */}
+				<h3>Anonymous methods</h3>
+				{cryptos.map((crypto, i) => (
+					<div
+						key={`crypto-${i}`}
+						className="crypto-info"
+					>
+						<table>
+							<tbody>
+								<tr>
+									<th>Name</th>
+									<td>{crypto.name}</td>
+								</tr>
+								<tr>
+									<th>Address</th>
+									<td>
+										<span>{crypto.address}</span>
+										<CopyButton
+											data={crypto.address || ''}
+										/>
+									</td>
+								</tr>
+								<tr>
+									<th>Network</th>
+									<td>
+										{crypto.network} (
+										{crypto.networkName})
+									</td>
+								</tr>
+								<tr>
+									<th>Contact information</th>
+									<td>{crypto.contactInfo}</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				))}
+				<h3>Other methods</h3>
+				{links.map((link, i) => (
+					<div>
+						<span>{link.name}</span>
+						{': '}
+						<span>
+							<a
+								key={`link-${i}`}
+								target="_blank"
+								href={link.link}
+								rel="noreferrer"
+							>
+								{link.link}
+							</a>
+						</span>
+					</div>
+				))}
 			</div>
 		</DonateStyle>
 	);
@@ -85,27 +172,35 @@ const DonateStyle = styled.div`
 		align-items: left;
 		flex-direction: column;
 		width: fit-content;
-		> * {
-			&:not(:last-child) {
-				margin-bottom: 10px;
-			}
-		}
+		row-gap: 15px;
 	}
 	.brand {
 		color: var(--c-pink1);
 	}
-	.coffee {
+	/*.coffee {
 		img {
 			width: 200px;
 		}
-	}
-	.patreon {
+	}*/
+	/*.patreon {
 		padding: 5px 10px;
 		background-color: #ff424d;
 		display: flex;
 		box-sizing: border-box;
 		img {
 			width: 180px;
+		}
+	}*/
+
+	.crypto-info {
+		> table {
+			text-align: left;
+			th {
+				min-width: 200px;
+			}
+		}
+		.copy-button {
+			margin-left: 5px;
 		}
 	}
 

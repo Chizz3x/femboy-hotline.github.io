@@ -4,8 +4,7 @@ import { Link } from 'react-router-dom';
 import { Tooltip } from '@mui/material';
 import {
 	CSSMediaSize,
-	DISCORD_INVITE,
-	PATREON,
+	SOCIAL,
 } from '../../const';
 import { ROUTES } from '../../routes';
 
@@ -98,24 +97,17 @@ const Footer = () => {
 				<table className="icon-table">
 					<tbody>
 						<tr>
-							<td>
-								<a
-									target="_blank"
-									href={DISCORD_INVITE}
-									rel="noreferrer"
-								>
-									<span className="icon-discord" />
-								</a>
-							</td>
-							<td>
-								<a
-									target="_blank"
-									href={PATREON}
-									rel="noreferrer"
-								>
-									<span className="icon-5968732" />
-								</a>
-							</td>
+							{SOCIAL.map((s) => (
+								<td key={s.id}>
+									<a
+										target="_blank"
+										href={s.link}
+										rel="noreferrer"
+									>
+										{s.icon?.()}
+									</a>
+								</td>
+							))}
 						</tr>
 					</tbody>
 				</table>
@@ -199,10 +191,8 @@ const FooterStyle = styled.div`
 	${CSSMediaSize.tablet} {
 		flex-direction: column;
 		align-items: center;
+		row-gap: 30px;
 		.footer-box {
-			&:not(:last-child) {
-				margin-bottom: 30px;
-			}
 			.link-table {
 				text-align: center;
 			}

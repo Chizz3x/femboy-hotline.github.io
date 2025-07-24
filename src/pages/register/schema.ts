@@ -15,6 +15,10 @@ export default () => {
 			.max(
 				32,
 				'Username must be at most 32 characters long',
+			)
+			.matches(
+				/^[a-z0-9._-]+$/,
+				'Only lowercase letters, dashes (-), underscores (_), and periods (.) are allowed',
 			),
 		email: yup
 			.string()
@@ -42,6 +46,10 @@ export default () => {
 			.max(
 				128,
 				'Email must be at most 128 characters long',
+			)
+			.matches(
+				/\d/,
+				'Password must contain at least one number',
 			),
 		repeatPassword: yup
 			.string()
@@ -53,9 +61,27 @@ export default () => {
 				[yup.ref('password')],
 				'Passwords must match',
 			),
-		claimKey: yup
-			.string()
-			.trim()
-			.required(requiredMessage('Key')),
+		agreeTosPp: yup
+			.boolean()
+			.oneOf(
+				[true],
+				'You must agree to the Terms of Service and Privacy Policy',
+			)
+			.required(
+				'You must agree to the Terms of Service and Privacy Policy',
+			),
+		agreeAge: yup
+			.boolean()
+			.oneOf(
+				[true],
+				'You must be at least 18 years old',
+			)
+			.required(
+				'You must be at least 18 years old',
+			),
+		// claimKey: yup
+		//	.string()
+		//	.trim()
+		//	.required(requiredMessage('Key')),
 	});
 };

@@ -1,3 +1,3 @@
 export default (name: string) => {
-	return `${name} is required`;
+	return `${name} is a required field`;
 };

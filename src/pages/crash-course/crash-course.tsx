@@ -1,10 +1,27 @@
 import styled from 'styled-components';
 import React from 'react';
 import { CSSMediaSize } from '../../const';
+import { ROUTES } from '../../routes';
+import {
+	Guide,
+	NGuide,
+} from '../../components/guide';
+
+const guidePath: NGuide.IGuidePathItem[] = [
+	{
+		name: 'Home',
+		route: ROUTES.home,
+	},
+	{
+		name: 'Crash Course',
+		route: ROUTES.crashCourse,
+	},
+];
 
 const CrashCourse = () => {
 	return (
 		<CrashCourseStyle>
+			<Guide path={guidePath} />
 			<div className="section">
 				<h2>Introduction</h2>
 				<p>

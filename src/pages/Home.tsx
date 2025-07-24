@@ -4,7 +4,7 @@ import { toast } from 'react-toastify';
 import weekday from 'dayjs/plugin/weekday';
 import duration from 'dayjs/plugin/duration';
 import dayjs from 'dayjs';
-import { CSSMediaSize, PATREON } from '../const';
+import { CSSMediaSize } from '../const';
 import useScrollIntoView from '../utils/hooks/use-scroll-into-view';
 // import { ConfettiGun } from "../components/confetti-gun";
 
@@ -45,7 +45,7 @@ const donatorClassNames: NHome.IDonatorClasses = {
 	2: { class: 'third' },
 };
 // Donators, if any ever :/
-const donatorWall: NHome.IDonatorWall[] = [];
+// const donatorWall: NHome.IDonatorWall[] = [];
 
 const Home = () => {
 	const [time, setTime] = React.useState(0); // seconds
@@ -186,24 +186,54 @@ const Home = () => {
 					</span>
 				</div>
 			</div>
-			<div className="image">
+			<div className="image image-right">
 				<img alt="2" src="/img/2.png" />
 				<div className="image-text">
 					<div className="image-text-box image-text-box-right">
-						<h2>About us</h2>
-						<span>
-							Our goal is to support Femboys in
-							this cruel and unforgiving world.
-						</span>
+						<div className="image-text-box-content">
+							<h2>About us</h2>
+							<span>
+								Our goal is to support Femboys in
+								this cruel and unforgiving world.
+							</span>
+						</div>
 					</div>
 				</div>
 			</div>
-			<div className="image">
+			<div className="content1-2">
+				<div className="content1-2-inline">
+					<h3>Femboy Fellaboy Service</h3>
+					<span>
+						Every Femboy is our fella, no matter
+						the color, age, religious and
+						political views.
+					</span>
+				</div>
+				<div className="content1-2-inline">
+					<h3>Click n&apos; Call</h3>
+					<span>
+						Quick and simple way to get in touch
+						with our Femboy friends, just click
+						n&apos; call!
+					</span>
+				</div>
+				<div className="content1-2-inline">
+					<h3>Spread AIDS with us!</h3>
+					<span>
+						Who cares about reproduction, right?
+						<br />
+						WE WANT MEN!
+					</span>
+				</div>
+			</div>
+			<div className="image image-left">
 				<img alt="3" src="/img/3.png" />
 				<div className="image-text">
 					<div className="image-text-box image-text-box-left">
-						<h2>Why???</h2>
-						<span>Femboys...</span>
+						<div className="image-text-box-content">
+							<h2>Why???</h2>
+							<span>Femboys...</span>
+						</div>
 					</div>
 				</div>
 			</div>
@@ -211,7 +241,7 @@ const Home = () => {
 				<div className="content2-box">
 					<div className="content2-sub-box">
 						<span className="content2-box-header">
-							350 Mil
+							350 M
 						</span>
 						<span className="content2-box-info">
 							Femboys worldwide
@@ -222,7 +252,7 @@ const Home = () => {
 							100%
 						</span>
 						<span className="content2-box-info">
-							Femboys using Linux
+							Of femboys using Linux
 						</span>
 					</div>
 					<div className="content2-sub-box">
@@ -376,7 +406,7 @@ const Home = () => {
 			<div className="image image-end">
 				<img alt="4" src="/img/4.png" />
 				<div className="image-text">
-					<div className="image-text-box">
+					<div className="image-text-box image-text-box-middle">
 						<h2>It is time to join us</h2>
 						<span>
 							Call us now!{' '}
@@ -394,7 +424,7 @@ const Home = () => {
 					</div>
 				</div>
 			</div>
-			<div className="content4">
+			{/* <div className="content4">
 				<h2>Donator wall!</h2>
 				<span className="smol gray">
 					Here is our donators and what they left
@@ -458,7 +488,7 @@ const Home = () => {
 						<span>:(</span>
 					</>
 				)}
-			</div>
+			</div> */}
 		</HomeStyle>
 	);
 };
@@ -514,7 +544,7 @@ const HomeStyle = styled.div`
 		}
 		> img {
 			z-index: -1;
-			filter: brightness(0.9);
+			filter: brightness(0.8);
 			position: absolute;
 			top: 0;
 			bottom: 0;
@@ -533,23 +563,49 @@ const HomeStyle = styled.div`
 				justify-content: right;
 			}
 			.image-text-box {
-				background-color: var(--c-p1-aa);
-				padding: 20px 30px;
 				/*padding-bottom: 30px;*/
-				max-width: 400px;
-				min-width: 300px;
-				&.image-text-box-right {
-					margin-right: 50px;
+				width: 50%;
+				.image-text-box-content {
+					max-width: 400px;
 					> h2 {
-						text-align: right;
+						font-size: 32px;
+						color: var(--c-pink1);
+					}
+				}
+				&.image-text-box-right {
+					text-align: right;
+					height: 100%;
+					background: linear-gradient(
+						-90deg,
+						var(--c-p1-aa) 20%,
+						transparent
+					);
+					align-items: flex-end;
+					.image-text-box-content {
+						margin-right: 50px;
 					}
 				}
 				&.image-text-box-left {
-					margin-left: 50px;
+					height: 100%;
+					background: linear-gradient(
+						90deg,
+						var(--c-p1-aa) 20%,
+						transparent
+					);
+					.image-text-box-content {
+						margin-left: 50px;
+					}
 				}
-				> h2 {
-					font-size: 32px;
-					color: var(--c-pink1);
+				&.image-text-box-right,
+				&.image-text-box-left {
+					display: flex;
+					flex-direction: column;
+					justify-content: center;
+				}
+				&.image-text-box-middle {
+					padding: 20px 30px;
+					background-color: var(--c-p1-aa);
+					max-width: 400px;
 				}
 			}
 		}
@@ -579,6 +635,28 @@ const HomeStyle = styled.div`
 		padding: 50px 0;
 		justify-content: space-evenly;
 		.content1-inline {
+			> h3 {
+				color: var(--c-pink1);
+			}
+			> span {
+				color: var(--c-p7);
+			}
+			flex-grow: 1;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			flex-direction: column;
+			max-width: 210px;
+			text-align: center;
+		}
+	}
+
+	.content1-2 {
+		width: 100%;
+		display: flex;
+		padding: 50px 0;
+		justify-content: space-evenly;
+		.content1-2-inline {
 			> h3 {
 				color: var(--c-pink1);
 			}
@@ -629,8 +707,9 @@ const HomeStyle = styled.div`
 			}
 		}
 		.content2-box {
-			padding: 10px 30px;
+			padding: 15px 30px;
 			background-color: var(--c-p2);
+			border-radius: 10px;
 			min-width: 400px;
 			animation: glow 5s
 				cubic-bezier(0.5, 0, 0.5, 1) 0s infinite
@@ -960,6 +1039,7 @@ const HomeStyle = styled.div`
 		width: 100%;
 		min-height: 300px;
 		background-color: var(--c-p2);
+		padding: 50px;
 		display: flex;
 		justify-content: center;
 		align-items: center;
@@ -979,29 +1059,58 @@ const HomeStyle = styled.div`
 		}
 	}
 
+	${CSSMediaSize.phone} {
+		.image {
+			.image-text {
+				.image-text-box {
+					background: var(--c-p1-aa) !important;
+				}
+			}
+		}
+	}
+
 	${CSSMediaSize.tablet} {
-		.content1 {
+		.content1,
+		.content1-2 {
 			flex-direction: column;
 			align-items: center;
 
-			.content1-inline {
+			.content1-inline,
+			.content1-2-inline {
 				max-width: 400px;
 				&:not(:last-child) {
 					margin-bottom: 15px;
 				}
 			}
 		}
-		.image-text {
-			flex-grow: 1;
-			justify-content: center !important;
-			.image-text-box {
-				box-sizing: border-box;
-				width: 100%;
-				margin: 0 !important;
-				padding: 30px !important;
-				text-align: center;
-				> h2 {
+		.image {
+			&.image-right {
+				> img {
+					object-position: left;
+				}
+			}
+			&.image-left {
+				> img {
+					object-position: right;
+				}
+			}
+			.image-text {
+				flex-grow: 1;
+				/*justify-content: center !important;*/
+				.image-text-box {
+					box-sizing: border-box;
+					width: 100% !important;
+					margin: 0 !important;
+					padding: 30px !important;
 					text-align: center !important;
+					align-items: center !important;
+					.image-text-box-content {
+						margin-left: 0 !important;
+						margin-right: 0 !important;
+					}
+					> h2 {
+						text-align: center !important;
+					}
 				}
 			}
 		}

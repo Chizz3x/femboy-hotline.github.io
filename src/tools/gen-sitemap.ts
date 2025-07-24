@@ -4,9 +4,14 @@ import dotenv from 'dotenv';
 import prettier from 'prettier';
 import { ROUTES } from '../routes';
 
-const env =
-	dotenv.config({ path: path.resolve('.env') })
-		.parsed || {};
+const env = {
+	...(dotenv.config({
+		path: path.resolve('.env'),
+	}).parsed || {}),
+	...(dotenv.config({
+		path: path.resolve('.env.local'),
+	}).parsed || {}),
+};
 
 const OUTPUT_FILE = path.resolve(
 	'public',

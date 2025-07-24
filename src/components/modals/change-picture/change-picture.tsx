@@ -78,9 +78,9 @@ const Modal = (
 		const res = await userChangePicture({
 			headers: {
 				Authorization: `Bearer ${Auth.getToken()}`,
+				uniqueId: getUniqueId(),
 			},
 			data: {
-				uniqueId: getUniqueId(),
 				picture: selected?.fileName,
 			},
 		});
@@ -110,8 +110,6 @@ const Modal = (
 					const res = await getMe({
 						headers: {
 							Authorization: `Bearer ${Auth.getToken()}`,
-						},
-						data: {
 							uniqueId: getUniqueId(),
 						},
 					});

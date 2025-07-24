@@ -18,7 +18,6 @@ import {
 	withReact,
 	ReactEditor,
 	RenderElementProps,
-	DefaultPlaceholder,
 } from 'slate-react';
 import styled from 'styled-components';
 import Prism, { Grammar, Token } from 'prismjs';
@@ -90,12 +89,20 @@ const customGrammar: Grammar = {
 			punctuation: /~~?/,
 		},
 	},
+	code: {
+		pattern: slateCreateInline(
+			/`([^`\n]+)`/.source,
+		),
+		lookbehind: true,
+		greedy: true,
+	},
 	// bold: {
 	//  ...md.bold,
 	//  pattern:
 	//    /((?:^|[^\\])(?:\\{2})*)(?:\*\*(?:(?!\*)(?:\\.|[^\\\n\r]|(?:\n|\r\n?)(?![\r\n]))|\*(?:(?!\*)(?:\\.|[^\\\n\r]|(?:\n|\r\n?)(?![\r\n])))+\*)+\*\*|__(?:(?!_)(?:\\.|[^\\\n\r]|(?:\n|\r\n?)(?![\r\n])))+__)/g,
 	// },
 };
+// console.log(customGrammar);
 
 const withShortcuts = (editor: Editor) => {
 	const { deleteBackward, insertText } = editor;
@@ -219,11 +226,13 @@ const withShortcuts = (editor: Editor) => {
 export const InputMarkdown = (
 	props: NInputMarkdown.IProps,
 ) => {
-	const { props: innerProps } = props;
+	const { props: innerProps, ...rest } = props;
 
 	const {
 		slateProps,
 		editableProps,
+		helperText,
+		error,
 		editable = false,
 		getEditor,
 		submitOnEnter,
@@ -413,7 +422,13 @@ export const InputMarkdown = (
 	}, [getEditor]);
 
 	return (
-		<InputMarkdownStyle className="input-markdown">
+		<InputMarkdownStyle
+			{...rest}
+			className={classes(
+				'input-markdown',
+				rest.className,
+			)}
+		>
 			<Slate
 				initialValue={
 					slateProps?.initialValue || defaultValue
@@ -441,12 +456,17 @@ export const InputMarkdown = (
 							</div>
 						);
 					}}
-					placeholder="text"
 					onDOMBeforeInput={handleDOMBeforeInput}
 					renderElement={renderElement}
 					{...editableProps}
+					placeholder={`${
+						editableProps?.placeholder || 'text'
+					}${
+						editableProps?.required ? ' *' : ''
+					}`}
 					className={classes(
 						'editable-root',
+						error ? 'error' : '',
 						editable ? 'is-editable' : '',
 						editableProps?.className,
 					)}
@@ -474,6 +494,18 @@ export const InputMarkdown = (
 						: {})}
 				/>
 			</Slate>
+			{helperText || error ? (
+				<div className="info-rows">
+					{helperText ? (
+						<div className="helper-text">
+							{helperText}
+						</div>
+					) : null}
+					{error ? (
+						<div className="error">{error}</div>
+					) : null}
+				</div>
+			) : null}
 		</InputMarkdownStyle>
 	);
 };
@@ -540,12 +572,15 @@ const CustomElement = (
 };
 
 export namespace NInputMarkdown {
-	export interface IProps {
+	export interface IProps
+		extends React.ComponentPropsWithRef<'div'> {
 		props: {
 			editable?: boolean;
 			submitOnEnter?: boolean;
 			onSubmit?: (nodes: Descendant[]) => any;
 			getEditor?: (editor: Editor) => any;
+			helperText?: string;
+			error?: string;
 			slateProps?: Partial<
 				React.ComponentProps<typeof Slate>
 			>;
@@ -565,13 +600,35 @@ const BlockquoteStyle = styled.blockquote`
 `;
 
 const InputMarkdownStyle = styled.div`
-	min-height: 100px;
 	display: flex;
+	flex-direction: column;
 	font-family: inherit;
+	.info-rows {
+		font-size: 0.75rem;
+		font-family: 'Roboto', 'Helvetica', 'Arial',
+			sans-serif;
+		letter-spacing: 0.03333em;
+		margin-top: 4px;
+		margin-left: 14px;
+		margin-right: 14px;
+		line-height: 1.66;
+		font-weight: 400;
+		color: var(--c-p5);
+		.error {
+			color: #f44336;
+		}
+	}
 	.editable-root {
 		flex-grow: 1;
 		border: 1px solid var(--c-p5);
 		border-radius: 4px;
+		&:not(.is-editable) {
+			border: none;
+			padding: 0;
+		}
+		&.error {
+			border-color: #f44336;
+		}
 		&:hover {
 			border-color: var(--c-pink1);
 		}
@@ -669,14 +726,10 @@ const LeafStyle = styled.span`
 	}
 	&.code {
 		font-family: monospace;
-		background-color: #eee;
-		padding: 3px;
-	}
-	&.code-snippet {
 		background-color: ${({ theme }) =>
-			theme?.palette?.colors?.tertiary?.[80]};
-		padding: 1px 4px;
-		border-radius: 4px;
+			theme?.palette?.background?.paper};
+		padding: 3px;
+		border-radius: 2px;
 	}
 	&.punctuation {
 		color: ${({ theme }) =>

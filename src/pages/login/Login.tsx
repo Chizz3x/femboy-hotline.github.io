@@ -25,6 +25,21 @@ import { CSSMediaSize } from '../../const';
 import { API_ROUTES, ROUTES } from '../../routes';
 import { getUniqueId } from '../../scripts/unique-id-manager';
 import { Auth } from '../../utils/auth';
+import {
+	Guide,
+	NGuide,
+} from '../../components/guide';
+
+const guidePath: NGuide.IGuidePathItem[] = [
+	{
+		name: 'Home',
+		route: ROUTES.home,
+	},
+	{
+		name: 'Login',
+		route: ROUTES.login,
+	},
+];
 
 const getDefaultForm = (): NLogin.IForm => {
 	return {
@@ -60,9 +75,9 @@ const Login = () => {
 
 	const onSubmit = handleSubmit(
 		async (values) => {
-			setLoggingIn(true);
-
 			try {
+				setLoggingIn(true);
+
 				const token = await executeRecaptcha?.(
 					'login',
 				);
@@ -99,9 +114,9 @@ const Login = () => {
 				toast(error.message || 'Unknown error', {
 					type: 'error',
 				});
+			} finally {
+				setLoggingIn(false);
 			}
-
-			setLoggingIn(false);
 		},
 	);
 
@@ -109,105 +124,122 @@ const Login = () => {
 		navigate(ROUTES.forgotPassword);
 	};
 
+	const onGoRegister = () => {
+		navigate(ROUTES.register);
+	};
+
 	return (
 		<LoginStyle>
+			<Guide path={guidePath} />
 			<div className="login-container">
-				<h2>Login</h2>
-				<form
-					className="login-form"
-					onSubmit={onSubmit}
-				>
-					<div className="fields">
-						<div className="row">
-							<TextField
-								helperText={
-									formErrors.usernameOrEmail
-										?.message
-								}
-								error={
-									!!formErrors.usernameOrEmail
-										?.message
-								}
-								size="small"
-								label="Username or Email"
-								inputProps={{
-									...register('usernameOrEmail'),
-								}}
-							/>
+				<div className="login-box">
+					<h2>Login</h2>
+					<form
+						className="login-form"
+						onSubmit={onSubmit}
+					>
+						<div className="fields">
+							<div className="row">
+								<TextField
+									helperText={
+										formErrors.usernameOrEmail
+											?.message
+									}
+									error={
+										!!formErrors.usernameOrEmail
+											?.message
+									}
+									size="small"
+									label="Username or Email"
+									inputProps={{
+										...register(
+											'usernameOrEmail',
+										),
+									}}
+								/>
+							</div>
+							<div className="row">
+								<TextField
+									helperText={
+										formErrors.password?.message
+									}
+									error={
+										!!formErrors.password?.message
+									}
+									size="small"
+									label="Password"
+									type={
+										showPassword
+											? 'text'
+											: 'password'
+									}
+									InputProps={{
+										...register('password'),
+										endAdornment: (
+											<InputAdornment position="end">
+												<IconButton
+													aria-label="toggle password visibility"
+													onClick={() =>
+														setShowPassword(
+															(v) => !v,
+														)
+													}
+													onMouseDown={() =>
+														setShowPassword(
+															(v) => !v,
+														)
+													}
+												>
+													{showPassword ? (
+														<VisibilityIcon />
+													) : (
+														<VisibilityOffIcon />
+													)}
+												</IconButton>
+											</InputAdornment>
+										),
+									}}
+								/>
+							</div>
+							<div className="row">
+								<FormControlLabel
+									control={
+										<Checkbox
+											{...register('rememberMe')}
+										/>
+									}
+									label="Remember me"
+								/>
+							</div>
+							<div className="row">
+								<ButtonBase
+									disableRipple
+									onClick={onForgotPassword}
+								>
+									Forgot password?
+								</ButtonBase>
+							</div>
+							<div className="row">
+								<ButtonBase
+									disableRipple
+									onClick={onGoRegister}
+								>
+									No account? Create one!
+								</ButtonBase>
+							</div>
 						</div>
-						<div className="row">
-							<TextField
-								helperText={
-									formErrors.password?.message
+						<div className="buttons">
+							<Button
+								type="submit"
+								disabled={
+									isFormLoading || loggingIn
 								}
-								error={
-									!!formErrors.password?.message
-								}
-								size="small"
-								label="Password"
-								type={
-									showPassword
-										? 'text'
-										: 'password'
-								}
-								InputProps={{
-									...register('password'),
-									endAdornment: (
-										<InputAdornment position="end">
-											<IconButton
-												aria-label="toggle password visibility"
-												onClick={() =>
-													setShowPassword(
-														(v) => !v,
-													)
-												}
-												onMouseDown={() =>
-													setShowPassword(
-														(v) => !v,
-													)
-												}
-											>
-												{showPassword ? (
-													<VisibilityIcon />
-												) : (
-													<VisibilityOffIcon />
-												)}
-											</IconButton>
-										</InputAdornment>
-									),
-								}}
-							/>
-						</div>
-						<div className="row">
-							<FormControlLabel
-								control={
-									<Checkbox
-										{...register('rememberMe')}
-									/>
-								}
-								label="Remember me"
-							/>
-						</div>
-						<div className="row">
-							<ButtonBase
-								disableRipple
-								onClick={onForgotPassword}
 							>
-								Forgot password?
-							</ButtonBase>
+								Log in
+							</Button>
 						</div>
-					</div>
-					<div className="buttons">
-						<Button
-							type="submit"
-							disabled={
-								isFormLoading || loggingIn
-							}
-						>
-							Log in
-						</Button>
-					</div>
-				</form>
+					</form>
+				</div>
 			</div>
 		</LoginStyle>
 	);
@@ -228,34 +260,38 @@ const LoginStyle = styled.div`
 	flex-grow: 1;
 	padding: 20px 50px;
 	display: flex;
-	align-items: center;
-	justify-content: center;
-
+	flex-direction: column;
 	.login-container {
-		background-color: var(--c-p2);
-		padding: 20px 30px;
-		border-radius: 10px;
-		width: 100%;
-		max-width: 500px;
+		flex-grow: 1;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		.login-box {
+			background-color: var(--c-p2);
+			padding: 20px 30px;
+			border-radius: 10px;
+			width: 100%;
+			max-width: 500px;
 
-		.login-form {
-			margin: 20px 0;
+			.login-form {
+				margin: 20px 0;
 
-			.fields {
-				.row {
-					> .MuiTextField-root {
-						width: 100%;
-					}
-					&:not(:last-child) {
-						margin-bottom: 15px;
+				.fields {
+					.row {
+						> .MuiTextField-root {
+							width: 100%;
+						}
+						&:not(:last-child) {
+							margin-bottom: 15px;
+						}
 					}
 				}
-			}
 
-			.buttons {
-				margin-top: 20px;
-				display: flex;
-				justify-content: flex-end;
+				.buttons {
+					margin-top: 20px;
+					display: flex;
+					justify-content: flex-end;
+				}
 			}
 		}
 	}

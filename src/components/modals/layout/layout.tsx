@@ -14,11 +14,14 @@ const ModalLayout = (
 		title,
 		showHeader,
 		centerHeader,
+		opacity = 'transparent',
+		closeOnOverlay = true,
 	} = props;
 
 	const closeModal: React.MouseEventHandler<
 		HTMLDivElement
 	> = (event) => {
+		if (!closeOnOverlay) return;
 		if (event.currentTarget === event.target) {
 			window.dispatchEvent(
 				changeModals({ [name]: null }),
@@ -35,9 +38,10 @@ const ModalLayout = (
 	return (
 		<ModalLayoutStyle
 			className="Modal"
+			data-opacity={opacity}
 			onClick={closeModal}
-			showHeader={showHeader}
-			centerHeader={centerHeader}
+			data-showheader={showHeader}
+			data-centerheader={centerHeader}
 		>
 			<div className="modal_inner">
 				<div className="header">
@@ -72,12 +76,15 @@ export namespace NModalLayout {
 		extends NModals.IDefaultProps {
 		children?: JSX.Element;
 		name: string;
+		opacity?: 'transparent' | 'opaque';
+		closeOnOverlay?: boolean;
 	}
 }
 
 const ModalLayoutStyle = styled.div<{
-	showHeader?: boolean;
-	centerHeader?: boolean;
+	'data-showheader'?: boolean;
+	'data-centerheader'?: boolean;
+	'data-opacity'?: NModalLayout.IProps['opacity'];
 }>`
 	height: 100vh;
 	width: 100vw;
@@ -86,7 +93,10 @@ const ModalLayoutStyle = styled.div<{
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	background-color: var(--c-p1-aa);
+	background-color: ${(props) =>
+		props?.['data-opacity'] === 'transparent'
+			? 'var(--c-p1-aa)'
+			: 'var(--c-p1)'};
 	backdrop-filter: blur(5px);
 	overflow: hidden;
 	.modal_inner {
@@ -97,13 +107,15 @@ const ModalLayoutStyle = styled.div<{
 		box-shadow: 0 0 15px var(--c-p1);
 		max-height: calc(100vh - 100px);
 		overflow-y: auto;
-		padding-top: ${({ showHeader }) =>
-			showHeader ? '0' : '20px'};
+		padding-top: ${(props) =>
+			props?.['data-showheader'] ? '0' : '20px'};
 
 		> .header {
 			padding: 10px 0;
-			display: ${({ showHeader }) =>
-				showHeader ? 'flex' : 'none'};
+			display: ${(props) =>
+				props?.['data-showheader']
+					? 'flex'
+					: 'none'};
 			justify-content: space-evenly;
 			position: sticky;
 			top: 0;
@@ -133,7 +145,10 @@ const ModalLayoutStyle = styled.div<{
 		.modal_inner {
 			padding-top: 0;
 			> .header {
-				display: flex;
+				display: ${(props) =>
+					props?.['data-showheader'] !== false
+						? 'flex'
+						: 'none'};
 			}
 		}
 	}

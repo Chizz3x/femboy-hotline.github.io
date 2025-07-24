@@ -55,7 +55,7 @@ export default createGlobalStyle`
 	a {
 		color: unset
 	}
-
+  
 	button {
 		background-color: var(--c-p2);
 		border: none;
@@ -106,6 +106,13 @@ export default createGlobalStyle`
 
 	::-webkit-scrollbar-thumb {
 		background-color: var(--c-p);
+	}
+
+	/* Toastify */
+	.toast-item {
+		.Toastify__close-button {
+			color: #fff
+		}
 	}
 
 	${CSSMediaSize.tablet} {

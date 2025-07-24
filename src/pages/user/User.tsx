@@ -12,8 +12,8 @@ import { API_ROUTES, ROUTES } from '../../routes';
 import { CSSMediaSize } from '../../const';
 import { Auth } from '../../utils/auth';
 import { getUniqueId } from '../../scripts/unique-id-manager';
-import buildRoute from '../../utils/build-route';
 import { changeModals } from '../../components/modals/modals';
+import buildApiRoute from '../../utils/build-api-route';
 
 const User = () => {
 	const navigate = useNavigate();
@@ -78,8 +78,6 @@ const User = () => {
 					getMe({
 						headers: {
 							Authorization: `Bearer ${Auth.getToken()}`,
-						},
-						data: {
 							uniqueId: getUniqueId(),
 						},
 					});
@@ -87,13 +85,9 @@ const User = () => {
 			}
 		} else {
 			getUser({
-				url: buildRoute(
-					API_ROUTES.getUser,
-					undefined,
-					{
-						id: otherId,
-					},
-				),
+				url: buildApiRoute(API_ROUTES.getUser, {
+					id: otherId,
+				}),
 			});
 		}
 	}, [authed.loaded, authed.seed, otherId]);

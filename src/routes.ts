@@ -19,9 +19,10 @@ export const ROUTES = {
 	resendVerification: '/resend-verification',
 	forgotPassword: '/forgot-password',
 	resetPassword: '/reset-password',
-	forums: '/forums',
-	forumPost: '/forums/:id',
-	forumPostNew: '/forums/new',
+	forum: '/forum',
+	forumPost: '/forum/:id',
+	forumPostNew: '/forum/new',
+	safePlace: '/safe-place',
 };
 
 export const API_ROUTES = {
@@ -38,4 +39,15 @@ export const API_ROUTES = {
 	resetPassword: `${API_URL}/user/reset-password`,
 	changePicture: `${API_URL}/user/change-picture`,
 	changeBanner: `${API_URL}/user/change-banner`,
+	changeUsername: `${API_URL}/user/change-username`,
+	forumNew: `${API_URL}/forum/new`,
+	forumPosts: `${API_URL}/forum`,
+	forumPost: `${API_URL}/forum/:id`,
+	forumDelete: `${API_URL}/forum/:id/delete`,
+	forumEdit: `${API_URL}/forum/:id/edit`,
+	forumVote: `${API_URL}/forum/:id/vote`,
+	forumComments: `${API_URL}/forum/:id/comments`,
+	forumCommentNew: `${API_URL}/forum/:id/comments/new`,
+	forumCommentDelete: `${API_URL}/forum/:id/comments/:commentId/delete`,
+	forumCommentEdit: `${API_URL}/forum/:id/comments/:commentId/edit`,
 };

@@ -1,5 +1,9 @@
 import React from 'react';
 import styled from 'styled-components';
+import {
+	useLocation,
+	useNavigate,
+} from 'react-router-dom';
 import { Header } from '../header';
 import { Footer } from '../footer';
 import {
@@ -8,6 +12,9 @@ import {
 	changeModals,
 } from '../modals/modals';
 import { sessionStorageSet } from '../../utils/session-storage';
+import { VERSION } from '../../const';
+import { ROUTES } from '../../routes';
+import useWatchStorage from '../../utils/hooks/use-watch-storage';
 
 const Layout = (props: NLayout.IProps) => {
 	const {
@@ -16,38 +23,26 @@ const Layout = (props: NLayout.IProps) => {
 		showFooter = true,
 	} = props;
 
+	const navigate = useNavigate();
+	const location = useLocation();
+
 	const [hasRun, setHasRun] =
 		React.useState<boolean>(false);
 	const [modalsInit, setModalsInit] =
 		React.useState<boolean>(false);
 
-	// const query = new URLSearchParams(
-	//	window.location.search,
-	// );
-
-	// const shouldShowSwitchingDomains =
-	//	!localStorage.getItem('switching-domains') &&
-	//	query.has('switching-domains');
-
 	const [modals, setModals] =
 		React.useState<NModals.TModals>({});
 
-	// React.useEffect(() => {
-	//	const firstVisit = sessionStorage.getItem(
-	//		'first-visit',
-	//	);
-	//	const shouldShowChangelog =
-	//		!localStorage.getItem('changelog-hide') &&
-	//		firstVisit !== 'false';
-
-	//	if (shouldShowChangelog) {
-	//		window.dispatchEvent(
-	//			changeModals({
-	//				ModalChangelog: { open: true },
-	//			}),
-	//		);
-	//	}
-	// }, []);
+	const dataLocal = useWatchStorage({
+		type: 'local',
+		keys: ['underage'],
+		withData: true,
+	});
+	const isUnderage =
+		dataLocal?.data?.underage === 'true';
+	const isMaybeUnderage =
+		dataLocal?.data?.underage === null;
 
 	React.useEffect(() => {
 		if (modalsInit) {
@@ -61,9 +56,9 @@ const Layout = (props: NLayout.IProps) => {
 						'false',
 					);
 					const shouldShowChangelog =
-						!localStorage.getItem(
+						localStorage.getItem(
 							'changelog-hide',
-						);
+						) !== VERSION;
 					if (shouldShowChangelog) {
 						window.dispatchEvent(
 							changeModals({
@@ -80,13 +75,13 @@ const Layout = (props: NLayout.IProps) => {
 		const changeModalsInner = (
 			event: WindowEventMap['changeModals'],
 		) => {
-			setModals({
-				...modals,
+			setModals((modalsData) => ({
+				...modalsData,
 				...(typeof event?.detail === 'object' &&
 				!Array.isArray(event?.detail)
 					? event?.detail
 					: {}),
-			});
+			}));
 		};
 
 		window.addEventListener(
@@ -104,6 +99,21 @@ const Layout = (props: NLayout.IProps) => {
 		};
 	}, []);
 
+	React.useEffect(() => {
+		if (
+			isUnderage &&
+			location.pathname !== ROUTES.safePlace
+		) {
+			navigate(ROUTES.safePlace);
+		} else if (isMaybeUnderage) {
+			window.dispatchEvent(
+				changeModals({
+					ModalUnderageCheck: { open: true },
+				}),
+			);
+		}
+	}, [dataLocal?.seed, location.pathname]);
+
 	return (
 		<LayoutStyle id="root-container">
 			{allModals.map((modal, index) =>
@@ -111,13 +121,26 @@ const Layout = (props: NLayout.IProps) => {
 				modals?.[modal.name] ? (
 					<modal.Modal
 						key={index}
-						{...modals[modal.name]}
+						{...(modals[modal.name] as any)}
 					/>
 				) : null,
 			)}
-			{showHeader ? <Header /> : null}
-			{children}
-			{showFooter ? <Footer /> : null}
+			{(!isUnderage && !isMaybeUnderage) ||
+			location.pathname === ROUTES.safePlace ? (
+				<>
+					{showHeader &&
+					!isUnderage &&
+					!isMaybeUnderage ? (
+						<Header />
+					) : null}
+					{children}
+					{showFooter &&
+					!isUnderage &&
+					!isMaybeUnderage ? (
+						<Footer />
+					) : null}
+				</>
+			) : null}
 		</LayoutStyle>
 	);
 };

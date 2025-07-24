@@ -1,8 +1,8 @@
 import * as yup from 'yup';
-import { NForums } from './Forums';
+import { NForum } from './Forum';
 
 export default () => {
-	return yup.object<NForums.IForm>({
+	return yup.object<NForum.IForm>({
 		text: yup.string().trim(),
 	});
 };

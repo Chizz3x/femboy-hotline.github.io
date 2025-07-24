@@ -73,16 +73,21 @@
 		>
 	</url>
 	<url>
-		<loc>https:/femboy-hotline.com/#/forums</loc>
+		<loc>https:/femboy-hotline.com/#/forum</loc>
 	</url>
 	<url>
 		<loc
-			>https:/femboy-hotline.com/#/forums/:id</loc
+			>https:/femboy-hotline.com/#/forum/:id</loc
 		>
 	</url>
 	<url>
 		<loc
-			>https:/femboy-hotline.com/#/forums/new</loc
+			>https:/femboy-hotline.com/#/forum/new</loc
+		>
+	</url>
+	<url>
+		<loc
+			>https:/femboy-hotline.com/#/safe-place</loc
 		>
 	</url>
 </urlset>

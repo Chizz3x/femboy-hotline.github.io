@@ -27,6 +27,7 @@ import {
 	Logout as LogoutIcon,
 	Person as PersonIcon,
 	DragHandle as DragHandleIcon,
+	Forum as ForumIcon,
 } from '@mui/icons-material';
 import axios from 'axios';
 import useAxios from 'axios-hooks';
@@ -35,6 +36,12 @@ import { API_ROUTES, ROUTES } from '../../routes';
 import { useAuth } from '../contexts/auth';
 import { Auth } from '../../utils/auth';
 import { getUniqueId } from '../../scripts/unique-id-manager';
+import {
+	localStorageRemove,
+	localStorageSet,
+} from '../../utils/local-storage';
+import useWatchStorage from '../../utils/hooks/use-watch-storage';
+import classes from '../../utils/classes';
 
 const Header = () => {
 	const location = useLocation();
@@ -58,6 +65,12 @@ const Header = () => {
 				name: 'Home',
 				route: ROUTES.home,
 				icon: <HomeIcon />,
+			},
+			{
+				id: 'goForum',
+				name: 'Forum',
+				route: ROUTES.forum,
+				icon: <ForumIcon />,
 			},
 			{
 				id: 'goAbout',
@@ -143,23 +156,15 @@ const Header = () => {
 
 	const [
 		{ data: userData, loading: userDataLoading },
-		getUser,
+		getMe,
 	] = useAxios(
 		{
 			method: 'POST',
 			url: API_ROUTES.getMe,
-			headers: {
-				Authorization: `Bearer ${Auth.getToken()}`,
-			},
-			data: {
-				uniqueId: getUniqueId(),
-				withRP: true,
-			},
 		},
 		{ manual: true, autoCancel: true },
 	);
 	const user = userData?.data?.user;
-	const userRP = userData?.data?.rp;
 
 	const toggleMobileMenu = (
 		event?: React.MouseEvent<HTMLElement>,
@@ -170,6 +175,24 @@ const Header = () => {
 		);
 	};
 
+	const { data: repPinnedData } = useWatchStorage(
+		{
+			keys: ['rep-pinned'],
+			type: 'local',
+			withData: true,
+		},
+	);
+
+	const toggleRepPin = () => {
+		const pinned =
+			localStorage.getItem('rep-pinned');
+		if (pinned) {
+			localStorageRemove('rep-pinned');
+		} else {
+			localStorageSet('rep-pinned', 'true');
+		}
+	};
+
 	React.useEffect(() => {
 		if (location.pathname) {
 			setCurrentRoute(location.pathname);
@@ -178,31 +201,49 @@ const Header = () => {
 
 	React.useEffect(() => {
 		if (authed) {
-			getUser();
+			getMe({
+				headers: {
+					Authorization: `Bearer ${Auth.getToken()}`,
+					uniqueId: getUniqueId(),
+				},
+				data: {
+					withPoints: true,
+					withRP: true,
+				},
+			});
 		}
 	}, [authed, authedSeed]);
 
 	return (
 		<HeaderStyle id="root-header">
-			{authed && userData ? (
-				<div className="rep-data">
+			{/* {authed && userData ? (
+				<div
+					className={classes(
+						'rep-data',
+						repPinnedData['rep-pinned'] === 'true'
+							? 'rep-pinned'
+							: '',
+					)}
+				>
 					<div className="rep-data-handle">
-						<DragHandleIcon />
+						<DragHandleIcon
+							onClick={toggleRepPin}
+						/>
 					</div>
 					<table className="rep-data-table">
 						<tbody>
 							<tr>
-								<td>Rep</td>
-								<td>{user?.rep || 0}</td>
+								<td>RP</td>
+								<td>{user?.rp || 0}</td>
 							</tr>
 							<tr>
-								<td>RP</td>
-								<td>{userRP?.rp || 0}</td>
+								<td>FP</td>
+								<td>{user?.points || 0}</td>
 							</tr>
 						</tbody>
 					</table>
 				</div>
-			) : null}
+			) : null} */}
 			<div className="container container-left">
 				<Link to={ROUTES.home}>
 					<div className="container-parts">
@@ -534,13 +575,24 @@ const HeaderStyle = styled.div`
 		transform: translateX(calc(100% - 24px));
 		transition: transform 0.1s ease-in-out;
 
-		&:hover {
+		&:hover,
+		&.rep-pinned {
 			transform: translateX(0);
+		}
+
+		&.rep-pinned {
+			.rep-data-handle {
+				color: var(--c-pink1);
+			}
 		}
 
 		.rep-data-handle {
 			display: flex;
 			align-items: center;
+			cursor: pointer;
+			:hover {
+				color: var(--c-pink3);
+			}
 			> * {
 				transform: rotate(90deg);
 			}

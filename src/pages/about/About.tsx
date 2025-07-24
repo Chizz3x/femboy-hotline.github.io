@@ -2,6 +2,22 @@ import styled from 'styled-components';
 import React from 'react';
 import Tooltip from '@mui/material/Tooltip';
 import { CSSMediaSize } from '../../const';
+import {
+	Guide,
+	NGuide,
+} from '../../components/guide';
+import { ROUTES } from '../../routes';
+
+const guidePath: NGuide.IGuidePathItem[] = [
+	{
+		name: 'Home',
+		route: ROUTES.home,
+	},
+	{
+		name: 'About',
+		route: ROUTES.about,
+	},
+];
 
 const About = () => {
 	const barbie: React.MouseEventHandler<
@@ -30,6 +46,7 @@ const About = () => {
 
 	return (
 		<AboutStyle>
+			<Guide path={guidePath} />
 			<h2>About Femboy Hotline</h2>
 			<p>
 				Welcome to Femboy Hotline, the hottest
@@ -92,7 +109,10 @@ const About = () => {
 				test some neat stuff such as web based
 				mini-games and such.
 				<br />
-				<Tooltip title="Come on, Barbie, let's go party">
+				<Tooltip
+					title="Come on, Barbie, let's go party"
+					arrow
+				>
 					<span
 						onClick={barbie}
 						className="barbie"

@@ -9,6 +9,7 @@ import {
 	createTheme,
 } from '@mui/material/styles';
 import { GoogleReCaptchaProvider } from 'react-google-recaptcha-v3';
+import { ThemeProvider as ThemeProviderStyled } from 'styled-components';
 import GlobalStyle from './style';
 import Index from './pages';
 import { GRECAPTCHA_ID } from './const';
@@ -16,6 +17,7 @@ import { AuthProvider } from './components/contexts/auth';
 
 const toastStyle: React.CSSProperties = {
 	background: 'var(--c-p1)',
+	// 'Toastify__close-button': { color: '#fff' },
 };
 
 const root = ReactDOM.createRoot(
@@ -107,14 +109,17 @@ root.render(
 			<GlobalStyle />
 			<ToastContainer
 				toastStyle={toastStyle}
+				toastClassName="toast-item"
 				position="bottom-left"
 			/>
 			<ThemeProvider theme={theme}>
-				<AuthProvider>
-					<HashRouter>
-						<Index />
-					</HashRouter>
-				</AuthProvider>
+				<ThemeProviderStyled theme={theme}>
+					<AuthProvider>
+						<HashRouter>
+							<Index />
+						</HashRouter>
+					</AuthProvider>
+				</ThemeProviderStyled>
 			</ThemeProvider>
 		</GoogleReCaptchaProvider>
 	</React.StrictMode>,

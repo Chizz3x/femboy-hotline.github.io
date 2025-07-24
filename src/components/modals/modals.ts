@@ -3,12 +3,18 @@ import * as ModalSwitchingDomains from './switching-domains';
 import * as ModalChangelog from './changelog';
 import * as ModalChangePicture from './change-picture';
 import * as ModalChangeBanner from './change-banner';
+import * as ModalDeletePost from './delete-post';
+import * as ModalDeletePostComment from './delete-post-comment';
+import * as ModalUnderageCheck from './underage-check';
 
 export const modals = [
 	ModalSwitchingDomains,
 	ModalChangelog,
 	ModalChangePicture,
 	ModalChangeBanner,
+	ModalDeletePost,
+	ModalDeletePostComment,
+	ModalUnderageCheck,
 ];
 
 export const changeModals = <

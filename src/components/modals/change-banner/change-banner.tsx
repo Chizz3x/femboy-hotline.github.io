@@ -62,9 +62,9 @@ const Modal = (
 		const res = await userChangeBanner({
 			headers: {
 				Authorization: `Bearer ${Auth.getToken()}`,
+				uniqueId: getUniqueId(),
 			},
 			data: {
-				uniqueId: getUniqueId(),
 				banner: selected?.fileName,
 			},
 		});
@@ -94,8 +94,6 @@ const Modal = (
 					const res = await getMe({
 						headers: {
 							Authorization: `Bearer ${Auth.getToken()}`,
-						},
-						data: {
 							uniqueId: getUniqueId(),
 						},
 					});
