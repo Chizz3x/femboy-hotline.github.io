@@ -72,4 +72,22 @@
 			>https:/femboy-hotline.com/#/reset-password</loc
 		>
 	</url>
+	<url>
+		<loc>https:/femboy-hotline.com/#/forum</loc>
+	</url>
+	<url>
+		<loc
+			>https:/femboy-hotline.com/#/forum/:id</loc
+		>
+	</url>
+	<url>
+		<loc
+			>https:/femboy-hotline.com/#/forum/new</loc
+		>
+	</url>
+	<url>
+		<loc
+			>https:/femboy-hotline.com/#/safe-place</loc
+		>
+	</url>
 </urlset>
