@@ -116,6 +116,7 @@ export namespace NModalChangelog {
 
 const ModalChangelogStyle = styled.div`
 	text-align: center;
+	max-width: 1000px;
 	.row {
 		> h3 {
 			color: var(--c-pink3);
