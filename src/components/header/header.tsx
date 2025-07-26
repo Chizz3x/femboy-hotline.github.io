@@ -640,6 +640,7 @@ const HeaderStyle = styled.div`
 			color: var(--c-pink1);
 		}
 		&.active {
+			color: var(--c-pink1);
 			border-color: var(--c-pink3);
 		}
 		border-radius: 0;

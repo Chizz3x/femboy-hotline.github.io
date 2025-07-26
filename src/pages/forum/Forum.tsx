@@ -48,7 +48,7 @@ const getDefaultForm = (): NForum.IForm => {
 	};
 };
 
-const perPage = 5;
+const perPage = 10;
 
 const Forum = () => {
 	const navigate = useNavigate();
@@ -290,7 +290,6 @@ const ForumStyle = styled.div`
 		display: flex;
 		flex-direction: column;
 		flex-grow: 1;
-		overflow-y: auto;
 		row-gap: 18px;
 		padding: 12px;
 	}

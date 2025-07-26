@@ -200,6 +200,7 @@ const ForumCardStyle = styled.div`
 	column-gap: 10px;
 	row-gap: 10px;
 	cursor: pointer;
+	min-height: 52px;
 	&:hover {
 		box-shadow: 0 0 8px 0 var(--c-p);
 	}
@@ -247,10 +248,10 @@ const ForumCardStyle = styled.div`
 		font-size: 20px;
 		overflow: hidden;
 		text-overflow: ellipsis;
-		line-height: 1;
 	}
 
 	${CSSMediaSize.phone} {
+		row-gap: 5px;
 		flex-direction: column;
 		.left-container {
 			max-width: 100%;
