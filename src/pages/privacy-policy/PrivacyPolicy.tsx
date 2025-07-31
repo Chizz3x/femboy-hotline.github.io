@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import React from 'react';
-import dayjs from 'dayjs';
 import { Link } from 'react-router-dom';
+import dayjs from '../../utils/dayjs';
 import { ROUTES } from '../../routes';
 
 const effectiveDate = dayjs('2025-02-11');

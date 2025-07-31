@@ -178,6 +178,7 @@ const Login = () => {
 										endAdornment: (
 											<InputAdornment position="end">
 												<IconButton
+													size="small"
 													aria-label="toggle password visibility"
 													onClick={() =>
 														setShowPassword(
@@ -191,9 +192,9 @@ const Login = () => {
 													}
 												>
 													{showPassword ? (
-														<VisibilityIcon />
+														<VisibilityIcon fontSize="small" />
 													) : (
-														<VisibilityOffIcon />
+														<VisibilityOffIcon fontSize="small" />
 													)}
 												</IconButton>
 											</InputAdornment>
@@ -267,7 +268,8 @@ const LoginStyle = styled.div`
 		align-items: center;
 		justify-content: center;
 		.login-box {
-			background-color: var(--c-p2);
+			background-color: ${({ theme }) =>
+				theme?.palette?.background_2?.default};
 			padding: 20px 30px;
 			border-radius: 10px;
 			width: 100%;

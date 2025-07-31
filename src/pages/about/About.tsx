@@ -66,6 +66,7 @@ const About = () => {
 			<p>
 				True origin of this idea is{' '}
 				<a
+					className="colored"
 					target="_blank"
 					href="https://www.reddit.com/r/lgbtmemes/comments/wqxqno/theres_a_femboy_hotline/"
 					rel="noreferrer"
@@ -143,16 +144,22 @@ const AboutStyle = styled.div`
 			display: inline-block;
 		}
 	}
+	p {
+		margin: 8px 0;
+	}
 	@keyframes pinkWave {
 		25% {
-			color: var(--c-pink1);
+			color: ${({ theme }) =>
+				theme?.palette?.primary?.main};
 		}
 		50% {
 			transform: translateY(-10px);
-			color: var(--c-pink2);
+			color: ${({ theme }) =>
+				theme?.palette?.primary?.light};
 		}
 		75% {
-			color: var(--c-pink3);
+			color: ${({ theme }) =>
+				theme?.palette?.primary?.dark};
 		}
 	}
 

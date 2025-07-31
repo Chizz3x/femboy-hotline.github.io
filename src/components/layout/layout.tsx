@@ -36,13 +36,21 @@ const Layout = (props: NLayout.IProps) => {
 
 	const dataLocal = useWatchStorage({
 		type: 'local',
+		keys: ['ageChecked'],
+		withData: true,
+	});
+	const dataSession = useWatchStorage({
+		type: 'session',
 		keys: ['underage'],
 		withData: true,
 	});
+	const isAgeChecked =
+		dataLocal?.data?.ageChecked === 'true';
 	const isUnderage =
-		dataLocal?.data?.underage === 'true';
+		dataSession?.data?.underage === 'true';
 	const isMaybeUnderage =
-		dataLocal?.data?.underage === null;
+		dataSession?.data?.underage === null &&
+		!isAgeChecked;
 
 	React.useEffect(() => {
 		if (modalsInit) {
@@ -105,14 +113,14 @@ const Layout = (props: NLayout.IProps) => {
 			location.pathname !== ROUTES.safePlace
 		) {
 			navigate(ROUTES.safePlace);
-		} else if (isMaybeUnderage) {
+		} else if (!isAgeChecked && isMaybeUnderage) {
 			window.dispatchEvent(
 				changeModals({
 					ModalUnderageCheck: { open: true },
 				}),
 			);
 		}
-	}, [dataLocal?.seed, location.pathname]);
+	}, [dataSession?.seed, location.pathname]);
 
 	return (
 		<LayoutStyle id="root-container">

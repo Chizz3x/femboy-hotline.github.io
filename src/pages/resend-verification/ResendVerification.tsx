@@ -190,7 +190,8 @@ const ResendVerificationStyle = styled.div`
 	justify-content: center;
 
 	.resend-verification-container {
-		background-color: var(--c-p2);
+		background-color: ${({ theme }) =>
+			theme?.palette?.background_2?.default};
 		padding: 20px 30px;
 		border-radius: 10px;
 		width: 100%;

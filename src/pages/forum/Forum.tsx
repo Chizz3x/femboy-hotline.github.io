@@ -262,7 +262,8 @@ const ForumStyle = styled.div`
 
 	.forum-header {
 		margin-bottom: 16px;
-		background-color: var(--c-p2);
+		background-color: ${({ theme }) =>
+			theme?.palette?.background_2?.default};
 		padding: 10px;
 		width: 100%;
 		box-sizing: border-box;

@@ -20,11 +20,11 @@ import { StatusCodes } from 'http-status-codes';
 import { Descendant } from 'slate';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
-import dayjs from 'dayjs';
 import {
 	ArrowDropDown as ArrowDropDownIcon,
 	ArrowDropUp as ArrowDropUpIcon,
 } from '@mui/icons-material';
+import dayjs from '../../utils/dayjs';
 import { API_ROUTES, ROUTES } from '../../routes';
 import buildApiRoute from '../../utils/build-api-route';
 import { getUniqueId } from '../../scripts/unique-id-manager';
@@ -54,6 +54,7 @@ import {
 } from '../../components/guide';
 import classes from '../../utils/classes';
 import { CSSMediaSize } from '../../const';
+import getUserPicture from '../../utils/get-user-picture';
 
 const getGuidePath = (
 	forumId: string,
@@ -491,10 +492,9 @@ const ForumPost = () => {
 							>
 								<Avatar
 									alt={forum?.author?.username}
-									src={`/img/pictures/${
-										forum?.author?.picture ||
-										'1.png'
-									}`}
+									src={getUserPicture(
+										forum?.author,
+									)}
 									imgProps={{
 										onClick: () =>
 											navigate(
@@ -605,23 +605,6 @@ const ForumPost = () => {
 						</div>
 					) : null}
 				</form>
-				{user?._id === forum?.author_id &&
-				!editingPost ? (
-					<div className="post-manager">
-						<Button
-							size="small"
-							onClick={startPostEdit}
-						>
-							Edit
-						</Button>
-						<Button
-							size="small"
-							onClick={deletePost}
-						>
-							Delete
-						</Button>
-					</div>
-				) : null}
 				{!userDataLoading && user ? (
 					<div className="post-user-options">
 						<div className="vote-box">
@@ -664,6 +647,23 @@ const ForumPost = () => {
 						</div>
 					</div>
 				) : null}
+				{user?._id === forum?.author_id &&
+				!editingPost ? (
+					<div className="post-manager">
+						<Button
+							size="small"
+							onClick={startPostEdit}
+						>
+							Edit
+						</Button>
+						<Button
+							size="small"
+							onClick={deletePost}
+						>
+							Delete
+						</Button>
+					</div>
+				) : null}
 				{!userDataLoading && user ? (
 					<div className="post-comment-new">
 						<div className="comment-new-left">
@@ -681,9 +681,7 @@ const ForumPost = () => {
 								) : (
 									<Avatar
 										alt={user.username}
-										src={`/img/pictures/${
-											user.picture || '1.png'
-										}`}
+										src={getUserPicture(user)}
 										imgProps={{
 											onClick: () =>
 												navigate(
@@ -875,6 +873,10 @@ const ForumPostStyle = styled.div`
 		margin-top: 10px;
 		display: flex;
 		column-gap: 10px;
+		background-color: ${({ theme }) =>
+			theme?.palette?.background_2?.default};
+		padding: 10px;
+		border-radius: 10px;
 	}
 
 	.post-title {
@@ -981,6 +983,7 @@ const ForumPostStyle = styled.div`
 				.comment-new-options {
 					display: flex;
 					justify-content: space-between;
+					margin-top: 8px;
 					.comment-new-options-left {
 						//
 					}

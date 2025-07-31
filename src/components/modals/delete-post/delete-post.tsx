@@ -63,6 +63,7 @@ const Modal = (
 		<ModalLayout
 			{...props}
 			showHeader
+			hideCloseButton
 			title="Are you sure you want to delete your post?"
 			name={name}
 		>

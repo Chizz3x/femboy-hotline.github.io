@@ -14,6 +14,8 @@ import { Auth } from '../../utils/auth';
 import { getUniqueId } from '../../scripts/unique-id-manager';
 import { changeModals } from '../../components/modals/modals';
 import buildApiRoute from '../../utils/build-api-route';
+import UserInfo from './components/user-info';
+import getUserPicture from '../../utils/get-user-picture';
 
 const User = () => {
 	const navigate = useNavigate();
@@ -50,8 +52,6 @@ const User = () => {
 			changeModals({
 				ModalChangePicture: {
 					open: true,
-					showHeader: true,
-					title: 'Change picture',
 				},
 			}),
 		);
@@ -62,8 +62,6 @@ const User = () => {
 			changeModals({
 				ModalChangeBanner: {
 					open: true,
-					showHeader: true,
-					title: 'Change banner',
 				},
 			}),
 		);
@@ -129,17 +127,14 @@ const User = () => {
 								variant="circular"
 								width="128px"
 								height="128px"
-								style={{
-									border: '5px solid var(--c-p1)',
-								}}
 							/>
 						) : (
 							<div
 								className="profile-picture"
 								style={{
-									backgroundImage: `url('/img/pictures/${
-										user?.picture || '1.png'
-									}')`,
+									backgroundImage: `url('${getUserPicture(
+										user,
+									)}')`,
 								}}
 							/>
 						)}
@@ -164,6 +159,9 @@ const User = () => {
 					</div>
 				</div>
 			</div>
+			<div className="user-content">
+				<UserInfo user={user} />
+			</div>
 		</UserStyle>
 	);
 };
@@ -177,11 +175,10 @@ export namespace NUser {
 const UserStyle = styled.div`
 	flex-shrink: 0;
 	flex-grow: 1;
-	/*padding: 20px 50px;*/
+	flex-direction: column;
 	display: flex;
 
 	.banner-container {
-		flex-grow: 1;
 		.banner-box {
 			position: relative;
 			.banner {
@@ -203,7 +200,8 @@ const UserStyle = styled.div`
 				left: 0;
 				width: 100%;
 				height: 100%;
-				background-color: var(--c-p1-aa);
+				background-color: ${({ theme }) =>
+					theme?.palette?.background?.default}aa;
 				transition: opacity 0.2s;
 				opacity: 0;
 				&:hover {
@@ -232,7 +230,10 @@ const UserStyle = styled.div`
 					width: 128px;
 					height: 128px;
 					border-radius: 50%;
-					border: 5px solid var(--c-p1);
+					border: 5px solid
+						${({ theme }) =>
+							theme?.palette?.background
+								?.default};
 				}
 				.editable-overlay {
 					--margin: 5px;
@@ -248,7 +249,9 @@ const UserStyle = styled.div`
 					width: calc(100% - var(--margin) * 2);
 					height: calc(100% - var(--margin) * 2);
 					margin: var(--margin);
-					background-color: var(--c-p1-aa);
+					background-color: ${({ theme }) =>
+						theme?.palette?.background
+							?.default}aa;
 					transition: opacity 0.2s;
 					opacity: 0;
 					&:hover {
@@ -276,11 +279,24 @@ const UserStyle = styled.div`
 		}
 	}
 
+	.user-content {
+		padding: 20px 50px;
+	}
+
 	${CSSMediaSize.phone} {
 		.banner-container {
 			.banner-content-box {
 				padding: 0 10px;
+				flex-direction: column;
+				align-items: center;
+				text-align: center;
+				.profile-name-box-inner {
+					transform: none;
+				}
 			}
+		}
+		.user-content {
+			padding: 20px 10px;
 		}
 	}
 `;

@@ -1,15 +1,19 @@
 import React from 'react';
 import styled from 'styled-components';
 import { toast } from 'react-toastify';
-import weekday from 'dayjs/plugin/weekday';
-import duration from 'dayjs/plugin/duration';
-import dayjs from 'dayjs';
+import { Button } from '@mui/material';
+import useAxios from 'axios-hooks';
+import { useNavigate } from 'react-router-dom';
+import dayjs from '../utils/dayjs';
 import { CSSMediaSize } from '../const';
 import useScrollIntoView from '../utils/hooks/use-scroll-into-view';
+import { JABillboard } from '../components/juicyads/billboard';
+import { useAuth } from '../components/contexts/auth';
+import { getUniqueId } from '../scripts/unique-id-manager';
+import { Auth } from '../utils/auth';
+import buildApiRoute from '../utils/build-api-route';
+import { API_ROUTES, ROUTES } from '../routes';
 // import { ConfettiGun } from "../components/confetti-gun";
-
-dayjs.extend(weekday);
-dayjs.extend(duration);
 
 const donatorClassNames: NHome.IDonatorClasses = {
 	0: {
@@ -55,6 +59,10 @@ const Home = () => {
 		React.useState(8);
 	// const confettiState = React.useState(true);
 
+	const navigate = useNavigate();
+
+	const { authed } = useAuth();
+
 	const date = dayjs().startOf('day');
 	const weekdayNow = date.weekday();
 	const lastFriday =
@@ -84,6 +92,14 @@ const Home = () => {
 	const fridayScrollIntoView = useScrollIntoView(
 		fridayRef,
 		0.6,
+	);
+
+	const [{ data: userMe }, getUserMe] = useAxios(
+		{
+			method: 'POST',
+			url: buildApiRoute(API_ROUTES.getMe),
+		},
+		{ manual: true, autoCancel: true },
 	);
 
 	React.useEffect(() => {
@@ -152,6 +168,17 @@ const Home = () => {
 		}
 	}, [fridayScrollIntoView.scrolledIntoView]);
 
+	React.useEffect(() => {
+		if (authed) {
+			getUserMe({
+				headers: {
+					Authorization: `Bearer ${Auth.getToken()}`,
+					uniqueId: getUniqueId(),
+				},
+			});
+		}
+	}, [authed]);
+
 	return (
 		<HomeStyle id="Home">
 			<div className="image">
@@ -186,6 +213,7 @@ const Home = () => {
 					</span>
 				</div>
 			</div>
+			<JABillboard id={1097485} />
 			<div className="image image-right">
 				<img alt="2" src="/img/2.png" />
 				<div className="image-text">
@@ -202,37 +230,54 @@ const Home = () => {
 			</div>
 			<div className="content1-2">
 				<div className="content1-2-inline">
-					<h3>Femboy Fellaboy Service</h3>
+					<h3>What we offer?</h3>
 					<span>
-						Every Femboy is our fella, no matter
-						the color, age, religious and
-						political views.
+						Femboy related content, femboy vibes
+						and most importantly - Femboys
 					</span>
 				</div>
 				<div className="content1-2-inline">
-					<h3>Click n&apos; Call</h3>
-					<span>
-						Quick and simple way to get in touch
-						with our Femboy friends, just click
-						n&apos; call!
-					</span>
+					{authed ? (
+						<>
+							<h3>Welcome</h3>
+							<span>
+								Hello there{' '}
+								{userMe?.data?.user?.username}!
+							</span>
+						</>
+					) : (
+						<>
+							<h3>Register Now!</h3>
+							<span>
+								<Button
+									onClick={() =>
+										navigate(ROUTES.register)
+									}
+								>
+									Register
+								</Button>
+							</span>
+						</>
+					)}
 				</div>
 				<div className="content1-2-inline">
-					<h3>Spread AIDS with us!</h3>
+					<h3>Available 48/7</h3>
 					<span>
-						Who cares about reproduction, right?
-						<br />
-						WE WANT MEN!
+						24 hours was not enough, let&apos;s
+						double it!
 					</span>
 				</div>
 			</div>
+			<JABillboard id={1097583} />
 			<div className="image image-left">
 				<img alt="3" src="/img/3.png" />
 				<div className="image-text">
 					<div className="image-text-box image-text-box-left">
 						<div className="image-text-box-content">
 							<h2>Why???</h2>
-							<span>Femboys...</span>
+							<span>
+								Because Femboys... Why else?
+							</span>
 						</div>
 					</div>
 				</div>
@@ -402,6 +447,7 @@ const Home = () => {
 						alt="Flag Counter"
 					/>
 				</a>
+				<JABillboard id={1097584} />
 			</div>
 			<div className="image image-end">
 				<img alt="4" src="/img/4.png" />
@@ -518,11 +564,13 @@ const HomeStyle = styled.div`
 	align-items: center;
 
 	.pinkish-text {
-		color: var(--c-pink3);
+		color: ${({ theme }) =>
+			theme?.palette?.primary?.main};
 		font-weight: 600;
 	}
 	.gray {
-		color: var(--c-p3);
+		color: ${({ theme }) =>
+			theme?.palette?.text?.secondary};
 	}
 	.smol {
 		font-size: 14px;
@@ -569,7 +617,8 @@ const HomeStyle = styled.div`
 					max-width: 400px;
 					> h2 {
 						font-size: 32px;
-						color: var(--c-pink1);
+						color: ${({ theme }) =>
+							theme?.palette?.primary?.main};
 					}
 				}
 				&.image-text-box-right {
@@ -577,7 +626,10 @@ const HomeStyle = styled.div`
 					height: 100%;
 					background: linear-gradient(
 						-90deg,
-						var(--c-p1-aa) 20%,
+						${({ theme }) =>
+								theme?.palette?.background
+									?.default}aa
+							20%,
 						transparent
 					);
 					align-items: flex-end;
@@ -589,7 +641,10 @@ const HomeStyle = styled.div`
 					height: 100%;
 					background: linear-gradient(
 						90deg,
-						var(--c-p1-aa) 20%,
+						${({ theme }) =>
+								theme?.palette?.background
+									?.default}aa
+							20%,
 						transparent
 					);
 					.image-text-box-content {
@@ -604,7 +659,9 @@ const HomeStyle = styled.div`
 				}
 				&.image-text-box-middle {
 					padding: 20px 30px;
-					background-color: var(--c-p1-aa);
+					background-color: ${({ theme }) =>
+						theme?.palette?.background
+							?.default}aa;
 					max-width: 400px;
 				}
 			}
@@ -613,18 +670,23 @@ const HomeStyle = styled.div`
 		.image-text-bottom {
 			background-image: linear-gradient(
 				transparent,
-				var(--c-p1) 90%
+				${({ theme }) =>
+						theme?.palette?.background?.default}
+					90%
 			);
 			width: 100%;
 			position: absolute;
 			bottom: 0;
 			left: 0;
 			text-align: center;
-			color: var(--c-pink1);
+			color: ${({ theme }) =>
+				theme?.palette?.primary?.main};
 			padding-bottom: 20px;
 			> h2 {
 				font-size: 42px;
-				-webkit-text-stroke: 2px var(--c-p1);
+				-webkit-text-stroke: 2px
+					${({ theme }) =>
+						theme?.palette?.background?.default};
 			}
 		}
 	}
@@ -634,13 +696,17 @@ const HomeStyle = styled.div`
 		display: flex;
 		padding: 50px 0;
 		justify-content: space-evenly;
+		align-items: flex-start;
 		.content1-inline {
 			> h3 {
-				color: var(--c-pink1);
+				color: ${({ theme }) =>
+					theme?.palette?.primary?.main};
 			}
 			> span {
-				color: var(--c-p7);
+				color: ${({ theme }) =>
+					theme?.palette?.text?.primary};
 			}
+			row-gap: 8px;
 			flex-grow: 1;
 			display: flex;
 			align-items: center;
@@ -656,13 +722,17 @@ const HomeStyle = styled.div`
 		display: flex;
 		padding: 50px 0;
 		justify-content: space-evenly;
+		align-items: flex-start;
 		.content1-2-inline {
 			> h3 {
-				color: var(--c-pink1);
+				color: ${({ theme }) =>
+					theme?.palette?.primary?.main};
 			}
 			> span {
-				color: var(--c-p7);
+				color: ${({ theme }) =>
+					theme?.palette?.text?.primary};
 			}
+			row-gap: 8px;
 			flex-grow: 1;
 			display: flex;
 			align-items: center;
@@ -682,33 +752,44 @@ const HomeStyle = styled.div`
 		@keyframes glow {
 			0% {
 				box-shadow:
-					0 -5px 6px -4px var(--c-pink1),
-					0 5px 6px -4px var(--c-pink3);
+					0 -5px 6px -4px
+						${({ theme }) =>
+							theme?.palette?.primary?.main},
+					0 5px 6px -4px ${({ theme }) => theme?.palette?.primary?.dark};
 			}
 			25% {
 				box-shadow:
-					0 -5px 10px -4px var(--c-pink1),
-					0 5px 10px -4px var(--c-pink3);
+					0 -5px 10px -4px
+						${({ theme }) =>
+							theme?.palette?.primary?.main},
+					0 5px 10px -4px ${({ theme }) => theme?.palette?.primary?.dark};
 			}
 			50% {
 				box-shadow:
-					0 -5px 7px -4px var(--c-pink1),
-					0 5px 7px -4px var(--c-pink3);
+					0 -5px 7px -4px
+						${({ theme }) =>
+							theme?.palette?.primary?.main},
+					0 5px 7px -4px ${({ theme }) => theme?.palette?.primary?.dark};
 			}
 			75% {
 				box-shadow:
-					0 -5px 6px -4px var(--c-pink1),
-					0 5px 6px -4px var(--c-pink3);
+					0 -5px 6px -4px
+						${({ theme }) =>
+							theme?.palette?.primary?.main},
+					0 5px 6px -4px ${({ theme }) => theme?.palette?.primary?.dark};
 			}
 			100% {
 				box-shadow:
-					0 -5px 5px -4px var(--c-pink1),
-					0 5px 5px -4px var(--c-pink3);
+					0 -5px 5px -4px
+						${({ theme }) =>
+							theme?.palette?.primary?.main},
+					0 5px 5px -4px ${({ theme }) => theme?.palette?.primary?.dark};
 			}
 		}
 		.content2-box {
 			padding: 15px 30px;
-			background-color: var(--c-p2);
+			background-color: ${({ theme }) =>
+				theme?.palette?.background_2?.default};
 			border-radius: 10px;
 			min-width: 400px;
 			animation: glow 5s
@@ -724,10 +805,12 @@ const HomeStyle = styled.div`
 				.content2-box-header {
 					font-size: 32px;
 					font-weight: 700;
-					color: var(--c-pink3);
+					color: ${({ theme }) =>
+						theme?.palette?.primary?.main};
 				}
 				.content2-box-info {
-					color: var(--c-p7);
+					color: ${({ theme }) =>
+						theme?.palette?.text?.primary};
 					font-size: 14px;
 				}
 			}
@@ -740,7 +823,8 @@ const HomeStyle = styled.div`
 		display: flex;
 		align-items: center;
 		justify-content: space-around;
-		background-color: var(--c-p2);
+		background-color: ${({ theme }) =>
+			theme?.palette?.background_2?.default};
 		.content3-profile-box {
 			display: flex;
 			flex-direction: column;
@@ -771,10 +855,12 @@ const HomeStyle = styled.div`
 					font-size: 22px;
 				}
 				.content3-profile-name {
-					color: var(--c-p7);
+					color: ${({ theme }) =>
+						theme?.palette?.text?.secondary};
 				}
 				.content3-profile-country {
-					color: var(--c-p6);
+					color: ${({ theme }) =>
+						theme?.palette?.text?.secondary};
 				}
 			}
 		}
@@ -796,11 +882,16 @@ const HomeStyle = styled.div`
 			overflow: hidden;
 			position: relative;
 			max-width: 500px;
-			background-color: var(--c-p2);
+			background-color: ${({ theme }) =>
+				theme?.palette?.background_2?.default};
 			background-image: linear-gradient(
 				45deg,
-				var(--c-p1) 0%,
-				var(--c-p2) 100%
+				${({ theme }) =>
+						theme?.palette?.background?.default}
+					0%,
+				${({ theme }) =>
+						theme?.palette?.background_2?.default}
+					100%
 			);
 			border-radius: 10px;
 			padding: 15px 0;
@@ -969,7 +1060,8 @@ const HomeStyle = styled.div`
 		position: relative;
 		height: 20px;
 		min-width: 50px;
-		background-color: var(--c-p2);
+		background-color: ${({ theme }) =>
+			theme?.palette?.background_2?.default};
 		border-radius: 10px;
 		overflow: hidden;
 		.progress-bar-fill {
@@ -977,7 +1069,8 @@ const HomeStyle = styled.div`
 			top: 0;
 			left: 0;
 			border-radius: 10px;
-			background-color: var(--c-pink1);
+			background-color: ${({ theme }) =>
+				theme?.palette?.primary?.main};
 			height: 100%;
 		}
 		.progress-bar-text {
@@ -1026,11 +1119,13 @@ const HomeStyle = styled.div`
 			}
 			.femboy-day-time-text {
 				font-size: 14px;
-				color: var(--c-p6);
+				color: ${({ theme }) =>
+					theme?.palette?.text?.secondary};
 			}
 			.femboy-day-remaining-text {
 				font-size: 16px;
-				color: var(--c-p6);
+				color: ${({ theme }) =>
+					theme?.palette?.text?.secondary};
 			}
 		}
 	}
@@ -1038,7 +1133,8 @@ const HomeStyle = styled.div`
 	.country-ranks-box {
 		width: 100%;
 		min-height: 300px;
-		background-color: var(--c-p2);
+		background-color: ${({ theme }) =>
+			theme?.palette?.background_2?.default};
 		padding: 50px;
 		display: flex;
 		justify-content: center;
@@ -1046,15 +1142,16 @@ const HomeStyle = styled.div`
 		flex-direction: column;
 		> h3 {
 			margin: 0;
+			padding: 0 10px;
 		}
 		> span {
-			color: var(--c-p5);
+			color: ${({ theme }) =>
+				theme?.palette?.text?.secondary};
 			text-align: center;
+			padding: 0 10px;
 		}
 		> a {
 			margin-top: 20px;
-		}
-		> * {
 			padding: 0 10px;
 		}
 	}
@@ -1063,7 +1160,9 @@ const HomeStyle = styled.div`
 		.image {
 			.image-text {
 				.image-text-box {
-					background: var(--c-p1-aa) !important;
+					background: ${({ theme }) =>
+						theme?.palette?.background
+							?.default}aa !important;
 				}
 			}
 		}

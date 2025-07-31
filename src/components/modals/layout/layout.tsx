@@ -14,8 +14,11 @@ const ModalLayout = (
 		title,
 		showHeader,
 		centerHeader,
+		hideCloseButton,
 		opacity = 'transparent',
 		closeOnOverlay = true,
+		blur = 5,
+		width,
 	} = props;
 
 	const closeModal: React.MouseEventHandler<
@@ -42,6 +45,8 @@ const ModalLayout = (
 			onClick={closeModal}
 			data-showheader={showHeader}
 			data-centerheader={centerHeader}
+			data-blur={blur}
+			data-width={width}
 		>
 			<div className="modal_inner">
 				<div className="header">
@@ -56,11 +61,13 @@ const ModalLayout = (
 						) : null}
 					</div>
 					<div className="header-right">
-						<IconButton
-							onClick={closeModalOnHeader}
-						>
-							<CloseIcon />
-						</IconButton>
+						{hideCloseButton ? null : (
+							<IconButton
+								onClick={closeModalOnHeader}
+							>
+								<CloseIcon />
+							</IconButton>
+						)}
 					</div>
 				</div>
 				{children}
@@ -76,8 +83,14 @@ export namespace NModalLayout {
 		extends NModals.IDefaultProps {
 		children?: JSX.Element;
 		name: string;
-		opacity?: 'transparent' | 'opaque';
+		opacity?:
+			| 'transparent'
+			| 'opaque'
+			| 'invisible';
+		blur?: number;
 		closeOnOverlay?: boolean;
+		hideCloseButton?: boolean;
+		width?: string;
 	}
 }
 
@@ -85,6 +98,8 @@ const ModalLayoutStyle = styled.div<{
 	'data-showheader'?: boolean;
 	'data-centerheader'?: boolean;
 	'data-opacity'?: NModalLayout.IProps['opacity'];
+	'data-blur'?: NModalLayout.IProps['blur'];
+	'data-width'?: NModalLayout.IProps['width'];
 }>`
 	height: 100vh;
 	width: 100vw;
@@ -95,20 +110,31 @@ const ModalLayoutStyle = styled.div<{
 	justify-content: center;
 	background-color: ${(props) =>
 		props?.['data-opacity'] === 'transparent'
-			? 'var(--c-p1-aa)'
-			: 'var(--c-p1)'};
-	backdrop-filter: blur(5px);
+			? `${props?.theme?.palette?.background?.default}80`
+			: props?.['data-opacity'] === 'invisible'
+			? 'transparent'
+			: props?.theme?.palette?.background
+					?.default};
+	backdrop-filter: blur(
+		${(props) => props?.['data-blur']}px
+	);
 	overflow: hidden;
 	.modal_inner {
-		background-color: var(--c-p1);
+		background-color: ${({ theme }) =>
+			theme?.palette?.background?.default};
 		padding: 20px;
 		border-radius: 5px;
 		position: relative;
-		box-shadow: 0 0 15px var(--c-p1);
+		box-shadow: 0 0 15px
+			${({ theme }) =>
+				theme?.palette?.background?.default};
 		max-height: calc(100vh - 100px);
 		overflow-y: auto;
 		padding-top: ${(props) =>
 			props?.['data-showheader'] ? '0' : '20px'};
+		${(props) =>
+			props?.['data-width'] &&
+			`width: ${props?.['data-width']};`}
 
 		> .header {
 			padding: 10px 0;
@@ -119,7 +145,8 @@ const ModalLayoutStyle = styled.div<{
 			justify-content: space-evenly;
 			position: sticky;
 			top: 0;
-			background-color: var(--c-p1);
+			background-color: ${({ theme }) =>
+				theme?.palette?.background?.default};
 
 			> * {
 				flex-grow: 1;

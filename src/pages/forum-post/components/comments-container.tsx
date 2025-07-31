@@ -17,9 +17,9 @@ import {
 	Reply as ReplyIcon,
 } from '@mui/icons-material';
 import { toast } from 'react-toastify';
-import dayjs from 'dayjs';
 import { useForm } from 'react-hook-form';
 import { Descendant } from 'slate';
+import dayjs from '../../../utils/dayjs';
 import {
 	NForumPost,
 	perPage,
@@ -43,6 +43,7 @@ import schemaPostReply from '../schema-post-reply';
 import yupValidationResolver from '../../../utils/yupValidationResolver';
 import { InfoHover } from '../../../components/info-hover';
 import trimSlateValue from '../../../utils/trim-slate-value';
+import getUserPicture from '../../../utils/get-user-picture';
 
 const CommentsContainer = (
 	props: NCommentContainer.ICommentsContainerProps,
@@ -268,10 +269,9 @@ const CommentsContainer = (
 								>
 									<Avatar
 										alt={m?.author?.username}
-										src={`/img/pictures/${
-											m?.author?.picture ||
-											'1.png'
-										}`}
+										src={getUserPicture(
+											m?.author,
+										)}
 										imgProps={{
 											onClick: () =>
 												navigate(

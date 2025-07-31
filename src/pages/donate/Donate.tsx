@@ -145,6 +145,7 @@ const Donate = () => {
 						{': '}
 						<span>
 							<a
+								className="hover-colored"
 								key={`link-${i}`}
 								target="_blank"
 								href={link.link}
@@ -175,7 +176,8 @@ const DonateStyle = styled.div`
 		row-gap: 15px;
 	}
 	.brand {
-		color: var(--c-pink1);
+		color: ${({ theme }) =>
+			theme?.palette?.primary?.main};
 	}
 	/*.coffee {
 		img {
@@ -202,6 +204,10 @@ const DonateStyle = styled.div`
 		.copy-button {
 			margin-left: 5px;
 		}
+	}
+
+	p {
+		margin: 8px 0;
 	}
 
 	${CSSMediaSize.phone} {

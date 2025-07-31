@@ -217,7 +217,8 @@ const ResetPasswordStyle = styled.div`
 	justify-content: center;
 
 	.reset-password-container {
-		background-color: var(--c-p2);
+		background-color: ${({ theme }) =>
+			theme?.palette?.background_2?.default};
 		padding: 20px 30px;
 		border-radius: 10px;
 		width: 100%;

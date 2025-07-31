@@ -1,4 +1,7 @@
-import { API_URL } from './const';
+import {
+	API_URL,
+	CLOUDINARY_NAME,
+} from './const';
 
 export const ROUTES = {
 	home: '/',
@@ -37,7 +40,9 @@ export const API_ROUTES = {
 	resendVerification: `${API_URL}/user/resend-verification`,
 	forgotPassword: `${API_URL}/user/forgot-password`,
 	resetPassword: `${API_URL}/user/reset-password`,
+	userUpdateInfo: `${API_URL}/user/update-info`,
 	changePicture: `${API_URL}/user/change-picture`,
+	requestUploadPicture: `${API_URL}/user/request-upload-picture`,
 	changeBanner: `${API_URL}/user/change-banner`,
 	changeUsername: `${API_URL}/user/change-username`,
 	forumNew: `${API_URL}/forum/new`,
@@ -50,4 +55,9 @@ export const API_ROUTES = {
 	forumCommentNew: `${API_URL}/forum/:id/comments/new`,
 	forumCommentDelete: `${API_URL}/forum/:id/comments/:commentId/delete`,
 	forumCommentEdit: `${API_URL}/forum/:id/comments/:commentId/edit`,
+};
+
+export const CLOUDINARY_API_ROUTES = {
+	upload: `https://api.cloudinary.com/v1_1/${CLOUDINARY_NAME}/image/upload`,
+	getUpload: `https://res.cloudinary.com/${CLOUDINARY_NAME}/image/upload/:folder/:name`,
 };

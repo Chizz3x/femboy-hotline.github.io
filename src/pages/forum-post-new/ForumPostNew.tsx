@@ -245,7 +245,8 @@ const ForumPostNewStyle = styled.div`
 			margin-bottom: 24px;
 		}
 		.new-forum-post-content {
-			background-color: var(--c-p2);
+			background-color: ${({ theme }) =>
+				theme?.palette?.background_2?.default};
 			padding: 12px;
 			border-radius: 5px;
 			max-width: 800px;

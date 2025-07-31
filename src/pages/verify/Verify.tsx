@@ -76,9 +76,7 @@ const Verify = () => {
 				</div>
 			) : (
 				<div className="verify-loading">
-					<CircularProgress
-						style={{ color: 'var(--c-pink1)' }}
-					/>
+					<CircularProgress className="verifying-loader" />
 					<span className="loading-text">
 						Verifying
 					</span>
@@ -100,6 +98,11 @@ const RegisterStyle = styled.div`
 	display: flex;
 	align-items: center;
 	justify-content: center;
+
+	.verifying-loader {
+		color: ${({ theme }) =>
+			theme?.palette?.primary?.main};
+	}
 
 	.verify-loading {
 		display: flex;
@@ -123,12 +126,14 @@ const RegisterStyle = styled.div`
 		align-items: center;
 
 		.error-code {
-			color: var(--c-pink1);
+			color: ${({ theme }) =>
+				theme?.palette?.primary?.main};
 			font-size: 2em;
 		}
 
 		.error-text {
-			color: var(--c-p4);
+			color: ${({ theme }) =>
+				theme?.palette?.text?.secondary};
 		}
 	}
 `;

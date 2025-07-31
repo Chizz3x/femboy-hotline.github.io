@@ -149,4 +149,10 @@ export class Auth {
 
 		return valid;
 	}
+
+	static check() {
+		window.dispatchEvent(
+			new CustomEvent('checkAuth'),
+		);
+	}
 }

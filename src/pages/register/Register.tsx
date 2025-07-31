@@ -208,6 +208,7 @@ const Register = () => {
 											endAdornment: (
 												<InputAdornment position="end">
 													<IconButton
+														size="small"
 														aria-label="toggle password visibility"
 														onClick={() =>
 															setShowPassword(
@@ -221,9 +222,9 @@ const Register = () => {
 														}
 													>
 														{showPassword ? (
-															<VisibilityIcon />
+															<VisibilityIcon fontSize="small" />
 														) : (
-															<VisibilityOffIcon />
+															<VisibilityOffIcon fontSize="small" />
 														)}
 													</IconButton>
 												</InputAdornment>
@@ -255,6 +256,7 @@ const Register = () => {
 											endAdornment: (
 												<InputAdornment position="end">
 													<IconButton
+														size="small"
 														aria-label="toggle password visibility"
 														onClick={() =>
 															setShowRepeatPassword(
@@ -268,9 +270,9 @@ const Register = () => {
 														}
 													>
 														{showRepeatPassword ? (
-															<VisibilityIcon />
+															<VisibilityIcon fontSize="small" />
 														) : (
-															<VisibilityOffIcon />
+															<VisibilityOffIcon fontSize="small" />
 														)}
 													</IconButton>
 												</InputAdornment>
@@ -443,7 +445,8 @@ const RegisterStyle = styled.div`
 		align-items: center;
 		justify-content: center;
 		.register-box {
-			background-color: var(--c-p2);
+			background-color: ${({ theme }) =>
+				theme?.palette?.background_2?.default};
 			padding: 20px 30px;
 			border-radius: 10px;
 			width: 100%;
@@ -477,12 +480,20 @@ const RegisterStyle = styled.div`
 		&:hover {
 			color: ${({ theme }) =>
 				theme?.palette?.primary?.main};
+			text-decoration: underline;
+		}
+	}
+
+	.MuiButtonBase-root {
+		&:hover {
+			text-decoration: underline;
 		}
 	}
 
 	.small-info {
 		font-size: 12px;
-		color: var(--c-p6);
+		color: ${({ theme }) =>
+			theme?.palette?.text?.secondary};
 	}
 
 	.register-success-container {

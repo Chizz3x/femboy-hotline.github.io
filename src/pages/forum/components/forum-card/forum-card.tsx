@@ -8,8 +8,8 @@ import {
 	useMediaQuery,
 } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
-import dayjs from 'dayjs';
 import { Delete as DeleteIcon } from '@mui/icons-material';
+import dayjs from '../../../../utils/dayjs';
 import { ROUTES } from '../../../../routes';
 import buildRoute from '../../../../utils/build-route';
 import { CSSMediaSize } from '../../../../const';
@@ -17,6 +17,7 @@ import { changeModals } from '../../../../components/modals/modals';
 import { AnonymousTag } from '../../../../components/tags/anonymous-tag';
 import { YouTag } from '../../../../components/tags/you-tag';
 import { PrivateTag } from '../../../../components/tags/private-tag';
+import getUserPicture from '../../../../utils/get-user-picture';
 
 const ForumAuthor = (
 	props: NForumCard.IForumAuthorProps,
@@ -37,9 +38,7 @@ const ForumAuthor = (
 				src={
 					forum?.anonymous
 						? '/img/pictures/1.png'
-						: `/img/pictures/${
-								forum?.author?.picture || '1.png'
-						  }`
+						: getUserPicture(forum.author)
 				}
 			/>
 			<div className="forum-author-details">
@@ -195,7 +194,8 @@ const ForumCardStyle = styled.div`
 	border-radius: 6px;
 	padding: 6px 12px;
 	box-shadow: 0 0 8px -2px var(--c-p);
-	background-color: var(--c-p2-66);
+	background-color: ${({ theme }) =>
+		theme?.palette?.background_2?.paper};
 	transition: box-shadow 0.1s ease-in-out;
 	column-gap: 10px;
 	row-gap: 10px;
@@ -209,7 +209,8 @@ const ForumCardStyle = styled.div`
 	}
 	.created-at {
 		font-size: 12px;
-		color: var(--c-p6);
+		color: ${({ theme }) =>
+			theme?.palette?.text?.secondary};
 	}
 	.forum-author {
 		display: flex;
@@ -217,12 +218,12 @@ const ForumCardStyle = styled.div`
 		.forum-author-details {
 			margin-left: 7px;
 			display: flex;
-			/*flex-direction: column;*/
 			align-items: flex-start;
 			row-gap: 3px;
 			column-gap: 5px;
 			.forum-author-name {
-				color: var(--c-p6);
+				color: ${({ theme }) =>
+					theme?.palette?.text?.secondary};
 			}
 		}
 	}

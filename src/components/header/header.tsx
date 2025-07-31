@@ -1,6 +1,8 @@
 import React from 'react';
 import { toast } from 'react-toastify';
-import styled from 'styled-components';
+import styled, {
+	useTheme,
+} from 'styled-components';
 import {
 	Link,
 	useLocation,
@@ -41,11 +43,12 @@ import {
 	localStorageSet,
 } from '../../utils/local-storage';
 import useWatchStorage from '../../utils/hooks/use-watch-storage';
-import classes from '../../utils/classes';
+import getUserPicture from '../../utils/get-user-picture';
 
 const Header = () => {
 	const location = useLocation();
 	const navigate = useNavigate();
+	const theme = useTheme();
 
 	const [currentRoute, setCurrentRoute] =
 		React.useState('');
@@ -288,7 +291,8 @@ const Header = () => {
 										<MenuIcon
 											className="menu-icon-on-avatar"
 											sx={{
-												fill: '#fff',
+												fill: theme?.palette?.text
+													?.primary,
 												padding: '3px',
 												height: '18px',
 												width: '18px',
@@ -312,7 +316,12 @@ const Header = () => {
 									)}
 								</Badge>
 							) : (
-								<MenuIcon sx={{ fill: '#fff' }} />
+								<MenuIcon
+									sx={{
+										fill: theme?.palette?.text
+											?.primary,
+									}}
+								/>
 							)}
 						</IconButton>
 						<MobileMenuStyle
@@ -433,7 +442,8 @@ const Header = () => {
 										<MenuIcon
 											className="menu-icon-on-avatar"
 											sx={{
-												fill: '#fff',
+												fill: theme?.palette?.text
+													?.primary,
 												padding: '3px',
 												height: '18px',
 												width: '18px',
@@ -450,14 +460,17 @@ const Header = () => {
 									) : (
 										<Avatar
 											alt={user.username}
-											src={`/img/pictures/${
-												user.picture || '1.png'
-											}`}
+											src={getUserPicture(user)}
 										/>
 									)}
 								</Badge>
 							) : (
-								<MenuIcon sx={{ fill: '#fff' }} />
+								<MenuIcon
+									sx={{
+										fill: theme?.palette?.text
+											?.primary,
+									}}
+								/>
 							)}
 						</IconButton>
 						<MobileMenuStyle
@@ -533,7 +546,8 @@ export namespace NHeader {
 
 const MobileMenuStyle = styled(Menu)`
 	.MuiPaper-root {
-		background-color: var(--c-p2);
+		background-color: ${({ theme }) =>
+			theme?.palette?.background_2?.default};
 		min-width: 100px;
 		max-height: 300px;
 		> ul {
@@ -543,15 +557,19 @@ const MobileMenuStyle = styled(Menu)`
 		}
 	}
 	::-webkit-scrollbar-thumb {
-		background-color: var(--c-pink1);
+		background-color: ${({ theme }) =>
+			theme?.palette?.primary?.main};
 	}
 `;
 
 const HeaderStyle = styled.div`
 	max-width: 100%;
 	box-shadow: 0 0 5px var(--c-p);
-	background-color: var(--c-p1);
-	border-top: 4px solid var(--c-pink2);
+	background-color: ${({ theme }) =>
+		theme?.palette?.background?.default};
+	border-top: 4px solid
+		${({ theme }) =>
+			theme?.palette?.primary?.dark};
 	position: sticky;
 	min-height: auto;
 	top: 0;
@@ -567,7 +585,8 @@ const HeaderStyle = styled.div`
 		top: 100%;
 		min-width: 50px;
 		min-height: 20px;
-		background-color: var(--c-p1);
+		background-color: ${({ theme }) =>
+			theme?.palette?.background?.default};
 		padding: 5px 10px;
 		padding-left: 0;
 		font-size: 12px;
@@ -582,7 +601,8 @@ const HeaderStyle = styled.div`
 
 		&.rep-pinned {
 			.rep-data-handle {
-				color: var(--c-pink1);
+				color: ${({ theme }) =>
+					theme?.palette?.primary?.main};
 			}
 		}
 
@@ -591,7 +611,8 @@ const HeaderStyle = styled.div`
 			align-items: center;
 			cursor: pointer;
 			:hover {
-				color: var(--c-pink3);
+				color: ${({ theme }) =>
+					theme?.palette?.primary?.dark};
 			}
 			> * {
 				transform: rotate(90deg);
@@ -627,33 +648,43 @@ const HeaderStyle = styled.div`
 	}
 
 	.menu-icon-on-avatar {
-		background-color: var(--c-p1);
+		background-color: ${({ theme }) =>
+			theme?.palette?.background?.default};
 		border-radius: 50%;
 	}
 
 	.header-btn {
 		padding: 15px 16px;
 		background-color: transparent;
-		border-bottom: 3px solid var(--c-p7);
+		border-bottom: 3px solid
+			${({ theme }) =>
+				theme?.palette?.text?.secondary};
 		&:hover {
-			border-color: var(--c-pink1);
-			color: var(--c-pink1);
+			border-color: ${({ theme }) =>
+				theme?.palette?.primary?.light};
+			color: ${({ theme }) =>
+				theme?.palette?.primary?.light};
 		}
 		&.active {
-			color: var(--c-pink1);
-			border-color: var(--c-pink3);
+			color: ${({ theme }) =>
+				theme?.palette?.primary?.main};
+			border-color: ${({ theme }) =>
+				theme?.palette?.primary?.main};
 		}
 		border-radius: 0;
-		color: #fff;
+		color: ${({ theme }) =>
+			theme?.palette?.text?.primary};
 	}
 
 	.header-mobile-btn {
 		text-align: right;
 		font-size: 14px;
-		color: #fff;
+		color: ${({ theme }) =>
+			theme?.palette?.text?.primary};
 		background-color: transparent !important;
 		&.active {
-			color: var(--c-pink1);
+			color: ${({ theme }) =>
+				theme?.palette?.primary?.main};
 		}
 	}
 

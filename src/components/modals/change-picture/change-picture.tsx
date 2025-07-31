@@ -4,13 +4,19 @@ import useAxios from 'axios-hooks';
 import { Button } from '@mui/material';
 import { toast } from 'react-toastify';
 import { StatusCodes } from 'http-status-codes';
+import { PhotoCamera as PhotoCameraIcon } from '@mui/icons-material';
 import { changeModals, NModals } from '../modals';
 import { ModalLayout } from '../layout';
 import classes from '../../../utils/classes';
-import { API_ROUTES } from '../../../routes';
+import {
+	API_ROUTES,
+	CLOUDINARY_API_ROUTES,
+} from '../../../routes';
 import { useAuth } from '../../contexts/auth';
 import { getUniqueId } from '../../../scripts/unique-id-manager';
 import { Auth } from '../../../utils/auth';
+import checkUpload from '../../../utils/check-upload';
+import buildApiRoute from '../../../utils/build-api-route';
 
 const defaultImage = '1.png';
 const images: NModalChangePicture.IImage[] = [
@@ -52,14 +58,18 @@ const Modal = (
 		);
 	const [currentImage, setCurrentImage] =
 		React.useState<string | null>(null);
+	const [custom, setCustom] = React.useState<
+		string | null
+	>(null);
 
-	const [{ loading }, getMe] = useAxios(
-		{
-			method: 'POST',
-			url: API_ROUTES.getMe,
-		},
-		{ manual: true, autoCancel: true },
-	);
+	const [{ loading: loadingMe }, getMe] =
+		useAxios(
+			{
+				method: 'POST',
+				url: API_ROUTES.getMe,
+			},
+			{ manual: true, autoCancel: true },
+		);
 	const [, userChangePicture] = useAxios(
 		{
 			method: 'POST',
@@ -72,6 +82,14 @@ const Modal = (
 		image: NModalChangePicture.IImage,
 	) => {
 		setSelected(image);
+	};
+
+	const uploadCustom = () => {
+		window.dispatchEvent(
+			changeModals({
+				ModalUploadPicture: { open: true },
+			}),
+		);
 	};
 
 	const handleSave = async () => {
@@ -90,9 +108,7 @@ const Modal = (
 			window.dispatchEvent(
 				changeModals({ [name]: null }),
 			);
-			window.dispatchEvent(
-				new CustomEvent('checkAuth'),
-			);
+			Auth.check();
 			toast('Picture changed', {
 				type: 'success',
 			});
@@ -113,25 +129,67 @@ const Modal = (
 							uniqueId: getUniqueId(),
 						},
 					});
-					setSelected(
-						images.find(
-							(f) =>
-								f.fileName ===
-								(res?.data?.data?.user?.picture ||
-									defaultImage),
-						) || null,
-					);
-					setCurrentImage(
-						res?.data?.data?.user?.picture ||
-							defaultImage,
-					);
+					if (res?.data?.data?.user?.picture) {
+						setSelected(
+							images.find(
+								(f) =>
+									f.fileName ===
+									res?.data?.data?.user?.picture,
+							) || null,
+						);
+						setCurrentImage(
+							res?.data?.data?.user?.picture,
+						);
+						setCustom(null);
+					} else if (
+						res?.data?.data?.user?.picture_custom
+					) {
+						const imagePath = buildApiRoute(
+							CLOUDINARY_API_ROUTES.getUpload,
+							{
+								folder: `pictures`,
+								name: `${res?.data?.data?.user?._id}_${res?.data?.data?.user?.picture_custom}.webp`,
+							},
+						);
+						const uploadedImage =
+							await checkUpload(imagePath);
+
+						if (uploadedImage) {
+							setSelected(null);
+							setCurrentImage(null);
+							setCustom(imagePath);
+						} else {
+							setSelected(
+								images.find(
+									(f) =>
+										f.fileName === defaultImage,
+								) || null,
+							);
+							setCurrentImage(defaultImage);
+							setCustom(null);
+						}
+					} else {
+						setSelected(
+							images.find(
+								(f) =>
+									f.fileName === defaultImage,
+							) || null,
+						);
+						setCurrentImage(defaultImage);
+						setCustom(null);
+					}
 				}
 			}
 		})();
-	}, [authed.loaded]);
+	}, [authed.loaded, authed.seed]);
 
 	return (
-		<ModalLayout {...props} name={name}>
+		<ModalLayout
+			showHeader
+			title="Change picture"
+			{...props}
+			name={name}
+		>
 			<ModalChangePictureStyle>
 				<div className="content">
 					{images.map((m, i) => (
@@ -153,11 +211,34 @@ const Modal = (
 							/>
 						</div>
 					))}
+					<div
+						className={classes(
+							'image-box',
+							'image-box-custom',
+							custom && !loadingMe && !selected
+								? 'selected'
+								: '',
+						)}
+						onClick={() => uploadCustom()}
+					>
+						<div className="choose-image">
+							<PhotoCameraIcon />
+							<span>Upload</span>
+						</div>
+						{custom ? (
+							<div
+								className="image"
+								style={{
+									backgroundImage: `url(${custom})`,
+								}}
+							/>
+						) : null}
+					</div>
 				</div>
 				<div className="modal-footer">
 					<Button
 						disabled={
-							loading ||
+							loadingMe ||
 							selected?.fileName ===
 								currentImage ||
 							!selected
@@ -190,7 +271,8 @@ export namespace NModalChangePicture {
 const ModalChangePictureStyle = styled.div`
 	max-width: 500px;
 	> h2 {
-		color: var(--c-pink1);
+		color: ${({ theme }) =>
+			theme?.palette?.primary?.main};
 	}
 	.content {
 		display: flex;
@@ -198,20 +280,49 @@ const ModalChangePictureStyle = styled.div`
 		row-gap: 10px;
 		column-gap: 10px;
 		.image-box {
+			display: flex;
+			justify-content: center;
+			align-items: center;
 			cursor: pointer;
 			position: relative;
 			border: 3px solid transparent;
 			border-radius: 50%;
+			width: 62px;
+			height: 62px;
+			box-sizing: border-box;
+			.choose-image {
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				flex-direction: column;
+				font-size: 12px;
+				width: 100%;
+				height: 100%;
+			}
 			&.selected {
-				border-color: var(--c-pink2);
+				border-color: ${({ theme }) =>
+					theme?.palette?.primary?.light};
 			}
 			.image {
-				width: 56px;
-				height: 56px;
+				width: 100%;
+				height: 100%;
 				background-position: center;
 				background-repeat: no-repeat;
 				background-size: cover;
 				border-radius: 50%;
+			}
+		}
+		.image-box-custom {
+			position: relative;
+			.choose-image {
+				position: absolute;
+				top: 0;
+				left: 0;
+				opacity: 0;
+				filter: invert(1);
+				&:hover {
+					opacity: 0.5;
+				}
 			}
 		}
 	}

@@ -76,7 +76,8 @@ export namespace NCopyButton {
 
 const CopyButtonStyle = styled.span`
 	.copy-icon-btn {
-		color: var(--c-p8) !important;
+		color: ${({ theme }) =>
+			theme?.palette?.text?.primary} !important;
 		svg {
 			width: 18px;
 		}

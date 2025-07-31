@@ -592,28 +592,32 @@ const CrashCourseStyle = styled.div`
 				&.caution {
 					> td {
 						&:first-child {
-							color: #f5da42;
+							color: ${({ theme }) =>
+								theme?.palette?.warning?.main};
 						}
 					}
 				}
 				&.warning {
 					> td {
 						&:first-child {
-							color: #ff9966;
+							color: ${({ theme }) =>
+								theme?.palette?.warning?.main};
 						}
 					}
 				}
 				&.alert {
 					> td {
 						&:first-child {
-							color: #ff6666;
+							color: ${({ theme }) =>
+								theme?.palette?.error?.main};
 						}
 					}
 				}
 				&.notice {
 					> td {
 						&:first-child {
-							color: #66ccff;
+							color: ${({ theme }) =>
+								theme?.palette?.info?.main};
 						}
 					}
 				}
@@ -621,7 +625,9 @@ const CrashCourseStyle = styled.div`
 					&:first-child {
 						padding-right: 20px;
 						padding-left: 20px;
-						background-color: var(--c-p2);
+						background-color: ${({ theme }) =>
+							theme?.palette?.background_2
+								?.default};
 					}
 					&:not(:first-child) {
 						padding-left: 20px;
@@ -643,6 +649,10 @@ const CrashCourseStyle = styled.div`
 				}
 			}
 		}
+	}
+
+	p {
+		margin: 8px 0;
 	}
 
 	${CSSMediaSize.phone} {

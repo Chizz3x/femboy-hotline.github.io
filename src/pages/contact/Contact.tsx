@@ -33,7 +33,12 @@ const Contact = () => {
 			</h2>
 			<div className="social-row">
 				Email:{' '}
-				<a href={`mailto:${EMAIL}`}>{EMAIL}</a>
+				<a
+					className="hover-colored"
+					href={`mailto:${EMAIL}`}
+				>
+					{EMAIL}
+				</a>
 				<CopyButton data={EMAIL} />
 				<div className="description">
 					<span>
@@ -50,6 +55,7 @@ const Contact = () => {
 				>
 					{social.name}:{' '}
 					<a
+						className="hover-colored"
 						target="_blank"
 						href={social.link}
 						rel="noreferrer"
@@ -88,17 +94,22 @@ const ContactStyle = styled.div`
 		> .description {
 			margin: 0;
 			font-size: 14px;
-			color: var(--c-p4);
-			border-left: 1px solid var(--c-p3);
+			color: ${({ theme }) =>
+				theme?.palette?.text?.secondary};
+			border-left: 1px solid
+				${({ theme }) =>
+					theme?.palette?.text?.secondary};
 			padding-left: 10px;
 		}
 	}
 	.gray {
-		color: var(--c-p3);
+		color: ${({ theme }) =>
+			theme?.palette?.text?.secondary};
 	}
 	.smol {
 		font-size: 12px;
-		color: var(--c-p3);
+		color: ${({ theme }) =>
+			theme?.palette?.text?.secondary};
 	}
 	.copy-button {
 		padding-left: 10px;

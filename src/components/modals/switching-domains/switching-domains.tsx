@@ -82,27 +82,33 @@ const ModalSwitchingDomainsStyle = styled.div`
 		color: var(--c-red1);
 	}
 	.gray {
-		color: var(--c-p3);
+		color: ${({ theme }) =>
+			theme?.palette?.text?.secondary};
 	}
 	.brand {
-		color: var(--c-pink1);
+		color: ${({ theme }) =>
+			theme?.palette?.primary?.main};
 	}
 	.smol {
 		font-size: 12px;
-		color: var(--c-p3);
+		color: ${({ theme }) =>
+			theme?.palette?.text?.secondary};
 	}
 	.checkbox {
 		span {
 			font-size: 14px;
-			color: var(--c-p3);
+			color: ${({ theme }) =>
+				theme?.palette?.text?.secondary};
 		}
 		.checked {
 			path {
-				color: var(--c-pink1);
+				color: ${({ theme }) =>
+					theme?.palette?.primary?.main};
 			}
 		}
 		path {
-			color: var(--c-p3);
+			color: ${({ theme }) =>
+				theme?.palette?.text?.secondary};
 		}
 	}
 `;

@@ -126,7 +126,8 @@ const FooterStyle = styled.div`
 	padding-bottom: 20px;
 	padding-top: 20px;
 	text-align: center;
-	background-color: var(--c-p1);
+	background-color: ${({ theme }) =>
+		theme?.palette?.background?.default};
 	z-index: 999;
 
 	.footer-box {
@@ -138,6 +139,12 @@ const FooterStyle = styled.div`
 			> tbody {
 				> tr {
 					> td {
+						> a {
+							&:hover {
+								color: ${({ theme }) =>
+									theme?.palette?.primary?.main};
+							}
+						}
 						&:not(:first-child) {
 							padding-left: 20px;
 						}
@@ -161,7 +168,8 @@ const FooterStyle = styled.div`
 
 	.small {
 		margin-top: 10px;
-		color: var(--c-p3);
+		color: ${({ theme }) =>
+			theme?.palette?.text?.secondary};
 	}
 
 	.uwuright {
@@ -172,7 +180,9 @@ const FooterStyle = styled.div`
 	.uwuright-sign {
 		margin-top: 1px;
 		font-size: 10px;
-		border: 1px solid var(--c-p8);
+		border: 1px solid
+			${({ theme }) =>
+				theme?.palette?.text?.primary};
 		border-radius: 50%;
 		height: 9px;
 		width: 9px;
@@ -185,7 +195,8 @@ const FooterStyle = styled.div`
 	}
 
 	.love-icon {
-		color: var(--c-pink1);
+		color: ${({ theme }) =>
+			theme?.palette?.primary?.main};
 	}
 
 	${CSSMediaSize.tablet} {

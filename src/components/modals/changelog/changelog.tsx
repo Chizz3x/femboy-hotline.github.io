@@ -2,8 +2,8 @@ import React from 'react';
 import styled from 'styled-components';
 import Checkbox from '@mui/material/Checkbox';
 import FormControlLabel from '@mui/material/FormControlLabel';
-import dayjs from 'dayjs';
 import { useMediaQuery } from '@mui/material';
+import dayjs from '../../../utils/dayjs';
 import { NModals } from '../modals';
 import { ModalLayout } from '../layout';
 import {
@@ -119,7 +119,8 @@ const ModalChangelogStyle = styled.div`
 	max-width: 1000px;
 	.row {
 		> h3 {
-			color: var(--c-pink3);
+			color: ${({ theme }) =>
+				theme?.palette?.primary?.dark};
 		}
 		> .images {
 			margin-top: 10px;
@@ -136,31 +137,38 @@ const ModalChangelogStyle = styled.div`
 		}
 	}
 	> h2 {
-		color: var(--c-pink1);
+		color: ${({ theme }) =>
+			theme?.palette?.primary?.main};
 	}
 	.gray,
 	.grey {
-		color: var(--c-p3);
+		color: ${({ theme }) =>
+			theme?.palette?.text?.secondary};
 	}
 	.brand {
-		color: var(--c-pink1);
+		color: ${({ theme }) =>
+			theme?.palette?.primary?.main};
 	}
 	.smol {
 		font-size: 12px;
-		color: var(--c-p3);
+		color: ${({ theme }) =>
+			theme?.palette?.text?.secondary};
 	}
 	.checkbox {
 		span {
 			font-size: 14px;
-			color: var(--c-p3);
+			color: ${({ theme }) =>
+				theme?.palette?.text?.secondary};
 		}
 		.checked {
 			path {
-				color: var(--c-pink1);
+				color: ${({ theme }) =>
+					theme?.palette?.primary?.main};
 			}
 		}
 		path {
-			color: var(--c-p3);
+			color: ${({ theme }) =>
+				theme?.palette?.text?.secondary};
 		}
 	}
 `;

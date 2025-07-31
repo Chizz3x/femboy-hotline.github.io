@@ -57,6 +57,7 @@
 		"no-restricted-exports": "off",
 		"no-plusplus": "off",
 		"no-param-reassign": "off",
-		"@typescript-eslint/ban-ts-comment": "off"
+		"@typescript-eslint/ban-ts-comment": "off",
+		"react/jsx-no-duplicate-props": "off"
 	}
 }

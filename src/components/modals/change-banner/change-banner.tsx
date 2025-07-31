@@ -74,9 +74,7 @@ const Modal = (
 			window.dispatchEvent(
 				changeModals({ [name]: null }),
 			);
-			window.dispatchEvent(
-				new CustomEvent('checkAuth'),
-			);
+			Auth.check();
 			toast('Banner changed', {
 				type: 'success',
 			});
@@ -115,7 +113,12 @@ const Modal = (
 	}, [authed.loaded]);
 
 	return (
-		<ModalLayout {...props} name={name}>
+		<ModalLayout
+			showHeader
+			title="Change banner"
+			{...props}
+			name={name}
+		>
 			<ModalChangeBannerStyle>
 				<div className="content">
 					{images.map((m, i) => (
@@ -175,7 +178,8 @@ const ModalChangeBannerStyle = styled.div`
 	max-width: 500px;
 	width: 300px;
 	> h2 {
-		color: var(--c-pink1);
+		color: ${({ theme }) =>
+			theme?.palette?.primary?.main};
 	}
 	.content {
 		display: flex;
@@ -190,7 +194,8 @@ const ModalChangeBannerStyle = styled.div`
 			border: 3px solid transparent;
 			border-radius: 3px;
 			&.selected {
-				border-color: var(--c-pink2);
+				border-color: ${({ theme }) =>
+					theme?.palette?.primary?.light};
 			}
 			.image {
 				width: 100%;

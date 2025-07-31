@@ -4,8 +4,9 @@ import { Button } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { changeModals, NModals } from '../modals';
 import { ModalLayout } from '../layout';
-import { localStorageSet } from '../../../utils/local-storage';
 import { ROUTES } from '../../../routes';
+import { sessionStorageSet } from '../../../utils/session-storage';
+import { localStorageSet } from '../../../utils/local-storage';
 
 const name = 'ModalUnderageCheck';
 const Modal = (
@@ -14,14 +15,15 @@ const Modal = (
 	const navigate = useNavigate();
 
 	const closeModal = () => {
-		localStorageSet('underage', 'false');
+		sessionStorageSet('underage', 'false');
+		localStorageSet('ageChecked', 'true');
 		window.dispatchEvent(
 			changeModals({ [name]: null }),
 		);
 	};
 
 	const isUnderage = () => {
-		localStorageSet('underage', 'true');
+		sessionStorageSet('underage', 'true');
 		window.dispatchEvent(
 			changeModals({ [name]: null }),
 		);

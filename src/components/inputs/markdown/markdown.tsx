@@ -613,27 +613,34 @@ const InputMarkdownStyle = styled.div`
 		margin-right: 14px;
 		line-height: 1.66;
 		font-weight: 400;
-		color: var(--c-p5);
+		color: ${({ theme }) =>
+			theme?.palette?.text?.secondary};
 		.error {
-			color: #f44336;
+			color: ${({ theme }) =>
+				theme?.palette?.error?.main};
 		}
 	}
 	.editable-root {
 		flex-grow: 1;
-		border: 1px solid var(--c-p5);
+		border: 1px solid
+			${({ theme }) =>
+				theme?.palette?.inputBorder?.main};
 		border-radius: 4px;
 		&:not(.is-editable) {
 			border: none;
 			padding: 0;
 		}
 		&.error {
-			border-color: #f44336;
+			border-color: ${({ theme }) =>
+				theme?.palette?.error?.main};
 		}
 		&:hover {
-			border-color: var(--c-pink1);
+			border-color: ${({ theme }) =>
+				theme?.palette?.primary?.main};
 		}
 		&:focus {
-			border-color: var(--c-pink1);
+			border-color: ${({ theme }) =>
+				theme?.palette?.primary?.main};
 			border-width: 2px;
 			padding: 7.5px 13px;
 		}
@@ -644,7 +651,8 @@ const InputMarkdownStyle = styled.div`
 			outline: none;
 		}
 		.slate-placeholder {
-			color: var(--c-p5);
+			color: ${({ theme }) =>
+				theme?.palette?.placeholder?.primary};
 			opacity: 1 !important;
 		}
 		> * {

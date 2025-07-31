@@ -116,6 +116,9 @@ export const API_URL =
 		? 'http://localhost:3001'
 		: 'https://api.femboy-hotline.com';
 
+export const CLOUDINARY_NAME = 'dqye0bas9';
+export const CLOUDINARY_KEY = '158377647424629';
+
 export const TEST = 'test';
 
 if (IS_DEV)
