@@ -45,6 +45,13 @@ const Index = () => {
 	// if (!isProper) return null;
 
 	React.useEffect(() => {
+		if (window) {
+			(window as any).adsbyjuicy =
+				(window as any).adsbyjuicy || [];
+		}
+	}, []);
+
+	React.useEffect(() => {
 		document
 			.getElementById('root-container')
 			?.scrollTo(0, 0);
