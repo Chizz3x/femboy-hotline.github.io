@@ -213,7 +213,10 @@ const Home = () => {
 					</span>
 				</div>
 			</div>
-			<JABillboard id={1097485} />
+			<JABillboard
+				id={1097485}
+				idMobile={1097807}
+			/>
 			<div className="image image-right">
 				<img alt="2" src="/img/2.png" />
 				<div className="image-text">
@@ -268,7 +271,10 @@ const Home = () => {
 					</span>
 				</div>
 			</div>
-			<JABillboard id={1097583} />
+			<JABillboard
+				id={1097583}
+				idMobile={1097809}
+			/>
 			<div className="image image-left">
 				<img alt="3" src="/img/3.png" />
 				<div className="image-text">
@@ -447,7 +453,10 @@ const Home = () => {
 						alt="Flag Counter"
 					/>
 				</a>
-				<JABillboard id={1097584} />
+				<JABillboard
+					id={1097584}
+					idMobile={1097810}
+				/>
 			</div>
 			<div className="image image-end">
 				<img alt="4" src="/img/4.png" />

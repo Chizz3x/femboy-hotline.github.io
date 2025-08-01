@@ -30,6 +30,7 @@ import {
 	NGuide,
 } from '../../components/guide';
 import { CSSMediaSize } from '../../const';
+import { JALeaderboard } from '../../components/juicyads/leaderbaord';
 
 const guidePath: NGuide.IGuidePathItem[] = [
 	{
@@ -149,6 +150,10 @@ const Forum = () => {
 
 	return (
 		<ForumStyle>
+			<JALeaderboard
+				id={1097812}
+				idMobile={1097813}
+			/>
 			<Guide path={guidePath} />
 			<div className="forum-header">
 				<form
@@ -235,6 +240,10 @@ const Forum = () => {
 					onChange: (_, page) =>
 						onPageChange(page),
 				}}
+			/>
+			<JALeaderboard
+				id={1097814}
+				idMobile={1097815}
 			/>
 		</ForumStyle>
 	);

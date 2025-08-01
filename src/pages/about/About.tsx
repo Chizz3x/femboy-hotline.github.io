@@ -7,6 +7,7 @@ import {
 	NGuide,
 } from '../../components/guide';
 import { ROUTES } from '../../routes';
+import { JALeaderboard } from '../../components/juicyads/leaderbaord';
 
 const guidePath: NGuide.IGuidePathItem[] = [
 	{
@@ -46,6 +47,10 @@ const About = () => {
 
 	return (
 		<AboutStyle>
+			<JALeaderboard
+				id={1097816}
+				idMobile={1097817}
+			/>
 			<Guide path={guidePath} />
 			<h2>About Femboy Hotline</h2>
 			<p>
@@ -128,6 +133,10 @@ const About = () => {
 				world of femboys! We hope you enjoy your
 				stay at Femboy Hotline!
 			</p>
+			<JALeaderboard
+				id={1097818}
+				idMobile={1097819}
+			/>
 		</AboutStyle>
 	);
 };

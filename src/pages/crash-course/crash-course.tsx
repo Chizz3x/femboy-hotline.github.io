@@ -6,6 +6,7 @@ import {
 	Guide,
 	NGuide,
 } from '../../components/guide';
+import { JALeaderboard } from '../../components/juicyads/leaderbaord';
 
 const guidePath: NGuide.IGuidePathItem[] = [
 	{
@@ -21,6 +22,10 @@ const guidePath: NGuide.IGuidePathItem[] = [
 const CrashCourse = () => {
 	return (
 		<CrashCourseStyle>
+			<JALeaderboard
+				id={1097824}
+				idMobile={1097825}
+			/>
 			<Guide path={guidePath} />
 			<div className="section">
 				<h2>Introduction</h2>
@@ -573,6 +578,10 @@ const CrashCourse = () => {
 					to reach out!
 				</p>
 			</div>
+			<JALeaderboard
+				id={1097826}
+				idMobile={1097827}
+			/>
 		</CrashCourseStyle>
 	);
 };

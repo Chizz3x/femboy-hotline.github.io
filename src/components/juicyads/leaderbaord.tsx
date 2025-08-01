@@ -6,16 +6,16 @@ import { CSSMediaSize } from '../../const';
 const sizes = {
 	mobile: {
 		w: 300,
-		h: 100,
+		h: 50,
 	},
 	desktop: {
-		w: 908,
-		h: 258,
+		w: 728,
+		h: 90,
 	},
 };
 
-const JABillboard = (
-	props: NJABillboard.IProps,
+const JALeaderboard = (
+	props: NJALeaderboard.IProps,
 ) => {
 	const { id, idMobile, width, height } = props;
 
@@ -99,16 +99,16 @@ const JABillboard = (
 
 	if (adBlocked) {
 		return (
-			<JABillboardStyle className="ad-blocked">
+			<JALeaderboardStyle className="ad-blocked">
 				Please whitelist this website on your ad
 				blocker. (We don&apos;t use click ads ;P)
 				<p>THANKS!</p>
-			</JABillboardStyle>
+			</JALeaderboardStyle>
 		);
 	}
 
 	return (
-		<JABillboardStyle
+		<JALeaderboardStyle
 			ref={adRef}
 			// eslint-disable-next-line react/no-danger
 			dangerouslySetInnerHTML={{
@@ -126,9 +126,9 @@ const JABillboard = (
 	);
 };
 
-export { JABillboard };
+export { JALeaderboard };
 
-export namespace NJABillboard {
+export namespace NJALeaderboard {
 	export interface IProps {
 		id: number;
 		idMobile?: number;
@@ -137,7 +137,7 @@ export namespace NJABillboard {
 	}
 }
 
-const JABillboardStyle = styled.div`
+const JALeaderboardStyle = styled.div`
 	max-width: 100%;
 	display: flex;
 	justify-content: center;

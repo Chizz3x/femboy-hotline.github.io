@@ -11,6 +11,7 @@ import {
 	Guide,
 	NGuide,
 } from '../../components/guide';
+import { JALeaderboard } from '../../components/juicyads/leaderbaord';
 
 const guidePath: NGuide.IGuidePathItem[] = [
 	{
@@ -26,6 +27,10 @@ const guidePath: NGuide.IGuidePathItem[] = [
 const Contact = () => {
 	return (
 		<ContactStyle>
+			<JALeaderboard
+				id={1097820}
+				idMobile={1097821}
+			/>
 			<Guide path={guidePath} />
 			<h2>
 				Contact information we are willing to
@@ -76,6 +81,10 @@ const Contact = () => {
 				Of course you can find us on other places,
 				that is if you know where to look ;P
 			</p>
+			<JALeaderboard
+				id={1097822}
+				idMobile={1097823}
+			/>
 		</ContactStyle>
 	);
 };
