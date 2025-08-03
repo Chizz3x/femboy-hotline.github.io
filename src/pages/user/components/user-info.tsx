@@ -18,6 +18,7 @@ import {
 import useAxios from 'axios-hooks';
 import { toast } from 'react-toastify';
 import styled from 'styled-components';
+import { useParams } from 'react-router-dom';
 import dayjs, {
 	Dayjs,
 } from '../../../utils/dayjs';
@@ -60,6 +61,10 @@ const nationalityOptions: NUserInfo.IOption[] =
 
 const UserInfo = (props: NUserInfo.IProps) => {
 	const { user, ...rest } = props;
+
+	const siteParams = useParams();
+
+	const otherId = siteParams.id;
 
 	const [editMode, setEditMode] =
 		React.useState(false);
@@ -365,14 +370,18 @@ const UserInfo = (props: NUserInfo.IProps) => {
 								</tr>
 							</tbody>
 						</table>
-						<div className="user-info-buttons">
-							<Button onClick={() => startEdit()}>
-								Edit
-							</Button>
-							<Button onClick={onClearAll}>
-								Clear all
-							</Button>
-						</div>
+						{!otherId ? (
+							<div className="user-info-buttons">
+								<Button
+									onClick={() => startEdit()}
+								>
+									Edit
+								</Button>
+								<Button onClick={onClearAll}>
+									Clear all
+								</Button>
+							</div>
+						) : null}
 					</>
 				)}
 			</div>
