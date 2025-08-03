@@ -99,7 +99,7 @@ const JABillboard = (
 
 	if (adBlocked) {
 		return (
-			<JABillboardStyle className="ad-blocked">
+			<JABillboardStyle className="ad-container ad-billboard ad-blocked">
 				Please whitelist this website on your ad
 				blocker. (We don&apos;t use click ads ;P)
 				<p>THANKS!</p>
@@ -109,6 +109,7 @@ const JABillboard = (
 
 	return (
 		<JABillboardStyle
+			className="ad-container ad-billboard"
 			ref={adRef}
 			// eslint-disable-next-line react/no-danger
 			dangerouslySetInnerHTML={{

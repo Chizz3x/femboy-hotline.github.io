@@ -8,6 +8,7 @@ import * as ModalDeletePostComment from './delete-post-comment';
 import * as ModalUnderageCheck from './underage-check';
 import * as ModalUploadPicture from './upload-picture';
 import * as ModalClearUserInfo from './clear-info';
+import * as ModalUserSettings from './user-settings';
 
 export const modals = [
 	ModalSwitchingDomains,
@@ -19,6 +20,7 @@ export const modals = [
 	ModalUnderageCheck,
 	ModalUploadPicture,
 	ModalClearUserInfo,
+	ModalUserSettings,
 ];
 
 export const changeModals = <

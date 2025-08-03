@@ -9,8 +9,12 @@ import {
 	IconButton,
 	InputAdornment,
 	TextField,
+	Tooltip,
 } from '@mui/material';
-import { Clear as ClearIcon } from '@mui/icons-material';
+import {
+	Clear as ClearIcon,
+	Settings as SettingsIcon,
+} from '@mui/icons-material';
 import useAxios from 'axios-hooks';
 import { toast } from 'react-toastify';
 import styled from 'styled-components';
@@ -131,6 +135,16 @@ const UserInfo = (props: NUserInfo.IProps) => {
 		setEditMode(false);
 	};
 
+	const openUserSettings = () => {
+		window.dispatchEvent(
+			changeModals({
+				ModalUserSettings: {
+					open: true,
+				},
+			}),
+		);
+	};
+
 	return (
 		<UserInfoStyle
 			{...rest}
@@ -139,221 +153,236 @@ const UserInfo = (props: NUserInfo.IProps) => {
 				rest.className,
 			)}
 		>
-			{editMode ? (
-				<form onSubmit={onSubmit}>
-					<table>
-						<tbody>
-							<tr>
-								<th>Gender</th>
-								<td>
-									<Controller
-										name="gender"
-										control={control}
-										render={({ field }) => (
-											<TextField
-												{...field}
-												label="Gender"
-												size="small"
-												error={
-													!!formErrors.gender
-												}
-												helperText={
-													formErrors.gender
-														?.message
-												}
-												InputProps={{
-													endAdornment:
-														field?.value && (
-															<InputAdornment position="end">
-																<IconButton
-																	size="small"
-																	onClick={() =>
-																		field.onChange(
-																			'',
-																		)
-																	}
-																>
-																	<ClearIcon fontSize="small" />
-																</IconButton>
-															</InputAdornment>
-														),
-												}}
-											/>
-										)}
-									/>
-								</td>
-							</tr>
-							<tr>
-								<th>Nationality</th>
-								<td>
-									<Controller
-										name="nationality"
-										control={control}
-										render={({ field }) => (
-											<Autocomplete<NUserInfo.IOption>
-												{...field}
-												value={
-													nationalityOptions.find(
-														(f) =>
-															f.value ===
-															field.value,
-													) || null
-												}
-												onChange={(_, v) =>
-													field.onChange(
-														v?.value || '',
-													)
-												}
-												disablePortal
-												options={
-													nationalityOptions
-												}
-												getOptionLabel={(
-													option,
-												) => option?.stringLabel}
-												renderOption={(
-													_props,
-													option,
-												) => (
-													<li
-														{..._props}
-														key={option.value}
-													>
-														{option?.label}
-													</li>
-												)}
-												size="small"
-												renderInput={(params) => (
-													<TextField
-														{...params}
-														error={
-															!!formErrors.nationality
-														}
-														helperText={
-															formErrors
-																.nationality
-																?.message
-														}
-														InputProps={{
-															...params.InputProps,
-															startAdornment:
-																field?.value ? (
-																	<InputAdornment position="end">
-																		<CountryFlag
-																			code={
-																				field?.value
-																			}
-																		/>
-																	</InputAdornment>
-																) : null,
-														}}
-														label="Nationality"
-													/>
-												)}
-											/>
-										)}
-									/>
-								</td>
-							</tr>
-							<tr>
-								<th>Birth date</th>
-								<td>
-									<Controller
-										name="birthDate"
-										control={control}
-										render={({ field }) => (
-											<DatePicker
-												tabs={['year', 'date']}
-												previewFormat="YYYY-MM-DD"
-												displayFormat="YYYY-MM-DD"
-												fieldProps={{
-													size: 'small',
-													label: 'Birth date',
-													error:
-														!!formErrors.birthDate,
-													helperText:
-														formErrors.birthDate
-															?.message,
-												}}
-												controlled
-												onChange={(v) =>
-													field.onChange(v)
-												}
-												value={field.value}
-												clearable
-											/>
-										)}
-									/>
-								</td>
-							</tr>
-						</tbody>
-					</table>
-					<div className="user-info-buttons">
-						<Button
-							disabled={isFormLoading}
-							onClick={() => endEdit()}
-						>
-							Cancel
-						</Button>
-						<Button
-							disabled={isFormLoading}
-							type="submit"
-						>
-							Save
-						</Button>
-					</div>
-				</form>
-			) : (
-				<>
-					<table>
-						<tbody>
-							<tr>
-								<th>Gender</th>
-								<td>{user?.gender || '-'}</td>
-							</tr>
-							<tr>
-								<th>Nationality</th>
-								<td>
-									<div className="align-middle">
-										{user?.nationality ? (
-											<>
-												<CountryFlag
-													code={user?.nationality}
-													height={21}
+			<div className="user-info-left">
+				{editMode ? (
+					<form onSubmit={onSubmit}>
+						<table>
+							<tbody>
+								<tr>
+									<th>Gender</th>
+									<td>
+										<Controller
+											name="gender"
+											control={control}
+											render={({ field }) => (
+												<TextField
+													{...field}
+													label="Gender"
+													size="small"
+													error={
+														!!formErrors.gender
+													}
+													helperText={
+														formErrors.gender
+															?.message
+													}
+													InputProps={{
+														endAdornment:
+															field?.value && (
+																<InputAdornment position="end">
+																	<IconButton
+																		size="small"
+																		onClick={() =>
+																			field.onChange(
+																				'',
+																			)
+																		}
+																	>
+																		<ClearIcon fontSize="small" />
+																	</IconButton>
+																</InputAdornment>
+															),
+													}}
 												/>
-												{CODE_TO_NAME.get(
-													user?.nationality,
-												)}
-											</>
-										) : (
-											'-'
-										)}
-									</div>
-								</td>
-							</tr>
-							<tr>
-								<th>Age</th>
-								<td>
-									{user?.birthDate
-										? dayjs().diff(
-												user?.birthDate,
-												'year',
-										  )
-										: '-'}
-								</td>
-							</tr>
-						</tbody>
-					</table>
-					<div className="user-info-buttons">
-						<Button onClick={() => startEdit()}>
-							Edit
-						</Button>
-						<Button onClick={onClearAll}>
-							Clear all
-						</Button>
-					</div>
-				</>
-			)}
+											)}
+										/>
+									</td>
+								</tr>
+								<tr>
+									<th>Nationality</th>
+									<td>
+										<Controller
+											name="nationality"
+											control={control}
+											render={({ field }) => (
+												<Autocomplete<NUserInfo.IOption>
+													{...field}
+													value={
+														nationalityOptions.find(
+															(f) =>
+																f.value ===
+																field.value,
+														) || null
+													}
+													onChange={(_, v) =>
+														field.onChange(
+															v?.value || '',
+														)
+													}
+													disablePortal
+													options={
+														nationalityOptions
+													}
+													getOptionLabel={(
+														option,
+													) =>
+														option?.stringLabel
+													}
+													renderOption={(
+														_props,
+														option,
+													) => (
+														<li
+															{..._props}
+															key={option.value}
+														>
+															{option?.label}
+														</li>
+													)}
+													size="small"
+													renderInput={(
+														params,
+													) => (
+														<TextField
+															{...params}
+															error={
+																!!formErrors.nationality
+															}
+															helperText={
+																formErrors
+																	.nationality
+																	?.message
+															}
+															InputProps={{
+																...params.InputProps,
+																startAdornment:
+																	field?.value ? (
+																		<InputAdornment position="end">
+																			<CountryFlag
+																				code={
+																					field?.value
+																				}
+																			/>
+																		</InputAdornment>
+																	) : null,
+															}}
+															label="Nationality"
+														/>
+													)}
+												/>
+											)}
+										/>
+									</td>
+								</tr>
+								<tr>
+									<th>Birth date</th>
+									<td>
+										<Controller
+											name="birthDate"
+											control={control}
+											render={({ field }) => (
+												<DatePicker
+													tabs={['year', 'date']}
+													previewFormat="YYYY-MM-DD"
+													displayFormat="YYYY-MM-DD"
+													fieldProps={{
+														size: 'small',
+														label: 'Birth date',
+														error:
+															!!formErrors.birthDate,
+														helperText:
+															formErrors.birthDate
+																?.message,
+													}}
+													controlled
+													onChange={(v) => {
+														field.onChange(v);
+													}}
+													value={field.value}
+													clearable
+												/>
+											)}
+										/>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+						<div className="user-info-buttons">
+							<Button
+								disabled={isFormLoading}
+								onClick={() => endEdit()}
+							>
+								Cancel
+							</Button>
+							<Button
+								disabled={isFormLoading}
+								type="submit"
+							>
+								Save
+							</Button>
+						</div>
+					</form>
+				) : (
+					<>
+						<table>
+							<tbody>
+								<tr>
+									<th>Gender</th>
+									<td>{user?.gender || '-'}</td>
+								</tr>
+								<tr>
+									<th>Nationality</th>
+									<td>
+										<div className="align-middle">
+											{user?.nationality ? (
+												<>
+													<CountryFlag
+														code={
+															user?.nationality
+														}
+														height={21}
+													/>
+													{CODE_TO_NAME.get(
+														user?.nationality,
+													)}
+												</>
+											) : (
+												'-'
+											)}
+										</div>
+									</td>
+								</tr>
+								<tr>
+									<th>Age</th>
+									<td>
+										{user?.birthDate
+											? dayjs().diff(
+													user?.birthDate,
+													'year',
+											  )
+											: '-'}
+									</td>
+								</tr>
+							</tbody>
+						</table>
+						<div className="user-info-buttons">
+							<Button onClick={() => startEdit()}>
+								Edit
+							</Button>
+							<Button onClick={onClearAll}>
+								Clear all
+							</Button>
+						</div>
+					</>
+				)}
+			</div>
+			<div className="user-info-right">
+				<Tooltip title="Settings" placement="top">
+					<IconButton onClick={openUserSettings}>
+						<SettingsIcon />
+					</IconButton>
+				</Tooltip>
+			</div>
 		</UserInfoStyle>
 	);
 };
@@ -382,30 +411,34 @@ const UserInfoStyle = styled.div`
 		theme?.palette?.background_2?.default};
 	border-radius: 10px;
 	padding: 20px 30px;
-	table {
-		max-width: 300px;
-		text-align: left;
-		border-spacing: 0 10px;
-		td {
-			padding-left: 14px;
+	display: flex;
+	justify-content: space-between;
+	.user-info-left {
+		table {
+			max-width: 300px;
+			text-align: left;
+			border-spacing: 0 10px;
+			td {
+				padding-left: 14px;
+			}
 		}
-	}
 
-	.user-info-buttons {
-		margin-top: 10px;
-		display: flex;
-		column-gap: 10px;
-	}
+		.user-info-buttons {
+			margin-top: 10px;
+			display: flex;
+			column-gap: 10px;
+		}
 
-	.autocomplete-option {
-		display: flex;
-		align-items: center;
-		column-gap: 5px;
-	}
+		.autocomplete-option {
+			display: flex;
+			align-items: center;
+			column-gap: 5px;
+		}
 
-	.align-middle {
-		display: flex;
-		align-items: center;
-		column-gap: 5px;
+		.align-middle {
+			display: flex;
+			align-items: center;
+			column-gap: 5px;
+		}
 	}
 `;

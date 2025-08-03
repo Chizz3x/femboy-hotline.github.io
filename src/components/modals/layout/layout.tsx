@@ -1,6 +1,9 @@
 import React from 'react';
 import styled from 'styled-components';
-import { IconButton } from '@mui/material';
+import {
+	IconButton,
+	useMediaQuery,
+} from '@mui/material';
 import { Close as CloseIcon } from '@mui/icons-material';
 import { NModals, changeModals } from '../modals';
 import { CSSMediaSize } from '../../../const';
@@ -20,6 +23,10 @@ const ModalLayout = (
 		blur = 5,
 		width,
 	} = props;
+
+	const isTablet = useMediaQuery(
+		CSSMediaSize.tablet,
+	);
 
 	const closeModal: React.MouseEventHandler<
 		HTMLDivElement
@@ -51,17 +58,25 @@ const ModalLayout = (
 			<div className="modal_inner">
 				<div className="header">
 					<div className="header-left">
-						{!centerHeader ? (
+						{isTablet ? (
+							hideCloseButton ? null : (
+								<IconButton
+									onClick={closeModalOnHeader}
+								>
+									<CloseIcon />
+								</IconButton>
+							)
+						) : !centerHeader ? (
 							<h2>{title}</h2>
 						) : null}
 					</div>
 					<div className="header-center">
-						{centerHeader ? (
+						{isTablet || centerHeader ? (
 							<h2>{title}</h2>
 						) : null}
 					</div>
 					<div className="header-right">
-						{hideCloseButton ? null : (
+						{isTablet ? null : hideCloseButton ? null : (
 							<IconButton
 								onClick={closeModalOnHeader}
 							>
@@ -151,10 +166,11 @@ const ModalLayoutStyle = styled.div<{
 			> * {
 				flex-grow: 1;
 				flex-basis: 0;
-				white-space: nowrap;
+				/*white-space: nowrap;*/
 			}
 			> .header-left {
 				display: flex;
+				flex-grow: 3;
 			}
 			> .header-center {
 				display: flex;
@@ -172,10 +188,15 @@ const ModalLayoutStyle = styled.div<{
 		.modal_inner {
 			padding-top: 0;
 			> .header {
+				flex-direction: column;
 				display: ${(props) =>
 					props?.['data-showheader'] !== false
 						? 'flex'
 						: 'none'};
+				text-align: center;
+				.header-left {
+					justify-content: flex-end;
+				}
 			}
 		}
 	}

@@ -318,10 +318,12 @@ const ModalChangePictureStyle = styled.div`
 				position: absolute;
 				top: 0;
 				left: 0;
-				opacity: 0;
-				filter: invert(1);
-				&:hover {
-					opacity: 0.5;
+
+				&.selected {
+					opacity: 0;
+					&:hover {
+						opacity: 0.5;
+					}
 				}
 			}
 		}

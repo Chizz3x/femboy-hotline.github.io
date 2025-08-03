@@ -168,13 +168,14 @@ const DatePicker = (
 	}, [range]);
 
 	React.useEffect(() => {
+		// console.log('isControlled', isControlled);
 		if (isControlled) {
 			if (range) {
 				setSelectedRange(valueRange || []);
-				onChangeRange?.(valueRange || []);
+				// onChangeRange?.(valueRange || []);
 			} else {
 				setSelectedDate(value || null);
-				onChange?.(value || null);
+				// onChange?.(value || null);
 			}
 		} else if (range) {
 			setSelectedRange(valueRange || []);
@@ -184,13 +185,13 @@ const DatePicker = (
 	}, [value, valueRange]);
 
 	React.useEffect(() => {
-		if (!isControlled) {
-			if (range) {
-				onChangeRange?.(selectedRange || []);
-			} else {
-				onChange?.(selectedDate || null);
-			}
+		// if (isControlled) {
+		if (range) {
+			onChangeRange?.(selectedRange || []);
+		} else {
+			onChange?.(selectedDate || null);
 		}
+		// }
 	}, [selectedDate, selectedRange]);
 
 	return (
