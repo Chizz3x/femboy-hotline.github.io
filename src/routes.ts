@@ -41,10 +41,13 @@ export const API_ROUTES = {
 	forgotPassword: `${API_URL}/user/forgot-password`,
 	resetPassword: `${API_URL}/user/reset-password`,
 	userUpdateInfo: `${API_URL}/user/update-info`,
+	updateUserSettings: `${API_URL}/user/update-settings`,
 	changePicture: `${API_URL}/user/change-picture`,
 	requestUploadPicture: `${API_URL}/user/request-upload-picture`,
 	changeBanner: `${API_URL}/user/change-banner`,
 	changeUsername: `${API_URL}/user/change-username`,
+	userBan: `${API_URL}/user/ban`,
+	userUnban: `${API_URL}/user/unban`,
 	forumNew: `${API_URL}/forum/new`,
 	forumPosts: `${API_URL}/forum`,
 	forumPost: `${API_URL}/forum/:id`,
@@ -55,6 +58,8 @@ export const API_ROUTES = {
 	forumCommentNew: `${API_URL}/forum/:id/comments/new`,
 	forumCommentDelete: `${API_URL}/forum/:id/comments/:commentId/delete`,
 	forumCommentEdit: `${API_URL}/forum/:id/comments/:commentId/edit`,
+	authDiscordCallback: `${API_URL}/auth/discord/callback`,
+	authDiscordDisconnect: `${API_URL}/auth/discord/disconnect`,
 };
 
 export const CLOUDINARY_API_ROUTES = {

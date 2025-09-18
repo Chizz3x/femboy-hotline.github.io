@@ -9,13 +9,18 @@ import { PhotoCamera as PhotoCameraIcon } from '@mui/icons-material';
 import { Skeleton } from '@mui/material';
 import { useAuth } from '../../components/contexts/auth';
 import { API_ROUTES, ROUTES } from '../../routes';
-import { CSSMediaSize } from '../../const';
+import {
+	CSSMediaSize,
+	USER_ROLE,
+} from '../../const';
 import { Auth } from '../../utils/auth';
 import { getUniqueId } from '../../scripts/unique-id-manager';
 import { changeModals } from '../../components/modals/modals';
 import buildApiRoute from '../../utils/build-api-route';
 import UserInfo from './components/user-info';
 import getUserPicture from '../../utils/get-user-picture';
+import IconDiscord from '../../components/icons/icon-discord';
+import ModControls from './components/mod-controls';
 
 const User = () => {
 	const navigate = useNavigate();
@@ -23,6 +28,23 @@ const User = () => {
 	const params = useParams();
 
 	const otherId = params.id;
+
+	const [{ data: userCurrent }] = useAxios(
+		{
+			method: 'POST',
+			url: API_ROUTES.getMe,
+			headers: {
+				Authorization: `Bearer ${Auth.getToken()}`,
+				uniqueId: getUniqueId(),
+			},
+		},
+		{ autoCancel: true },
+	);
+
+	const canBan = [
+		USER_ROLE.ADMIN,
+		USER_ROLE.OWNER,
+	].includes(userCurrent?.data?.user?.role || 0);
 
 	const [
 		{ data: userDataMe, loading: loadingMe },
@@ -154,11 +176,22 @@ const User = () => {
 								<span>
 									{user?.username || '-'}
 								</span>
+								{user?.discord ? (
+									<span className="user-discord">
+										<IconDiscord />
+										{user?.discord?.username}
+									</span>
+								) : null}
 							</div>
 						</div>
 					</div>
 				</div>
 			</div>
+			{canBan ? (
+				<div className="mod-controls">
+					<ModControls user={user} />
+				</div>
+			) : null}
 			<div className="user-content">
 				<UserInfo user={user} />
 			</div>
@@ -274,13 +307,23 @@ const UserStyle = styled.div`
 				.profile-name {
 					font-weight: 600;
 					font-size: 24px;
+					.user-discord {
+						font-size: 14px;
+						margin-left: 10px;
+						display: inline-flex;
+						align-items: center;
+						column-gap: 5px;
+						color: ${({ theme }) =>
+							theme?.palette?.text?.secondary};
+					}
 				}
 			}
 		}
 	}
 
-	.user-content {
-		padding: 20px 50px;
+	.user-content,
+	.mod-controls {
+		padding: 10px 20px;
 	}
 
 	${CSSMediaSize.phone} {
@@ -295,8 +338,9 @@ const UserStyle = styled.div`
 				}
 			}
 		}
-		.user-content {
-			padding: 20px 10px;
+		.user-content,
+		.mod-controls {
+			padding: 10px 10px;
 		}
 	}
 `;

@@ -18,7 +18,8 @@ export default () => {
 			.max(
 				128,
 				'Email must be at most 128 characters long',
-			),
+			)
+			.label('Email'),
 		username: yup
 			.string()
 			.trim()
@@ -34,7 +35,11 @@ export default () => {
 			.matches(
 				/^[a-z0-9._-]+$/,
 				'Only lowercase letters, dashes (-), underscores (_), and periods (.) are allowed',
-			),
+			)
+			.label('Username'),
+		unlistedProfile: yup
+			.boolean()
+			.label('Hidden profile'),
 		currentPassword: yup
 			.string()
 			.trim()
@@ -50,7 +55,8 @@ export default () => {
 			.matches(
 				/\d/,
 				'Password must contain at least one number',
-			),
+			)
+			.label('Password'),
 		newPassword: yup
 			.string()
 			.trim()
@@ -66,7 +72,8 @@ export default () => {
 			.matches(
 				/\d/,
 				'Password must contain at least one number',
-			),
+			)
+			.label('Password'),
 		repeatPassword: yup
 			.string()
 			.trim()
@@ -76,6 +83,7 @@ export default () => {
 			.oneOf(
 				[yup.ref('newPassword')],
 				'Passwords must match',
-			),
+			)
+			.label('Password'),
 	});
 };

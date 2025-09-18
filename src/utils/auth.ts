@@ -79,7 +79,7 @@ export class Auth {
 
 		const valid = !!localValid?.data?.data?.valid;
 
-		if (!valid && !is404)
+		if (!is404 && !valid)
 			localStorageRemove('token');
 
 		return valid;

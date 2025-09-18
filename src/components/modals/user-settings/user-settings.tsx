@@ -2,6 +2,8 @@ import React from 'react';
 import styled from 'styled-components';
 import {
 	Button,
+	Checkbox,
+	FormControlLabel,
 	IconButton,
 	InputAdornment,
 	TextField,
@@ -15,6 +17,7 @@ import {
 	VisibilityOff as VisibilityOffIcon,
 } from '@mui/icons-material';
 import useAxios from 'axios-hooks';
+import axios from 'axios';
 import { changeModals, NModals } from '../modals';
 import { ModalLayout } from '../layout';
 import yupValidationResolver from '../../../utils/yupValidationResolver';
@@ -24,6 +27,13 @@ import { API_ROUTES } from '../../../routes';
 import { Auth } from '../../../utils/auth';
 import { getUniqueId } from '../../../scripts/unique-id-manager';
 import { NotImplemented } from '../../not-implemented';
+import { InfoHover } from '../../info-hover';
+import IconDiscord from '../../icons/icon-discord';
+import {
+	DISCORD_AUTH_REDIRECT,
+	DISCORD_AUTH_SCOPE,
+	DISCORD_CLIENT_ID,
+} from '../../../const';
 
 const getDefaultForm = (
 	props?: Partial<NModalUserSettings.IForm>,
@@ -31,6 +41,7 @@ const getDefaultForm = (
 	return {
 		email: '',
 		username: '',
+		unlistedProfile: false,
 		currentPassword: '',
 		newPassword: '',
 		repeatPassword: '',
@@ -42,8 +53,11 @@ const name = 'ModalUserSettings';
 const Modal = (
 	props: NModalUserSettings.IProps,
 ) => {
-	const { authed, loaded: loadedAuth } =
-		useAuth();
+	const {
+		authed,
+		seed: authSeed,
+		loaded: loadedAuth,
+	} = useAuth();
 
 	const [{ data: meData }, getMe] = useAxios(
 		{
@@ -52,6 +66,8 @@ const Modal = (
 		},
 		{ manual: true, autoCancel: true },
 	);
+
+	const { user: userData } = meData?.data || {};
 
 	const [
 		showCurrentPassword,
@@ -85,6 +101,44 @@ const Modal = (
 		console.log(values);
 	});
 
+	const doConnect = (type: 'discord') => {
+		switch (type) {
+			case 'discord': {
+				window.location.href = `https://discord.com/oauth2/authorize?client_id=${DISCORD_CLIENT_ID}&response_type=code&redirect_uri=${DISCORD_AUTH_REDIRECT}&scope=${DISCORD_AUTH_SCOPE}&state=${getUniqueId()}`;
+				break;
+			}
+			default:
+				break;
+		}
+	};
+
+	const doDisconnect = async (
+		type: 'discord',
+	) => {
+		switch (type) {
+			case 'discord': {
+				try {
+					await axios.post(
+						API_ROUTES.authDiscordDisconnect,
+						undefined,
+						{
+							headers: {
+								Authorization: `Bearer ${Auth.getToken()}`,
+								uniqueId: getUniqueId(),
+							},
+						},
+					);
+				} catch (err) {
+					console.log('Something went wrong');
+				}
+				Auth.check();
+				break;
+			}
+			default:
+				break;
+		}
+	};
+
 	React.useEffect(() => {
 		(async () => {
 			if (authed) {
@@ -108,7 +162,7 @@ const Modal = (
 				}
 			}
 		})();
-	}, [authed]);
+	}, [authed, authSeed]);
 
 	return (
 		<ModalLayout
@@ -162,7 +216,70 @@ const Modal = (
 						</div>
 						<div className="form-privacy">
 							<h3>Privacy</h3>
-							{/*  */}
+							<Controller
+								name="unlistedProfile"
+								control={control}
+								render={({ field }) => (
+									<FormControlLabel
+										label={
+											<div className="checkbox-label">
+												<span>
+													Unlisted profile
+												</span>
+												<InfoHover text="Whether your profile should be unlisted from public lists. This does not hide your profile." />
+											</div>
+										}
+										control={
+											<Checkbox
+												{...register(
+													'unlistedProfile',
+												)}
+											/>
+										}
+									/>
+								)}
+							/>
+						</div>
+						<div className="form-connections">
+							<h3>Connections</h3>
+							<div className="connection-buttons">
+								<div className="connection-row">
+									<h4>
+										<IconDiscord /> Discord
+										{userData?.discord ? (
+											<span className="user-discord-username">
+												{
+													userData?.discord
+														?.username
+												}
+											</span>
+										) : null}
+									</h4>
+									<div className="connection-row-buttons">
+										<Button
+											size="small"
+											onClick={() =>
+												doConnect('discord')
+											}
+										>
+											{userData?.discord
+												? 'Update'
+												: 'Connect'}
+										</Button>
+										<Button
+											size="small"
+											disabled={
+												!userData?.discord
+											}
+											onClick={() =>
+												doDisconnect('discord')
+											}
+										>
+											Disconnect
+										</Button>
+									</div>
+								</div>
+							</div>
 						</div>
 						<div className="form-security">
 							<h3>Security</h3>
@@ -328,6 +445,7 @@ export namespace NModalUserSettings {
 	export interface IForm {
 		email: string;
 		username: string;
+		unlistedProfile: boolean;
 		currentPassword: string;
 		newPassword: string;
 		repeatPassword: string;
@@ -344,6 +462,31 @@ const ModalUserSettingsStyle = styled.div`
 			flex-direction: column;
 			row-gap: 10px;
 		}
+	}
+	.user-discord-username {
+		margin-left: 5px;
+		font-size: 12px;
+		color: ${({ theme }) =>
+			theme?.palette?.text?.secondary};
+	}
+	.connection-buttons {
+		display: flex;
+		flex-direction: column;
+		row-gap: 10px;
+	}
+	.connection-row {
+		> h4 {
+			margin-bottom: 5px;
+		}
+		.connection-row-buttons {
+			display: flex;
+			column-gap: 5px;
+		}
+	}
+	.checkbox-label {
+		display: flex;
+		align-items: center;
+		column-gap: 5px;
 	}
 	.buttons {
 		display: flex;

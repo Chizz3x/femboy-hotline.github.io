@@ -38,13 +38,6 @@ const CopyButton = (
 		<CopyButtonStyle className="copy-button">
 			<Tooltip
 				arrow
-				PopperProps={{
-					sx: {
-						'.MuiTooltip-tooltip': {
-							margin: '5px !important',
-						},
-					},
-				}}
 				title={titleText}
 				placement="right"
 				{...tooltipProps}

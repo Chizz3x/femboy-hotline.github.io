@@ -8,7 +8,9 @@
 	},
 	"files.eol": "\n",
 	"eslint.validate": [
+		"typescriptreact",
 		"typescript",
+		"javascriptreact",
 		"javascript"
 	],
 	"cSpell.words": [

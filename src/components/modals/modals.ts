@@ -9,6 +9,8 @@ import * as ModalUnderageCheck from './underage-check';
 import * as ModalUploadPicture from './upload-picture';
 import * as ModalClearUserInfo from './clear-info';
 import * as ModalUserSettings from './user-settings';
+import * as ModalBanUser from './ban-user';
+import * as ModalUnbanUser from './unban-user';
 
 export const modals = [
 	ModalSwitchingDomains,
@@ -21,6 +23,8 @@ export const modals = [
 	ModalUploadPicture,
 	ModalClearUserInfo,
 	ModalUserSettings,
+	ModalBanUser,
+	ModalUnbanUser,
 ];
 
 export const changeModals = <

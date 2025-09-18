@@ -119,6 +119,15 @@ export const API_URL =
 export const CLOUDINARY_NAME = 'dqye0bas9';
 export const CLOUDINARY_KEY = '158377647424629';
 
+export const DISCORD_CLIENT_ID =
+	'1416115227765768355';
+export const DISCORD_AUTH_SCOPE =
+	encodeURIComponent('identify');
+export const DISCORD_AUTH_REDIRECT =
+	encodeURIComponent(
+		`${API_URL}/auth/discord/callback`,
+	);
+
 export const TEST = 'test';
 
 if (IS_DEV)

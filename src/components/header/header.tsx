@@ -717,6 +717,7 @@ const HeaderStyle = styled.div`
 		.container-parts {
 			display: flex;
 			align-items: center;
+			text-decoration: none;
 		}
 	}
 

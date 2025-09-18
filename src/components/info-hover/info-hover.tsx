@@ -18,6 +18,7 @@ const InfoHover = (props: NInfoHover.IProps) => {
 				arrow
 				PopperProps={{
 					sx: {
+						zIndex: '9999',
 						'.MuiTooltip-tooltip': {
 							margin: '10px !important',
 						},
