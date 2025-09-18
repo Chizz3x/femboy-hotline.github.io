@@ -289,7 +289,9 @@ const CommentsContainer = (
 						</div>
 						<div className="comment-item-right">
 							<div className="comment-item-author">
-								{m?.deleted_at || m?.anonymous ? (
+								{m?.deleted_at ||
+								m?.author_is_banned ||
+								m?.anonymous ? (
 									<AnonymousTag />
 								) : (
 									<span
@@ -312,7 +314,8 @@ const CommentsContainer = (
 								) : null}
 							</div>
 							<div className="comment-item-content">
-								{m?.deleted_at ? (
+								{m?.deleted_at ||
+								m?.author_is_banned ? (
 									<DeletedTag />
 								) : (
 									<>
