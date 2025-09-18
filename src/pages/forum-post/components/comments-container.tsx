@@ -256,7 +256,7 @@ const CommentsContainer = (
 						className="comment-item"
 					>
 						<div className="comment-item-left">
-							{m?.anonymous ? (
+							{m?.anonymous || !m?.author ? (
 								<Avatar
 									alt="Anonymous"
 									src="img/pictures/1.png"
@@ -399,7 +399,9 @@ const CommentsContainer = (
 										</span>
 									</div>
 								) : null}
-								{m?.deleted_at || !user ? null : (
+								{m?.deleted_at ||
+								m?.author_is_banned ||
+								!user ? null : (
 									<div
 										className="comment-item-reply-btn"
 										onClick={() =>
