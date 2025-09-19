@@ -33,7 +33,10 @@ import {
 } from '@mui/icons-material';
 import axios from 'axios';
 import useAxios from 'axios-hooks';
-import { CSSMediaSize } from '../../const';
+import {
+	CSSMediaSize,
+	PHONE_NUMBER,
+} from '../../const';
 import { API_ROUTES, ROUTES } from '../../routes';
 import { useAuth } from '../contexts/auth';
 import { Auth } from '../../utils/auth';
@@ -263,7 +266,7 @@ const Header = () => {
 				<div className="container-parts menu-info">
 					<span className="call-text">
 						<span>Call us today!</span>
-						<span
+						{/* <span
 							className="fake-link"
 							onClick={() =>
 								toast('It aint real...', {
@@ -271,8 +274,14 @@ const Header = () => {
 								})
 							}
 						>
-							+48 123 123 69
-						</span>
+							{PHONE_NUMBER}
+						</span> */}
+						<a
+							className="fake-link"
+							href={`tel:${PHONE_NUMBER}`}
+						>
+							{PHONE_NUMBER}
+						</a>
 					</span>
 					<div className="mobile-menu">
 						<IconButton

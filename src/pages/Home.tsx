@@ -5,7 +5,10 @@ import { Button } from '@mui/material';
 import useAxios from 'axios-hooks';
 import { useNavigate } from 'react-router-dom';
 import dayjs from '../utils/dayjs';
-import { CSSMediaSize } from '../const';
+import {
+	CSSMediaSize,
+	PHONE_NUMBER,
+} from '../const';
 import useScrollIntoView from '../utils/hooks/use-scroll-into-view';
 import { JABillboard } from '../components/juicyads/billboard';
 import { useAuth } from '../components/contexts/auth';
@@ -205,7 +208,7 @@ const Home = () => {
 					</span>
 				</div>
 				<div className="content1-inline">
-					<h3>Spread AIDS with us!</h3>
+					<h3>Spread love with us!</h3>
 					<span>
 						Who cares about reproduction, right?
 						<br />
@@ -465,7 +468,7 @@ const Home = () => {
 						<h2>It is time to join us</h2>
 						<span>
 							Call us now!{' '}
-							<span
+							{/* <span
 								className="fake-link"
 								onClick={() =>
 									toast('Or maybe not...', {
@@ -473,8 +476,14 @@ const Home = () => {
 									})
 								}
 							>
-								+48 123 123 69
-							</span>
+								{PHONE_NUMBER}
+							</span> */}
+							<a
+								className="fake-link"
+								href={`tel:${PHONE_NUMBER}`}
+							>
+								{PHONE_NUMBER}
+							</a>
 						</span>
 					</div>
 				</div>

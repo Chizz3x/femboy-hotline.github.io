@@ -6,7 +6,7 @@ import {
 } from 'react-router-dom';
 import useAxios from 'axios-hooks';
 import { PhotoCamera as PhotoCameraIcon } from '@mui/icons-material';
-import { Skeleton } from '@mui/material';
+import { Skeleton, Tooltip } from '@mui/material';
 import { useAuth } from '../../components/contexts/auth';
 import { API_ROUTES, ROUTES } from '../../routes';
 import {
@@ -21,6 +21,8 @@ import UserInfo from './components/user-info';
 import getUserPicture from '../../utils/get-user-picture';
 import IconDiscord from '../../components/icons/icon-discord';
 import ModControls from './components/mod-controls';
+import { CopyButton } from '../../components/copy-button';
+import IconFemboyhotline from '../../components/icons/icon-femboyhotline';
 
 const User = () => {
 	const navigate = useNavigate();
@@ -176,10 +178,27 @@ const User = () => {
 								<span>
 									{user?.username || '-'}
 								</span>
+								{user?.role ===
+								USER_ROLE.OWNER ? (
+									<Tooltip
+										placement="top"
+										arrow
+										title="Owner"
+									>
+										<span>
+											<IconFemboyhotline />
+										</span>
+									</Tooltip>
+								) : null}
 								{user?.discord ? (
 									<span className="user-discord">
 										<IconDiscord />
 										{user?.discord?.username}
+										<CopyButton
+											data={
+												user?.discord?.username
+											}
+										/>
 									</span>
 								) : null}
 							</div>
@@ -307,9 +326,11 @@ const UserStyle = styled.div`
 				.profile-name {
 					font-weight: 600;
 					font-size: 24px;
+					> *:not(:last-child) {
+						margin-right: 10px;
+					}
 					.user-discord {
 						font-size: 14px;
-						margin-left: 10px;
 						display: inline-flex;
 						align-items: center;
 						column-gap: 5px;

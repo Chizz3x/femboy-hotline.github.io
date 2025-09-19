@@ -221,9 +221,20 @@ const Modal = (
 						)}
 						onClick={() => uploadCustom()}
 					>
-						<div className="choose-image">
+						<div
+							className={classes(
+								'choose-image',
+								custom
+									? 'choose-image-uploaded'
+									: '',
+							)}
+						>
 							<PhotoCameraIcon />
-							<span>Upload</span>
+							<span>
+								{custom && !loadingMe && !selected
+									? 'Change'
+									: 'Upload'}
+							</span>
 						</div>
 						{custom ? (
 							<div
@@ -298,6 +309,9 @@ const ModalChangePictureStyle = styled.div`
 				font-size: 12px;
 				width: 100%;
 				height: 100%;
+				background-color: ${({ theme }) =>
+					theme?.palette?.background?.default};
+				border-radius: 50%;
 			}
 			&.selected {
 				border-color: ${({ theme }) =>
@@ -314,17 +328,18 @@ const ModalChangePictureStyle = styled.div`
 		}
 		.image-box-custom {
 			position: relative;
+			&.selected {
+				.choose-image {
+					opacity: 0;
+					&:hover {
+						opacity: 0.8;
+					}
+				}
+			}
 			.choose-image {
 				position: absolute;
 				top: 0;
 				left: 0;
-
-				&.selected {
-					opacity: 0;
-					&:hover {
-						opacity: 0.5;
-					}
-				}
 			}
 		}
 	}

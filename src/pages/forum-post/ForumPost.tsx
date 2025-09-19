@@ -53,8 +53,14 @@ import {
 	NGuide,
 } from '../../components/guide';
 import classes from '../../utils/classes';
-import { CSSMediaSize } from '../../const';
+import {
+	CSSMediaSize,
+	USER_ROLE,
+} from '../../const';
 import getUserPicture from '../../utils/get-user-picture';
+import IconDiscord from '../../components/icons/icon-discord';
+import { CopyButton } from '../../components/copy-button';
+import IconFemboyhotline from '../../components/icons/icon-femboyhotline';
 
 const getGuidePath = (
 	forumId: string,
@@ -530,8 +536,35 @@ const ForumPost = () => {
 									{forum?.author?.username}
 								</span>
 							)}
+							{forum?.author?.role ===
+							USER_ROLE.OWNER ? (
+								<Tooltip
+									placement="top"
+									arrow
+									title="Owner"
+								>
+									<span>
+										<IconFemboyhotline />
+									</span>
+								</Tooltip>
+							) : null}
 							{forum?.author_id === user?._id ? (
 								<YouTag />
+							) : null}
+							{forum?.author?.discord ? (
+								<span className="author-discord">
+									<IconDiscord />
+									{
+										forum?.author?.discord
+											?.username
+									}
+									<CopyButton
+										data={
+											forum?.author?.discord
+												?.username
+										}
+									/>
+								</span>
 							) : null}
 						</div>
 						<div className="post-author-right-bottom">
@@ -710,6 +743,18 @@ const ForumPost = () => {
 									>
 										{user?.username}
 									</span>
+									{forum?.author?.role ===
+									USER_ROLE.OWNER ? (
+										<Tooltip
+											placement="top"
+											arrow
+											title="Owner"
+										>
+											<span>
+												<IconFemboyhotline />
+											</span>
+										</Tooltip>
+									) : null}
 								</div>
 								<form
 									onSubmit={onSubmitPostComment}
@@ -906,6 +951,15 @@ const ForumPostStyle = styled.div`
 				display: flex;
 				column-gap: 5px;
 				align-items: center;
+				.author-discord {
+					font-size: 14px;
+					margin-left: 10px;
+					display: inline-flex;
+					align-items: center;
+					column-gap: 5px;
+					color: ${({ theme }) =>
+						theme?.palette?.text?.secondary};
+				}
 			}
 			.post-author-username {
 				cursor: pointer;
@@ -969,6 +1023,8 @@ const ForumPostStyle = styled.div`
 				row-gap: 10px;
 				height: 100%;
 				.comment-new-author {
+					display: flex;
+					column-gap: 5px;
 					&:hover {
 						text-decoration: underline;
 						cursor: pointer;
@@ -1019,6 +1075,13 @@ const ForumPostStyle = styled.div`
 		padding: 20px 10px;
 		.comments-container-root {
 			overflow-x: auto;
+		}
+		.post-author-container {
+			.post-author-right {
+				.post-author-right-top {
+					flex-wrap: wrap;
+				}
+			}
 		}
 	}
 `;

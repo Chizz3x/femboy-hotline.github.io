@@ -44,6 +44,8 @@ import yupValidationResolver from '../../../utils/yupValidationResolver';
 import { InfoHover } from '../../../components/info-hover';
 import trimSlateValue from '../../../utils/trim-slate-value';
 import getUserPicture from '../../../utils/get-user-picture';
+import { USER_ROLE } from '../../../const';
+import IconFemboyhotline from '../../../components/icons/icon-femboyhotline';
 
 const CommentsContainer = (
 	props: NCommentContainer.ICommentsContainerProps,
@@ -309,6 +311,18 @@ const CommentsContainer = (
 										{m?.author?.username}
 									</span>
 								)}
+								{m?.author?.role ===
+								USER_ROLE.OWNER ? (
+									<Tooltip
+										placement="top"
+										arrow
+										title="Owner"
+									>
+										<span>
+											<IconFemboyhotline />
+										</span>
+									</Tooltip>
+								) : null}
 								{m?.author_id === user?._id ? (
 									<YouTag />
 								) : null}

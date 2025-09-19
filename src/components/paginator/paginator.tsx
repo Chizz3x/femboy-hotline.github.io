@@ -35,6 +35,8 @@ const Paginator = (props: NPaginator.IProps) => {
 			<Pagination
 				{...paginationProps}
 				count={pageCount || 0}
+				siblingCount={0}
+				boundaryCount={1}
 			/>
 		</PaginatorStyle>
 	);

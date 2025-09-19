@@ -13,6 +13,7 @@ export { PrivateTag };
 
 const PrivateTagStyle = styled.div`
 	width: min-content;
+	height: min-content;
 	font-size: 11px;
 	color: ${({ theme }) =>
 		theme?.palette?.text?.primary};

@@ -12,12 +12,16 @@ import { Delete as DeleteIcon } from '@mui/icons-material';
 import dayjs from '../../../../utils/dayjs';
 import { ROUTES } from '../../../../routes';
 import buildRoute from '../../../../utils/build-route';
-import { CSSMediaSize } from '../../../../const';
+import {
+	CSSMediaSize,
+	USER_ROLE,
+} from '../../../../const';
 import { changeModals } from '../../../../components/modals/modals';
 import { AnonymousTag } from '../../../../components/tags/anonymous-tag';
 import { YouTag } from '../../../../components/tags/you-tag';
 import { PrivateTag } from '../../../../components/tags/private-tag';
 import getUserPicture from '../../../../utils/get-user-picture';
+import IconFemboyhotline from '../../../../components/icons/icon-femboyhotline';
 
 const ForumAuthor = (
 	props: NForumCard.IForumAuthorProps,
@@ -51,6 +55,18 @@ const ForumAuthor = (
 						)}
 					</span>
 				</div>
+				{forum?.author?.role ===
+				USER_ROLE.OWNER ? (
+					<Tooltip
+						placement="top"
+						arrow
+						title="Owner"
+					>
+						<span>
+							<IconFemboyhotline />
+						</span>
+					</Tooltip>
+				) : null}
 				<div className="forum-author-details-bottom">
 					{isAuthor ? <YouTag /> : null}
 				</div>
@@ -236,7 +252,8 @@ const ForumCardStyle = styled.div`
 	}
 	.middle-container {
 		display: flex;
-		align-items: center;
+		column-gap: 5px;
+		/*align-items: center;*/
 	}
 	.right-container {
 		display: flex;

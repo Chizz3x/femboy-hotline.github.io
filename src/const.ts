@@ -128,6 +128,8 @@ export const DISCORD_AUTH_REDIRECT =
 		`${API_URL}/auth/discord/callback`,
 	);
 
+export const PHONE_NUMBER = '248-434-5508';
+
 export const TEST = 'test';
 
 if (IS_DEV)

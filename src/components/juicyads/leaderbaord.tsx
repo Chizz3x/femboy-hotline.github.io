@@ -142,6 +142,7 @@ const JALeaderboardStyle = styled.div`
 	max-width: 100%;
 	display: flex;
 	justify-content: center;
+	margin: 10px 0;
 	&.ad-blocked {
 		box-sizing: border-box;
 		color: white;
