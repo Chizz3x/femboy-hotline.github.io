@@ -23,6 +23,7 @@ import Forum from './forum';
 import ForumPost from './forum-post';
 import ForumPostNew from './forum-post-new';
 import SafePlace from './safe-place';
+import ChangeEmail from './change-email';
 
 export const PAGES: RouteProps[] = [
 	{
@@ -198,6 +199,14 @@ export const PAGES: RouteProps[] = [
 		element: (
 			<Layout>
 				<SafePlace />
+			</Layout>
+		),
+	},
+	{
+		path: ROUTES.changeEmail,
+		element: (
+			<Layout>
+				<ChangeEmail />
 			</Layout>
 		),
 	},

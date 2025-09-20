@@ -26,6 +26,7 @@ export const ROUTES = {
 	forumPost: '/forum/:id',
 	forumPostNew: '/forum/new',
 	safePlace: '/safe-place',
+	changeEmail: '/change-email',
 };
 
 export const API_ROUTES = {
@@ -42,10 +43,11 @@ export const API_ROUTES = {
 	resetPassword: `${API_URL}/user/reset-password`,
 	userUpdateInfo: `${API_URL}/user/update-info`,
 	updateUserSettings: `${API_URL}/user/update-settings`,
+	changeEmail: `${API_URL}/user/change-email`,
 	changePicture: `${API_URL}/user/change-picture`,
 	requestUploadPicture: `${API_URL}/user/request-upload-picture`,
 	changeBanner: `${API_URL}/user/change-banner`,
-	changeUsername: `${API_URL}/user/change-username`,
+	// changeUsername: `${API_URL}/user/change-username`,
 	userBan: `${API_URL}/user/ban`,
 	userUnban: `${API_URL}/user/unban`,
 	forumNew: `${API_URL}/forum/new`,

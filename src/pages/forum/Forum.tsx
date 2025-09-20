@@ -222,6 +222,8 @@ const Forum = () => {
 						key={i}
 						forum={m}
 						isAuthor={
+							user &&
+							m?.author &&
 							user?._id === m?.author?._id
 						}
 						refetchPosts={fetchForum}

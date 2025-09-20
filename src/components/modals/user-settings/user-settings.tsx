@@ -18,15 +18,19 @@ import {
 } from '@mui/icons-material';
 import useAxios from 'axios-hooks';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import { changeModals, NModals } from '../modals';
 import { ModalLayout } from '../layout';
 import yupValidationResolver from '../../../utils/yupValidationResolver';
 import schema from './schema';
 import { useAuth } from '../../contexts/auth';
-import { API_ROUTES } from '../../../routes';
+import {
+	API_ROUTES,
+	ROUTES,
+} from '../../../routes';
 import { Auth } from '../../../utils/auth';
 import { getUniqueId } from '../../../scripts/unique-id-manager';
-import { NotImplemented } from '../../not-implemented';
 import { InfoHover } from '../../info-hover';
 import IconDiscord from '../../icons/icon-discord';
 import {
@@ -41,10 +45,8 @@ const getDefaultForm = (
 	return {
 		email: '',
 		username: '',
-		unlistedProfile: false,
-		currentPassword: '',
-		newPassword: '',
-		repeatPassword: '',
+		unlisted: false,
+		password: '',
 		...props,
 	};
 };
@@ -59,10 +61,20 @@ const Modal = (
 		loaded: loadedAuth,
 	} = useAuth();
 
+	const navigate = useNavigate();
+
 	const [{ data: meData }, getMe] = useAxios(
 		{
 			method: 'POST',
 			url: API_ROUTES.getMe,
+		},
+		{ manual: true, autoCancel: true },
+	);
+
+	const [, updateUserSettings] = useAxios(
+		{
+			method: 'POST',
+			url: API_ROUTES.updateUserSettings,
 		},
 		{ manual: true, autoCancel: true },
 	);
@@ -72,12 +84,6 @@ const Modal = (
 	const [
 		showCurrentPassword,
 		setShowCurrentPassword,
-	] = React.useState<boolean>(false);
-	const [showNewPassword, setShowNewPassword] =
-		React.useState<boolean>(false);
-	const [
-		showRepeatPassword,
-		setShowRepeatPassword,
 	] = React.useState<boolean>(false);
 
 	const closeModal = () => {
@@ -97,9 +103,26 @@ const Modal = (
 		defaultValues: getDefaultForm(),
 	});
 
-	const onSubmit = handleSubmit((values) => {
-		console.log(values);
-	});
+	const onSubmit = handleSubmit(
+		async (values) => {
+			const resp = await updateUserSettings({
+				headers: {
+					Authorization: `Bearer ${Auth.getToken()}`,
+					uniqueId: getUniqueId(),
+				},
+				data: {
+					...values,
+				},
+			});
+
+			if (resp?.data?.data?.success) {
+				toast('Settings updated', {
+					type: 'success',
+				});
+				Auth.check();
+			}
+		},
+	);
 
 	const doConnect = (type: 'discord') => {
 		switch (type) {
@@ -129,7 +152,7 @@ const Modal = (
 						},
 					);
 				} catch (err) {
-					console.log('Something went wrong');
+					console.error('Something went wrong');
 				}
 				Auth.check();
 				break;
@@ -137,6 +160,11 @@ const Modal = (
 			default:
 				break;
 		}
+	};
+
+	const goResetPassword = () => {
+		navigate(ROUTES.resetPassword);
+		closeModal();
 	};
 
 	React.useEffect(() => {
@@ -157,6 +185,9 @@ const Modal = (
 							username:
 								res?.data?.data?.user?.username ||
 								'',
+							unlisted:
+								res?.data?.data?.user
+									?.unlisted_profile || false,
 						}),
 					);
 				}
@@ -171,9 +202,9 @@ const Modal = (
 			hideCloseButton
 			title="Settings"
 			name={name}
+			width="500px"
 		>
 			<ModalUserSettingsStyle>
-				<NotImplemented />
 				<form>
 					<div className="form-body">
 						<div className="form-generic">
@@ -216,29 +247,32 @@ const Modal = (
 						</div>
 						<div className="form-privacy">
 							<h3>Privacy</h3>
-							<Controller
-								name="unlistedProfile"
-								control={control}
-								render={({ field }) => (
-									<FormControlLabel
-										label={
-											<div className="checkbox-label">
-												<span>
-													Unlisted profile
-												</span>
-												<InfoHover text="Whether your profile should be unlisted from public lists. This does not hide your profile." />
-											</div>
-										}
-										control={
-											<Checkbox
-												{...register(
-													'unlistedProfile',
-												)}
-											/>
-										}
-									/>
-								)}
-							/>
+							<div className="privacy-rows">
+								<Controller
+									name="unlisted"
+									control={control}
+									render={({ field }) => (
+										<FormControlLabel
+											label={
+												<div className="checkbox-label">
+													<span>
+														Unlisted profile
+													</span>
+													<InfoHover text="Whether your profile should be unlisted from public lists. This does not hide your profile." />
+												</div>
+											}
+											control={
+												<Checkbox
+													{...register(
+														'unlisted',
+													)}
+													checked={field.value}
+												/>
+											}
+										/>
+									)}
+								/>
+							</div>
 						</div>
 						<div className="form-connections">
 							<h3>Connections</h3>
@@ -283,104 +317,20 @@ const Modal = (
 						</div>
 						<div className="form-security">
 							<h3>Security</h3>
-							<TextField
-								helperText={
-									formErrors.newPassword?.message
-								}
-								error={
-									!!formErrors.newPassword
-										?.message
-								}
-								size="small"
-								label="New password"
-								type={
-									showNewPassword
-										? 'text'
-										: 'password'
-								}
-								InputProps={{
-									...register('newPassword'),
-									endAdornment: (
-										<InputAdornment position="end">
-											<IconButton
-												size="small"
-												aria-label="toggle password visibility"
-												onClick={() =>
-													setShowNewPassword(
-														(v) => !v,
-													)
-												}
-												onMouseDown={() =>
-													setShowNewPassword(
-														(v) => !v,
-													)
-												}
-											>
-												{showNewPassword ? (
-													<VisibilityIcon fontSize="small" />
-												) : (
-													<VisibilityOffIcon fontSize="small" />
-												)}
-											</IconButton>
-										</InputAdornment>
-									),
-								}}
-							/>
-							<TextField
-								helperText={
-									formErrors.repeatPassword
-										?.message
-								}
-								error={
-									!!formErrors.repeatPassword
-										?.message
-								}
-								size="small"
-								label="Repeat password"
-								type={
-									showRepeatPassword
-										? 'text'
-										: 'password'
-								}
-								InputProps={{
-									...register('repeatPassword'),
-									endAdornment: (
-										<InputAdornment position="end">
-											<IconButton
-												size="small"
-												aria-label="toggle password visibility"
-												onClick={() =>
-													setShowRepeatPassword(
-														(v) => !v,
-													)
-												}
-												onMouseDown={() =>
-													setShowRepeatPassword(
-														(v) => !v,
-													)
-												}
-											>
-												{showRepeatPassword ? (
-													<VisibilityIcon fontSize="small" />
-												) : (
-													<VisibilityOffIcon fontSize="small" />
-												)}
-											</IconButton>
-										</InputAdornment>
-									),
-								}}
-							/>
+							<div className="security-buttons">
+								<Button onClick={goResetPassword}>
+									Reset password
+								</Button>
+							</div>
 						</div>
 						<div className="non-form">
 							<h3>Confirm</h3>
 							<TextField
 								helperText={
-									formErrors.currentPassword
-										?.message
+									formErrors.password?.message
 								}
 								error={
-									!!formErrors.currentPassword
-										?.message
+									!!formErrors.password?.message
 								}
 								size="small"
 								label="Current password"
@@ -390,7 +340,7 @@ const Modal = (
 										: 'password'
 								}
 								InputProps={{
-									...register('currentPassword'),
+									...register('password'),
 									endAdornment: (
 										<InputAdornment position="end">
 											<IconButton
@@ -445,10 +395,8 @@ export namespace NModalUserSettings {
 	export interface IForm {
 		email: string;
 		username: string;
-		unlistedProfile: boolean;
-		currentPassword: string;
-		newPassword: string;
-		repeatPassword: string;
+		unlisted: boolean;
+		password: string;
 	}
 }
 
@@ -489,6 +437,7 @@ const ModalUserSettingsStyle = styled.div`
 		column-gap: 5px;
 	}
 	.buttons {
+		margin-top: 10px;
 		display: flex;
 		justify-content: flex-end;
 	}

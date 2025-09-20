@@ -548,7 +548,8 @@ const ForumPost = () => {
 									</span>
 								</Tooltip>
 							) : null}
-							{forum?.author_id === user?._id ? (
+							{user &&
+							forum?.author_id === user?._id ? (
 								<YouTag />
 							) : null}
 							{forum?.author?.discord ? (

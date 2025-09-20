@@ -37,10 +37,10 @@ export default () => {
 				'Only lowercase letters, dashes (-), underscores (_), and periods (.) are allowed',
 			)
 			.label('Username'),
-		unlistedProfile: yup
+		unlisted: yup
 			.boolean()
-			.label('Hidden profile'),
-		currentPassword: yup
+			.label('Unlisted profile'),
+		password: yup
 			.string()
 			.trim()
 			.required(requiredMessage('Password'))
@@ -55,34 +55,6 @@ export default () => {
 			.matches(
 				/\d/,
 				'Password must contain at least one number',
-			)
-			.label('Password'),
-		newPassword: yup
-			.string()
-			.trim()
-			.required(requiredMessage('Password'))
-			.min(
-				6,
-				'Email must be at least 6 characters long',
-			)
-			.max(
-				128,
-				'Email must be at most 128 characters long',
-			)
-			.matches(
-				/\d/,
-				'Password must contain at least one number',
-			)
-			.label('Password'),
-		repeatPassword: yup
-			.string()
-			.trim()
-			.required(
-				requiredMessage('Matching password'),
-			)
-			.oneOf(
-				[yup.ref('newPassword')],
-				'Passwords must match',
 			)
 			.label('Password'),
 	});

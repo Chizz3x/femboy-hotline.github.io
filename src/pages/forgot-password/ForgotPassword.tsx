@@ -22,6 +22,9 @@ const ForgotPassword = () => {
 	const { executeRecaptcha } =
 		useGoogleReCaptcha();
 
+	const [requested, setRequested] =
+		React.useState(false);
+
 	const {
 		register,
 		handleSubmit,
@@ -61,6 +64,7 @@ const ForgotPassword = () => {
 						toast('Please check your email', {
 							type: 'success',
 						});
+						setRequested(true);
 					} else throw Error(resp?.data?.message);
 				} else
 					throw Error('Google Recaptcha failed');
@@ -76,37 +80,50 @@ const ForgotPassword = () => {
 	return (
 		<ForgotPasswordStyle>
 			<div className="forgot-password-container">
-				<h2>Forgot password</h2>
-				<form
-					className="forgot-password-form"
-					onSubmit={onSubmit}
-				>
-					<div className="fields">
-						<div className="row">
-							<TextField
-								helperText={
-									formErrors.email?.message
-								}
-								error={
-									!!formErrors.email?.message
-								}
-								size="small"
-								label="Email"
-								inputProps={{
-									...register('email'),
-								}}
-							/>
+				<h2>
+					{requested
+						? 'Success!'
+						: 'Forgot password'}
+				</h2>
+				{requested ? (
+					<div className="success">
+						<span>
+							Please check your inbox and perform
+							password reset via the provided link
+						</span>
+					</div>
+				) : (
+					<form
+						className="forgot-password-form"
+						onSubmit={onSubmit}
+					>
+						<div className="fields">
+							<div className="row">
+								<TextField
+									helperText={
+										formErrors.email?.message
+									}
+									error={
+										!!formErrors.email?.message
+									}
+									size="small"
+									label="Email"
+									inputProps={{
+										...register('email'),
+									}}
+								/>
+							</div>
 						</div>
-					</div>
-					<div className="buttons">
-						<Button
-							type="submit"
-							disabled={isFormLoading}
-						>
-							Send
-						</Button>
-					</div>
-				</form>
+						<div className="buttons">
+							<Button
+								type="submit"
+								disabled={isFormLoading}
+							>
+								Send
+							</Button>
+						</div>
+					</form>
+				)}
 			</div>
 		</ForgotPasswordStyle>
 	);

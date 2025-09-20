@@ -318,9 +318,7 @@ const Header = () => {
 									) : (
 										<Avatar
 											alt={user.username}
-											src={`/img/pictures/${
-												user.picture || '1.png'
-											}`}
+											src={getUserPicture(user)}
 										/>
 									)}
 								</Badge>
