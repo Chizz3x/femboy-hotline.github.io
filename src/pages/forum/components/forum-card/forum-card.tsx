@@ -22,6 +22,7 @@ import { YouTag } from '../../../../components/tags/you-tag';
 import { PrivateTag } from '../../../../components/tags/private-tag';
 import getUserPicture from '../../../../utils/get-user-picture';
 import IconFemboyhotline from '../../../../components/icons/icon-femboyhotline';
+import { UserCard } from '../../../../components/user-card';
 
 const ForumAuthor = (
 	props: NForumCard.IForumAuthorProps,
@@ -31,7 +32,7 @@ const ForumAuthor = (
 	const navigate = useNavigate();
 
 	let ForumAuthorComp = (
-		<>
+		<div className="forum-author-inner">
 			<Avatar
 				alt={
 					forum?.anonymous
@@ -71,30 +72,17 @@ const ForumAuthor = (
 					{isAuthor ? <YouTag /> : null}
 				</div>
 			</div>
-		</>
+		</div>
 	);
 
 	if (!forum?.anonymous) {
 		ForumAuthorComp = (
-			<Tooltip
-				title="Visit profile"
-				placement="right"
-				arrow
-			>
-				<ButtonBase
-					disableRipple
-					onClick={(e: React.MouseEvent) => {
-						e.stopPropagation();
-						navigate(
-							buildRoute(ROUTES.userId, {
-								id: forum?.author?._id,
-							}),
-						);
-					}}
-				>
-					{ForumAuthorComp}
-				</ButtonBase>
-			</Tooltip>
+			<UserCard
+				RenderElement={ForumAuthorComp}
+				props={{
+					user: forum?.author,
+				}}
+			/>
 		);
 	}
 
@@ -140,7 +128,10 @@ const ForumCard = (props: NForumCard.IProps) => {
 	);
 
 	const MiddleContainer = (
-		<div className="forum-author">
+		<div
+			className="forum-author"
+			onClick={(e) => e.stopPropagation()}
+		>
 			<ForumAuthor
 				forum={forum}
 				isAuthor={isAuthor}
@@ -231,6 +222,10 @@ const ForumCardStyle = styled.div`
 	.forum-author {
 		display: flex;
 		align-items: center;
+		.forum-author-inner {
+			display: flex;
+			align-items: center;
+		}
 		.forum-author-details {
 			margin-left: 7px;
 			display: flex;

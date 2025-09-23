@@ -50,6 +50,8 @@ export const API_ROUTES = {
 	// changeUsername: `${API_URL}/user/change-username`,
 	userBan: `${API_URL}/user/ban`,
 	userUnban: `${API_URL}/user/unban`,
+	userPosts: `${API_URL}/user/:id/posts`,
+	userComments: `${API_URL}/user/:id/comments`,
 	forumNew: `${API_URL}/forum/new`,
 	forumPosts: `${API_URL}/forum`,
 	forumPost: `${API_URL}/forum/:id`,

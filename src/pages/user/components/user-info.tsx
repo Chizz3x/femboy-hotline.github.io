@@ -18,7 +18,6 @@ import {
 import useAxios from 'axios-hooks';
 import { toast } from 'react-toastify';
 import styled from 'styled-components';
-import { useParams } from 'react-router-dom';
 import dayjs, {
 	Dayjs,
 } from '../../../utils/dayjs';
@@ -60,11 +59,7 @@ const nationalityOptions: NUserInfo.IOption[] =
 	}));
 
 const UserInfo = (props: NUserInfo.IProps) => {
-	const { user, ...rest } = props;
-
-	const siteParams = useParams();
-
-	const otherId = siteParams.id;
+	const { user, isMe = false, ...rest } = props;
 
 	const [editMode, setEditMode] =
 		React.useState(false);
@@ -370,7 +365,7 @@ const UserInfo = (props: NUserInfo.IProps) => {
 								</tr>
 							</tbody>
 						</table>
-						{!otherId ? (
+						{isMe ? (
 							<div className="user-info-buttons">
 								<Button
 									onClick={() => startEdit()}
@@ -386,11 +381,18 @@ const UserInfo = (props: NUserInfo.IProps) => {
 				)}
 			</div>
 			<div className="user-info-right">
-				<Tooltip title="Settings" placement="top">
-					<IconButton onClick={openUserSettings}>
-						<SettingsIcon />
-					</IconButton>
-				</Tooltip>
+				{isMe ? (
+					<Tooltip
+						title="Settings"
+						placement="top"
+					>
+						<IconButton
+							onClick={openUserSettings}
+						>
+							<SettingsIcon />
+						</IconButton>
+					</Tooltip>
+				) : null}
 			</div>
 		</UserInfoStyle>
 	);
@@ -402,6 +404,7 @@ export namespace NUserInfo {
 	export interface IProps
 		extends React.HTMLAttributes<HTMLDivElement> {
 		user: any;
+		isMe?: boolean;
 	}
 	export interface IForm {
 		gender?: string;

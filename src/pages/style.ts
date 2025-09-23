@@ -36,7 +36,13 @@ export default createGlobalStyle`
 		}
 	}
 
-	.icon-table {
+	[class^="icon-"] {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+	}
+
+	.icons-table {
 		td {
 			&:not(:last-child) {
 				padding-right: 20px;

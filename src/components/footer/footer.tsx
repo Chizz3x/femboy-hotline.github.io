@@ -94,7 +94,7 @@ const Footer = () => {
 				</div>
 			</div>
 			<div className="footer-box footer-box-right">
-				<table className="icon-table">
+				<table className="icons-table">
 					<tbody>
 						<tr>
 							{SOCIAL.map((s) => (

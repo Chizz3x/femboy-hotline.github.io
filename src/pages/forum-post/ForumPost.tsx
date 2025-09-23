@@ -61,6 +61,7 @@ import getUserPicture from '../../utils/get-user-picture';
 import IconDiscord from '../../components/icons/icon-discord';
 import { CopyButton } from '../../components/copy-button';
 import IconFemboyhotline from '../../components/icons/icon-femboyhotline';
+import { UserCard } from '../../components/user-card';
 
 const getGuidePath = (
 	forumId: string,
@@ -491,29 +492,19 @@ const ForumPost = () => {
 								src="/img/pictures/1.png"
 							/>
 						) : (
-							<Tooltip
-								title="Visit profile"
-								placement="top"
-								arrow
-							>
-								<Avatar
-									alt={forum?.author?.username}
-									src={getUserPicture(
-										forum?.author,
-									)}
-									imgProps={{
-										onClick: () =>
-											navigate(
-												buildRoute(
-													ROUTES.userId,
-													{
-														id: forum?.author_id,
-													},
-												),
-											),
-									}}
-								/>
-							</Tooltip>
+							<UserCard
+								RenderElement={
+									<Avatar
+										alt={forum?.author?.username}
+										src={getUserPicture(
+											forum?.author,
+										)}
+									/>
+								}
+								props={{
+									user: forum?.author,
+								}}
+							/>
 						)}
 					</div>
 					<div className="post-author-right">
@@ -523,18 +514,16 @@ const ForumPost = () => {
 									<AnonymousTag />
 								</span>
 							) : (
-								<span
-									className="post-author-username"
-									onClick={() =>
-										navigate(
-											buildRoute(ROUTES.userId, {
-												id: forum?.author_id,
-											}),
-										)
+								<UserCard
+									RenderElement={
+										<span className="post-author-username">
+											{forum?.author?.username}
+										</span>
 									}
-								>
-									{forum?.author?.username}
-								</span>
+									props={{
+										user: forum?.author,
+									}}
+								/>
 							)}
 							{forum?.author?.role ===
 							USER_ROLE.OWNER ? (
@@ -681,7 +670,8 @@ const ForumPost = () => {
 						</div>
 					</div>
 				) : null}
-				{user?._id === forum?.author_id &&
+				{user &&
+				user?._id === forum?.author_id &&
 				!editingPost ? (
 					<div className="post-manager">
 						<Button
@@ -701,49 +691,23 @@ const ForumPost = () => {
 				{!userDataLoading && user ? (
 					<div className="post-comment-new">
 						<div className="comment-new-left">
-							<Tooltip
-								title="Visit profile"
-								placement="top"
-								arrow
-							>
-								{userDataLoading ? (
-									<Skeleton
-										variant="circular"
-										width={40}
-										height={40}
-									/>
-								) : (
-									<Avatar
-										alt={user.username}
-										src={getUserPicture(user)}
-										imgProps={{
-											onClick: () =>
-												navigate(
-													buildRoute(
-														ROUTES.userId,
-														{ id: user._id },
-													),
-												),
-										}}
-									/>
-								)}
-							</Tooltip>
+							{userDataLoading ? (
+								<Skeleton
+									variant="circular"
+									width={40}
+									height={40}
+								/>
+							) : (
+								<Avatar
+									alt={user.username}
+									src={getUserPicture(user)}
+								/>
+							)}
 						</div>
 						<div className="comment-new-right">
 							<div className="comment-new-right-inner">
 								<div className="comment-new-author">
-									<span
-										onClick={() =>
-											navigate(
-												buildRoute(
-													ROUTES.userId,
-													{ id: user._id },
-												),
-											)
-										}
-									>
-										{user?.username}
-									</span>
+									<span>{user?.username}</span>
 									{forum?.author?.role ===
 									USER_ROLE.OWNER ? (
 										<Tooltip
@@ -1026,10 +990,6 @@ const ForumPostStyle = styled.div`
 				.comment-new-author {
 					display: flex;
 					column-gap: 5px;
-					&:hover {
-						text-decoration: underline;
-						cursor: pointer;
-					}
 				}
 				.input-markdown {
 					flex-grow: 1;

@@ -133,7 +133,7 @@ const Forum = () => {
 				uniqueId: getUniqueId(),
 			},
 			params: {
-				withAuthors: true,
+				withAuthor: true,
 				offset:
 					(Number(searchParams.get('page') || 1) -
 						1) *

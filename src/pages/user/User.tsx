@@ -1,14 +1,10 @@
 import styled from 'styled-components';
 import React from 'react';
-import {
-	useNavigate,
-	useParams,
-} from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import useAxios from 'axios-hooks';
 import { PhotoCamera as PhotoCameraIcon } from '@mui/icons-material';
 import { Skeleton, Tooltip } from '@mui/material';
-import { useAuth } from '../../components/contexts/auth';
-import { API_ROUTES, ROUTES } from '../../routes';
+import { API_ROUTES } from '../../routes';
 import {
 	CSSMediaSize,
 	USER_ROLE,
@@ -23,10 +19,11 @@ import IconDiscord from '../../components/icons/icon-discord';
 import ModControls from './components/mod-controls';
 import { CopyButton } from '../../components/copy-button';
 import IconFemboyhotline from '../../components/icons/icon-femboyhotline';
+import UserPosts from './components/user-posts';
+import UserComments from './components/user-comments';
+import { UserCard } from '../../components/user-card';
 
 const User = () => {
-	const navigate = useNavigate();
-	const authed = useAuth();
 	const params = useParams();
 
 	const otherId = params.id;
@@ -50,13 +47,16 @@ const User = () => {
 
 	const [
 		{ data: userDataMe, loading: loadingMe },
-		getMe,
 	] = useAxios(
 		{
 			method: 'POST',
 			url: API_ROUTES.getMe,
+			headers: {
+				Authorization: `Bearer ${Auth.getToken()}`,
+				uniqueId: getUniqueId(),
+			},
 		},
-		{ manual: true, autoCancel: true },
+		{ autoCancel: true },
 	);
 	const [
 		{ data: userData, loading: loadingUser },
@@ -68,8 +68,15 @@ const User = () => {
 		{ manual: true, autoCancel: true },
 	);
 	const user =
-		userDataMe?.data?.user ||
-		userData?.data?.user;
+		!otherId ||
+		userDataMe?.data?.user?.username ===
+			otherId ||
+		userCurrent?.data?.user?._id === otherId
+			? userDataMe?.data?.user
+			: userData?.data?.user;
+
+	const isMe =
+		userDataMe?.data?.user?._id === user?._id;
 
 	const onChangePicture = () => {
 		window.dispatchEvent(
@@ -92,27 +99,14 @@ const User = () => {
 	};
 
 	React.useEffect(() => {
-		if (!otherId) {
-			if (authed.loaded) {
-				if (!authed.authed) {
-					navigate(ROUTES.login);
-				} else {
-					getMe({
-						headers: {
-							Authorization: `Bearer ${Auth.getToken()}`,
-							uniqueId: getUniqueId(),
-						},
-					});
-				}
-			}
-		} else {
+		if (otherId) {
 			getUser({
 				url: buildApiRoute(API_ROUTES.getUser, {
 					id: otherId,
 				}),
 			});
 		}
-	}, [authed.loaded, authed.seed, otherId]);
+	}, [otherId]);
 
 	return (
 		<UserStyle>
@@ -134,7 +128,7 @@ const User = () => {
 							}}
 						/>
 					)}
-					{!otherId && !loadingMe ? (
+					{isMe ? (
 						<div
 							className="editable-overlay"
 							onClick={onChangeBanner}
@@ -162,7 +156,7 @@ const User = () => {
 								}}
 							/>
 						)}
-						{!otherId && !loadingMe ? (
+						{isMe ? (
 							<div
 								className="editable-overlay"
 								onClick={onChangePicture}
@@ -175,9 +169,16 @@ const User = () => {
 					<div className="profile-name-box">
 						<div className="profile-name-box-inner">
 							<div className="profile-name">
-								<span>
-									{user?.username || '-'}
-								</span>
+								<UserCard
+									RenderElement={
+										<UsernameTextStyle>
+											{user?.username || '-'}
+										</UsernameTextStyle>
+									}
+									props={{
+										user,
+									}}
+								/>
 								{user?.role ===
 								USER_ROLE.OWNER ? (
 									<Tooltip
@@ -212,7 +213,11 @@ const User = () => {
 				</div>
 			) : null}
 			<div className="user-content">
-				<UserInfo user={user} />
+				<UserInfo user={user} isMe={isMe} />
+			</div>
+			<div className="user-social-activity">
+				<UserPosts user={user} isMe={isMe} />
+				<UserComments user={user} isMe={isMe} />
 			</div>
 		</UserStyle>
 	);
@@ -223,6 +228,13 @@ export default User;
 export namespace NUser {
 	//
 }
+
+const UsernameTextStyle = styled.span`
+	&:hover {
+		cursor: pointer;
+		text-decoration: underline;
+	}
+`;
 
 const UserStyle = styled.div`
 	flex-shrink: 0;
@@ -342,8 +354,15 @@ const UserStyle = styled.div`
 		}
 	}
 
+	.user-social-activity {
+		display: flex;
+		justify-content: space-evenly;
+		column-gap: 10px;
+	}
+
 	.user-content,
-	.mod-controls {
+	.mod-controls,
+	.user-social-activity {
 		padding: 10px 20px;
 	}
 

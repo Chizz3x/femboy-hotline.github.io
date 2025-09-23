@@ -46,6 +46,7 @@ import trimSlateValue from '../../../utils/trim-slate-value';
 import getUserPicture from '../../../utils/get-user-picture';
 import { USER_ROLE } from '../../../const';
 import IconFemboyhotline from '../../../components/icons/icon-femboyhotline';
+import { UserCard } from '../../../components/user-card';
 
 const CommentsContainer = (
 	props: NCommentContainer.ICommentsContainerProps,
@@ -264,29 +265,19 @@ const CommentsContainer = (
 									src="img/pictures/1.png"
 								/>
 							) : (
-								<Tooltip
-									title="Visit profile"
-									placement="top"
-									arrow
-								>
-									<Avatar
-										alt={m?.author?.username}
-										src={getUserPicture(
-											m?.author,
-										)}
-										imgProps={{
-											onClick: () =>
-												navigate(
-													buildRoute(
-														ROUTES.userId,
-														{
-															id: m?.author_id,
-														},
-													),
-												),
-										}}
-									/>
-								</Tooltip>
+								<UserCard
+									RenderElement={
+										<Avatar
+											alt={m?.author?.username}
+											src={getUserPicture(
+												m?.author,
+											)}
+										/>
+									}
+									props={{
+										user: m?.author,
+									}}
+								/>
 							)}
 						</div>
 						<div className="comment-item-right">
@@ -296,20 +287,16 @@ const CommentsContainer = (
 								m?.anonymous ? (
 									<AnonymousTag />
 								) : (
-									<span
-										onClick={() =>
-											navigate(
-												buildRoute(
-													ROUTES.userId,
-													{
-														id: m?.author_id,
-													},
-												),
-											)
+									<UserCard
+										RenderElement={
+											<span>
+												{m?.author?.username}
+											</span>
 										}
-									>
-										{m?.author?.username}
-									</span>
+										props={{
+											user: m?.author,
+										}}
+									/>
 								)}
 								{m?.author?.role ===
 								USER_ROLE.OWNER ? (
