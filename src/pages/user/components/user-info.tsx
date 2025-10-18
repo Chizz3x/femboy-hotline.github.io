@@ -34,6 +34,8 @@ import { getUniqueId } from '../../../scripts/unique-id-manager';
 import { Auth } from '../../../utils/auth';
 import { DatePicker } from '../../../components/inputs/date-picker';
 import { changeModals } from '../../../components/modals/modals';
+import { fetchUser } from '../../../store/slices/user';
+import { useDispatch } from '../../../store/store';
 
 const getDefaultForm = (
 	props?: Partial<NUserInfo.IForm>,
@@ -61,6 +63,8 @@ const nationalityOptions: NUserInfo.IOption[] =
 const UserInfo = (props: NUserInfo.IProps) => {
 	const { user, isMe = false, ...rest } = props;
 
+	const dispatch = useDispatch();
+
 	const [editMode, setEditMode] =
 		React.useState(false);
 
@@ -80,7 +84,7 @@ const UserInfo = (props: NUserInfo.IProps) => {
 		handleSubmit,
 		control,
 		formState: {
-			isLoading: isFormLoading,
+			isSubmitting: isFormSubmitting,
 			errors: formErrors,
 		},
 		reset: resetForm,
@@ -97,7 +101,7 @@ const UserInfo = (props: NUserInfo.IProps) => {
 				await updateInfo({
 					data: values,
 				});
-				Auth.check();
+				dispatch(fetchUser());
 			} catch (err) {
 				toast('Failed to update info', {
 					type: 'error',
@@ -309,13 +313,13 @@ const UserInfo = (props: NUserInfo.IProps) => {
 						</table>
 						<div className="user-info-buttons">
 							<Button
-								disabled={isFormLoading}
+								disabled={isFormSubmitting}
 								onClick={() => endEdit()}
 							>
 								Cancel
 							</Button>
 							<Button
-								disabled={isFormLoading}
+								disabled={isFormSubmitting}
 								type="submit"
 							>
 								Save

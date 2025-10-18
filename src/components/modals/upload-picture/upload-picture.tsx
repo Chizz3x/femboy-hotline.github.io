@@ -21,8 +21,10 @@ import {
 	CLOUDINARY_API_ROUTES,
 } from '../../../routes';
 import { getUniqueId } from '../../../scripts/unique-id-manager';
-import { Auth } from '../../../utils/auth';
 import { CLOUDINARY_KEY } from '../../../const';
+import { useDispatch } from '../../../store/store';
+import { fetchUser } from '../../../store/slices/user';
+import { Auth } from '../../../utils/auth';
 
 const pages: NModalUploadPicture.IPage[] = [
 	{
@@ -42,6 +44,8 @@ const name = 'ModalUploadPicture';
 const Modal = (
 	props: NModalUploadPicture.IProps,
 ) => {
+	const dispatch = useDispatch();
+
 	const [page, setPage] =
 		React.useState<NModalUploadPicture.IPage>(
 			pages[0],
@@ -116,17 +120,20 @@ const Modal = (
 				'public_id',
 				uploadRequestData?.public_id,
 			);
-			const res = await uploadPicture({
+			await uploadPicture({
 				data: formData,
 			});
 
 			window.dispatchEvent(
-				changeModals({ [name]: null }),
+				changeModals({
+					[name]: null,
+					ModalChangePicture: null,
+				}),
 			);
-			Auth.check();
 			toast('Picture changed', {
 				type: 'success',
 			});
+			dispatch(fetchUser());
 		} catch (err) {
 			toast('Failed to upload image', {
 				type: 'error',

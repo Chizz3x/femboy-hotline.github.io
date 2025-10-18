@@ -12,11 +12,15 @@ import {
 	API_ROUTES,
 	CLOUDINARY_API_ROUTES,
 } from '../../../routes';
-import { useAuth } from '../../contexts/auth';
 import { getUniqueId } from '../../../scripts/unique-id-manager';
 import { Auth } from '../../../utils/auth';
 import checkUpload from '../../../utils/check-upload';
 import buildApiRoute from '../../../utils/build-api-route';
+import {
+	useDispatch,
+	useSelector,
+} from '../../../store/store';
+import { fetchUser } from '../../../store/slices/user';
 
 const defaultImage = '1.png';
 const images: NModalChangePicture.IImage[] = [
@@ -50,7 +54,10 @@ const name = 'ModalChangePicture';
 const Modal = (
 	props: NModalChangePicture.IProps,
 ) => {
-	const authed = useAuth();
+	const { user, loading } = useSelector(
+		(st) => st.user,
+	);
+	const dispatch = useDispatch();
 
 	const [selected, setSelected] =
 		React.useState<NModalChangePicture.IImage | null>(
@@ -62,14 +69,6 @@ const Modal = (
 		string | null
 	>(null);
 
-	const [{ loading: loadingMe }, getMe] =
-		useAxios(
-			{
-				method: 'POST',
-				url: API_ROUTES.getMe,
-			},
-			{ manual: true, autoCancel: true },
-		);
 	const [, userChangePicture] = useAxios(
 		{
 			method: 'POST',
@@ -108,10 +107,10 @@ const Modal = (
 			window.dispatchEvent(
 				changeModals({ [name]: null }),
 			);
-			Auth.check();
 			toast('Picture changed', {
 				type: 'success',
 			});
+			dispatch(fetchUser());
 		} else {
 			toast('Failed to change picture', {
 				type: 'error',
@@ -119,69 +118,54 @@ const Modal = (
 		}
 	};
 
-	React.useEffect(() => {
-		(async () => {
-			if (authed.loaded) {
-				if (authed.authed) {
-					const res = await getMe({
-						headers: {
-							Authorization: `Bearer ${Auth.getToken()}`,
-							uniqueId: getUniqueId(),
-						},
-					});
-					if (res?.data?.data?.user?.picture) {
-						setSelected(
-							images.find(
-								(f) =>
-									f.fileName ===
-									res?.data?.data?.user?.picture,
-							) || null,
-						);
-						setCurrentImage(
-							res?.data?.data?.user?.picture,
-						);
-						setCustom(null);
-					} else if (
-						res?.data?.data?.user?.picture_custom
-					) {
-						const imagePath = buildApiRoute(
-							CLOUDINARY_API_ROUTES.getUpload,
-							{
-								folder: `pictures`,
-								name: `${res?.data?.data?.user?._id}_${res?.data?.data?.user?.picture_custom}.webp`,
-							},
-						);
-						const uploadedImage =
-							await checkUpload(imagePath);
+	const handleStates = async () => {
+		if (user?.picture) {
+			setSelected(
+				images.find(
+					(f) => f.fileName === user?.picture,
+				) || null,
+			);
+			setCurrentImage(user?.picture);
+			setCustom(null);
+		} else if (user?.picture_custom) {
+			const imagePath = buildApiRoute(
+				CLOUDINARY_API_ROUTES.getUpload,
+				{
+					folder: `pictures`,
+					name: `${user?._id}_${user?.picture_custom}.webp`,
+				},
+			);
+			const uploadedImage = await checkUpload(
+				imagePath,
+			);
 
-						if (uploadedImage) {
-							setSelected(null);
-							setCurrentImage(null);
-							setCustom(imagePath);
-						} else {
-							setSelected(
-								images.find(
-									(f) =>
-										f.fileName === defaultImage,
-								) || null,
-							);
-							setCurrentImage(defaultImage);
-							setCustom(null);
-						}
-					} else {
-						setSelected(
-							images.find(
-								(f) =>
-									f.fileName === defaultImage,
-							) || null,
-						);
-						setCurrentImage(defaultImage);
-						setCustom(null);
-					}
-				}
+			if (uploadedImage) {
+				setSelected(null);
+				setCurrentImage(null);
+				setCustom(imagePath);
+			} else {
+				setSelected(
+					images.find(
+						(f) => f.fileName === defaultImage,
+					) || null,
+				);
+				setCurrentImage(defaultImage);
+				setCustom(null);
 			}
-		})();
-	}, [authed.loaded, authed.seed]);
+		} else {
+			setSelected(
+				images.find(
+					(f) => f.fileName === defaultImage,
+				) || null,
+			);
+			setCurrentImage(defaultImage);
+			setCustom(null);
+		}
+	};
+
+	React.useEffect(() => {
+		handleStates();
+	}, []);
 
 	return (
 		<ModalLayout
@@ -215,8 +199,8 @@ const Modal = (
 						className={classes(
 							'image-box',
 							'image-box-custom',
-							custom && !loadingMe && !selected
-								? 'selected'
+							custom && !loading
+								? 'uploaded'
 								: '',
 						)}
 						onClick={() => uploadCustom()}
@@ -231,7 +215,7 @@ const Modal = (
 						>
 							<PhotoCameraIcon />
 							<span>
-								{custom && !loadingMe && !selected
+								{custom && !loading
 									? 'Change'
 									: 'Upload'}
 							</span>
@@ -249,7 +233,7 @@ const Modal = (
 				<div className="modal-footer">
 					<Button
 						disabled={
-							loadingMe ||
+							loading ||
 							selected?.fileName ===
 								currentImage ||
 							!selected
@@ -328,7 +312,7 @@ const ModalChangePictureStyle = styled.div`
 		}
 		.image-box-custom {
 			position: relative;
-			&.selected {
+			&.uploaded {
 				.choose-image {
 					opacity: 0;
 					&:hover {

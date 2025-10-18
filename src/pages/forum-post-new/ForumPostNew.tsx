@@ -3,7 +3,6 @@ import {
 	Checkbox,
 	FormControlLabel,
 	TextField,
-	Tooltip,
 } from '@mui/material';
 import React from 'react';
 import {
@@ -62,7 +61,7 @@ const ForumPostNew = () => {
 		register,
 		handleSubmit,
 		formState: {
-			isLoading: isFormLoading,
+			isSubmitting: isFormSubmitting,
 			errors: formErrors,
 		},
 		setValue,
@@ -191,7 +190,7 @@ const ForumPostNew = () => {
 					<div className="form-buttons">
 						<Button
 							type="button"
-							disabled={isFormLoading}
+							disabled={isFormSubmitting}
 							onClick={() =>
 								navigate(ROUTES.forum)
 							}
@@ -200,7 +199,7 @@ const ForumPostNew = () => {
 						</Button>
 						<Button
 							type="submit"
-							disabled={isFormLoading}
+							disabled={isFormSubmitting}
 						>
 							Create
 						</Button>

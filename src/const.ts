@@ -46,7 +46,7 @@ export const SOCIAL: {
 		id: 'dc',
 		name: 'Discord',
 		socialName: 'AnimeCord',
-		link: 'https://discord.gg/yKTgJzceWh',
+		link: 'https://discord.gg/bM9GXScUc8',
 		description:
 			'Mostly for suggestions, general support (not femboy related server)',
 		icon: IconDiscord,
@@ -129,6 +129,13 @@ export const DISCORD_AUTH_REDIRECT =
 	);
 
 export const PHONE_NUMBER = '248-434-5508';
+
+export const PUSHER_KEY = IS_DEV
+	? 'f8195408ebd979c61a64'
+	: 'f5fb47e8a2f53efe93e5';
+export const PUSHER_CLUSTER = IS_DEV
+	? 'eu'
+	: 'eu';
 
 export const TEST = 'test';
 

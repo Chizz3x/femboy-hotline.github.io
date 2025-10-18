@@ -39,7 +39,7 @@ const ResendVerification = () => {
 		register,
 		handleSubmit,
 		formState: {
-			isLoading: isFormLoading,
+			isSubmitting: isFormSubmitting,
 			errors: formErrors,
 		},
 		reset: resetForm,
@@ -161,7 +161,7 @@ const ResendVerification = () => {
 					<div className="buttons">
 						<Button
 							type="submit"
-							disabled={isFormLoading}
+							disabled={isFormSubmitting}
 						>
 							Send
 						</Button>

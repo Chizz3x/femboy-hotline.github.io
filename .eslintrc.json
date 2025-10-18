@@ -58,6 +58,7 @@
 		"no-plusplus": "off",
 		"no-param-reassign": "off",
 		"@typescript-eslint/ban-ts-comment": "off",
-		"react/jsx-no-duplicate-props": "off"
+		"react/jsx-no-duplicate-props": "off",
+		"@typescript-eslint/no-empty-function": "off"
 	}
 }

@@ -8,12 +8,15 @@ import styled from 'styled-components';
 import { StatusCodes } from 'http-status-codes';
 import { toast } from 'react-toastify';
 import { API_ROUTES, ROUTES } from '../../routes';
-import { Auth } from '../../utils/auth';
+import { fetchUser } from '../../store/slices/user';
+import { useDispatch } from '../../store/store';
 
 const ChangeEmail = () => {
 	const [params] = useSearchParams();
 	const navigate = useNavigate();
 	const token = params.get('token');
+
+	const dispatch = useDispatch();
 
 	const [emailChanged, setEmailChanged] =
 		React.useState(false);
@@ -41,7 +44,7 @@ const ChangeEmail = () => {
 						toast('Email changed', {
 							type: 'success',
 						});
-						Auth.check();
+						dispatch(fetchUser());
 						navigate(ROUTES.login);
 					} else {
 						toast('Failed to change email', {

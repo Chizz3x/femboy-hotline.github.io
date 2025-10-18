@@ -24,7 +24,6 @@ import { changeModals, NModals } from '../modals';
 import { ModalLayout } from '../layout';
 import yupValidationResolver from '../../../utils/yupValidationResolver';
 import schema from './schema';
-import { useAuth } from '../../contexts/auth';
 import {
 	API_ROUTES,
 	ROUTES,
@@ -38,6 +37,11 @@ import {
 	DISCORD_AUTH_SCOPE,
 	DISCORD_CLIENT_ID,
 } from '../../../const';
+import {
+	useDispatch,
+	useSelector,
+} from '../../../store/store';
+import { fetchUser } from '../../../store/slices/user';
 
 const getDefaultForm = (
 	props?: Partial<NModalUserSettings.IForm>,
@@ -55,21 +59,10 @@ const name = 'ModalUserSettings';
 const Modal = (
 	props: NModalUserSettings.IProps,
 ) => {
-	const {
-		authed,
-		seed: authSeed,
-		loaded: loadedAuth,
-	} = useAuth();
+	const { user } = useSelector((st) => st.user);
+	const dispatch = useDispatch();
 
 	const navigate = useNavigate();
-
-	const [{ data: meData }, getMe] = useAxios(
-		{
-			method: 'POST',
-			url: API_ROUTES.getMe,
-		},
-		{ manual: true, autoCancel: true },
-	);
 
 	const [, updateUserSettings] = useAxios(
 		{
@@ -78,8 +71,6 @@ const Modal = (
 		},
 		{ manual: true, autoCancel: true },
 	);
-
-	const { user: userData } = meData?.data || {};
 
 	const [
 		showCurrentPassword,
@@ -119,7 +110,8 @@ const Modal = (
 				toast('Settings updated', {
 					type: 'success',
 				});
-				Auth.check();
+				dispatch(fetchUser());
+				closeModal();
 			}
 		},
 	);
@@ -154,7 +146,7 @@ const Modal = (
 				} catch (err) {
 					console.error('Something went wrong');
 				}
-				Auth.check();
+				dispatch(fetchUser());
 				break;
 			}
 			default:
@@ -168,32 +160,14 @@ const Modal = (
 	};
 
 	React.useEffect(() => {
-		(async () => {
-			if (authed) {
-				const res = await getMe({
-					headers: {
-						Authorization: `Bearer ${Auth.getToken()}`,
-						uniqueId: getUniqueId(),
-					},
-				});
-				if (res?.data?.data?.user) {
-					resetForm(
-						getDefaultForm({
-							email:
-								res?.data?.data?.user?.email ||
-								'',
-							username:
-								res?.data?.data?.user?.username ||
-								'',
-							unlisted:
-								res?.data?.data?.user
-									?.unlisted_profile || false,
-						}),
-					);
-				}
-			}
-		})();
-	}, [authed, authSeed]);
+		resetForm(
+			getDefaultForm({
+				email: user?.email || '',
+				username: user?.username || '',
+				unlisted: user?.unlisted_profile || false,
+			}),
+		);
+	}, [user]);
 
 	return (
 		<ModalLayout
@@ -280,12 +254,9 @@ const Modal = (
 								<div className="connection-row">
 									<h4>
 										<IconDiscord /> Discord
-										{userData?.discord ? (
+										{user?.discord ? (
 											<span className="user-discord-username">
-												{
-													userData?.discord
-														?.username
-												}
+												{user?.discord?.username}
 											</span>
 										) : null}
 									</h4>
@@ -296,15 +267,13 @@ const Modal = (
 												doConnect('discord')
 											}
 										>
-											{userData?.discord
+											{user?.discord
 												? 'Update'
 												: 'Connect'}
 										</Button>
 										<Button
 											size="small"
-											disabled={
-												!userData?.discord
-											}
+											disabled={!user?.discord}
 											onClick={() =>
 												doDisconnect('discord')
 											}

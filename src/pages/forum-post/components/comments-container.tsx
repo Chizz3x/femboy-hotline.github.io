@@ -26,14 +26,10 @@ import {
 } from '../ForumPost';
 import { CustomEditor } from '../../../types/overrides/slate';
 import buildApiRoute from '../../../utils/build-api-route';
-import {
-	API_ROUTES,
-	ROUTES,
-} from '../../../routes';
+import { API_ROUTES } from '../../../routes';
 import { Auth } from '../../../utils/auth';
 import { getUniqueId } from '../../../scripts/unique-id-manager';
 import { InputMarkdown } from '../../../components/inputs/markdown';
-import buildRoute from '../../../utils/build-route';
 import classes from '../../../utils/classes';
 import { DeletedTag } from '../../../components/tags/deleted-tag';
 import { AnonymousTag } from '../../../components/tags/anonymous-tag';
@@ -84,8 +80,7 @@ const CommentsContainer = (
 		register: registerPostReply,
 		handleSubmit: handleSubmitPostReply,
 		formState: {
-			errors: errorsPostReply,
-			isLoading: isFormLoadingPostReply,
+			isSubmitting: isFormSubmittingPostReply,
 		},
 		setValue: setValuePostReply,
 		reset: resetFormPostReply,
@@ -493,14 +488,17 @@ const CommentsContainer = (
 									<div className="comment-item-reply-buttons">
 										<Button
 											onClick={() => endReply()}
+											disabled={
+												isFormSubmittingPostReply
+											}
 										>
 											Cancel
 										</Button>
 										<Button
 											type="submit"
-											// onClick={() =>
-											//	sendReply(m._id)
-											// }
+											disabled={
+												isFormSubmittingPostReply
+											}
 										>
 											Reply
 										</Button>

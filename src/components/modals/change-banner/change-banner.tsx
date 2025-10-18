@@ -8,9 +8,13 @@ import { changeModals, NModals } from '../modals';
 import { ModalLayout } from '../layout';
 import classes from '../../../utils/classes';
 import { API_ROUTES } from '../../../routes';
-import { useAuth } from '../../contexts/auth';
 import { getUniqueId } from '../../../scripts/unique-id-manager';
 import { Auth } from '../../../utils/auth';
+import {
+	useDispatch,
+	useSelector,
+} from '../../../store/store';
+import { fetchUser } from '../../../store/slices/user';
 
 const defaultImage = 'astolfo-1.png';
 const images: NModalChangeBanner.IImage[] = [
@@ -28,7 +32,10 @@ const name = 'ModalChangeBanner';
 const Modal = (
 	props: NModalChangeBanner.IProps,
 ) => {
-	const authed = useAuth();
+	const { user, loading } = useSelector(
+		(st) => st.user,
+	);
+	const dispatch = useDispatch();
 
 	const [selected, setSelected] =
 		React.useState<NModalChangeBanner.IImage | null>(
@@ -37,13 +44,6 @@ const Modal = (
 	const [currentImage, setCurrentImage] =
 		React.useState<string | null>(null);
 
-	const [{ loading }, getMe] = useAxios(
-		{
-			method: 'POST',
-			url: API_ROUTES.getMe,
-		},
-		{ manual: true, autoCancel: true },
-	);
 	const [, userChangeBanner] = useAxios(
 		{
 			method: 'POST',
@@ -74,10 +74,10 @@ const Modal = (
 			window.dispatchEvent(
 				changeModals({ [name]: null }),
 			);
-			Auth.check();
 			toast('Banner changed', {
 				type: 'success',
 			});
+			dispatch(fetchUser());
 		} else {
 			toast('Failed to change banner', {
 				type: 'error',
@@ -86,31 +86,15 @@ const Modal = (
 	};
 
 	React.useEffect(() => {
-		(async () => {
-			if (authed.loaded) {
-				if (authed.authed) {
-					const res = await getMe({
-						headers: {
-							Authorization: `Bearer ${Auth.getToken()}`,
-							uniqueId: getUniqueId(),
-						},
-					});
-					setSelected(
-						images.find(
-							(f) =>
-								f.fileName ===
-								(res?.data?.data?.user?.banner ||
-									defaultImage),
-						) || null,
-					);
-					setCurrentImage(
-						res?.data?.data?.user?.banner ||
-							defaultImage,
-					);
-				}
-			}
-		})();
-	}, [authed.loaded]);
+		setSelected(
+			images.find(
+				(f) =>
+					f.fileName ===
+					(user?.banner || defaultImage),
+			) || null,
+		);
+		setCurrentImage(user?.banner || defaultImage);
+	}, []);
 
 	return (
 		<ModalLayout

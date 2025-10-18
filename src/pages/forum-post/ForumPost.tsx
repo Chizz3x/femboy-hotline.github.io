@@ -30,7 +30,6 @@ import buildApiRoute from '../../utils/build-api-route';
 import { getUniqueId } from '../../scripts/unique-id-manager';
 import { Auth } from '../../utils/auth';
 import { InputMarkdown } from '../../components/inputs/markdown';
-import { useAuth } from '../../components/contexts/auth';
 import { CustomEditor } from '../../types/overrides/slate';
 import cleanSlateEditor from '../../utils/clean-slate-editor';
 import buildRoute from '../../utils/build-route';
@@ -62,6 +61,7 @@ import IconDiscord from '../../components/icons/icon-discord';
 import { CopyButton } from '../../components/copy-button';
 import IconFemboyhotline from '../../components/icons/icon-femboyhotline';
 import { UserCard } from '../../components/user-card';
+import { useSelector } from '../../store/store';
 
 const getGuidePath = (
 	forumId: string,
@@ -89,6 +89,9 @@ export const perPage = 10;
 const ForumPost = () => {
 	const params = useParams();
 
+	const { user, loading: loadingUser } =
+		useSelector((st) => st.user);
+
 	const forumId = params.id;
 
 	const navigate = useNavigate();
@@ -99,8 +102,6 @@ const ForumPost = () => {
 	const [guidePath] = React.useState(
 		getGuidePath(forumId || ''),
 	);
-
-	const { authed, seed: authedSeed } = useAuth();
 
 	const [commentEditor, setCommentEditor] =
 		React.useState<CustomEditor | null>(null);
@@ -116,18 +117,6 @@ const ForumPost = () => {
 
 	const [slateKey, setSlateKey] =
 		React.useState(0);
-
-	const [
-		{ data: userData, loading: userDataLoading },
-		getMe,
-	] = useAxios(
-		{
-			method: 'POST',
-			url: API_ROUTES.getMe,
-		},
-		{ manual: true, autoCancel: true },
-	);
-	const user = userData?.data?.user;
 
 	const [
 		{
@@ -195,6 +184,8 @@ const ForumPost = () => {
 		{ manual: true, autoCancel: true },
 	);
 
+	// TODO: Get subscriptions and by that determine the state of the checkbox, then sub or unsub.
+
 	const forum = forumData?.data?.post;
 	const comments: any[] =
 		forumCommentData?.data?.comments || [];
@@ -212,7 +203,7 @@ const ForumPost = () => {
 		register: registerPostComment,
 		handleSubmit: handleSubmitPostComment,
 		formState: {
-			isLoading: isFormLoadingPostComment,
+			isSubmitting: isFormSubmittingPostComment,
 			errors: formErrorsPostComment,
 		},
 		setValue: setValuePostComment,
@@ -389,7 +380,7 @@ const ForumPost = () => {
 		register: registerPostEdit,
 		handleSubmit: handleSubmitPostEdit,
 		formState: {
-			isLoading: isFormLoadingPostEdit,
+			isSubmitting: isFormSubmittingPostEdit,
 			errors: formErrorsPostEdit,
 		},
 		setValue: setValuePostEdit,
@@ -451,7 +442,7 @@ const ForumPost = () => {
 	const votePostHandler = async (
 		vote: number,
 	) => {
-		if (authed) {
+		if (user) {
 			await votePost({
 				data: {
 					vote,
@@ -461,24 +452,17 @@ const ForumPost = () => {
 		}
 	};
 
+	const subUnsubPost = () => {
+		//
+	};
+
 	React.useEffect(() => {
 		setSlateKey(Math.random());
 	}, [forum]);
 
 	React.useEffect(() => {
-		if (authed) {
-			getMe({
-				headers: {
-					Authorization: `Bearer ${Auth.getToken()}`,
-					uniqueId: getUniqueId(),
-				},
-			});
-		}
-	}, [authedSeed]);
-
-	React.useEffect(() => {
 		fetchComments();
-	}, [searchParams, authedSeed]);
+	}, [searchParams]);
 
 	return (
 		<ForumPostStyle>
@@ -614,13 +598,17 @@ const ForumPost = () => {
 					{editingPost ? (
 						<div className="post-edit-buttons">
 							<Button
-								disabled={isFormLoadingPostEdit}
+								disabled={
+									isFormSubmittingPostEdit
+								}
 								onClick={endPostEdit}
 							>
 								Cancel
 							</Button>
 							<Button
-								disabled={isFormLoadingPostEdit}
+								disabled={
+									isFormSubmittingPostEdit
+								}
 								type="submit"
 							>
 								Save
@@ -628,7 +616,7 @@ const ForumPost = () => {
 						</div>
 					) : null}
 				</form>
-				{!userDataLoading && user ? (
+				{!loadingUser && user ? (
 					<div className="post-user-options">
 						<div className="vote-box">
 							<Button
@@ -688,10 +676,21 @@ const ForumPost = () => {
 						</Button>
 					</div>
 				) : null}
-				{!userDataLoading && user ? (
+				<div className="post-options">
+					<FormControlLabel
+						label="Subscribe to this post"
+						control={
+							<Checkbox
+								checked
+								onChange={subUnsubPost}
+							/>
+						}
+					/>
+				</div>
+				{!loadingUser && user ? (
 					<div className="post-comment-new">
 						<div className="comment-new-left">
-							{userDataLoading ? (
+							{loadingUser ? (
 								<Skeleton
 									variant="circular"
 									width={40}
@@ -775,7 +774,7 @@ const ForumPost = () => {
 										<div className="comment-new-options-right">
 											<Button
 												disabled={
-													isFormLoadingPostComment
+													isFormSubmittingPostComment
 												}
 												type="submit"
 											>
@@ -787,7 +786,7 @@ const ForumPost = () => {
 							</div>
 						</div>
 					</div>
-				) : !userDataLoading && !user ? (
+				) : !loadingUser && !user ? (
 					<div className="post-comment-new-not-logged">
 						<span className="post-comment-new-not-logged-text">
 							Want to comment? Please{' '}

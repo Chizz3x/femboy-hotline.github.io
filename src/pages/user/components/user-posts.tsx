@@ -8,7 +8,6 @@ import { getUniqueId } from '../../../scripts/unique-id-manager';
 import { Auth } from '../../../utils/auth';
 import buildApiRoute from '../../../utils/build-api-route';
 import ForumCard from '../../forum/components/forum-card';
-import { useAuth } from '../../../components/contexts/auth';
 import { Paginator } from '../../../components/paginator';
 
 const perPage = 10;
@@ -18,8 +17,6 @@ const UserPosts = (props: NUserPosts.IProps) => {
 
 	const [searchParams, setSearchParams] =
 		useSearchParams();
-
-	const { seed: authedSeed } = useAuth();
 
 	const [
 		{
@@ -75,7 +72,7 @@ const UserPosts = (props: NUserPosts.IProps) => {
 		if (user?._id) {
 			fetchPosts();
 		}
-	}, [authedSeed, user?._id, searchParams]);
+	}, [user?._id, searchParams]);
 
 	return (
 		<UserPostsStyle {...rest}>

@@ -1,8 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { toast } from 'react-toastify';
 import { Button } from '@mui/material';
-import useAxios from 'axios-hooks';
 import { useNavigate } from 'react-router-dom';
 import dayjs from '../utils/dayjs';
 import {
@@ -11,11 +9,8 @@ import {
 } from '../const';
 import useScrollIntoView from '../utils/hooks/use-scroll-into-view';
 import { JABillboard } from '../components/juicyads/billboard';
-import { useAuth } from '../components/contexts/auth';
-import { getUniqueId } from '../scripts/unique-id-manager';
-import { Auth } from '../utils/auth';
-import buildApiRoute from '../utils/build-api-route';
-import { API_ROUTES, ROUTES } from '../routes';
+import { ROUTES } from '../routes';
+import { useSelector } from '../store/store';
 // import { ConfettiGun } from "../components/confetti-gun";
 
 const donatorClassNames: NHome.IDonatorClasses = {
@@ -55,6 +50,8 @@ const donatorClassNames: NHome.IDonatorClasses = {
 // const donatorWall: NHome.IDonatorWall[] = [];
 
 const Home = () => {
+	const { user } = useSelector((st) => st.user);
+
 	const [time, setTime] = React.useState(0); // seconds
 	const [timeRemaining, setTimeRemaining] =
 		React.useState(0);
@@ -63,8 +60,6 @@ const Home = () => {
 	// const confettiState = React.useState(true);
 
 	const navigate = useNavigate();
-
-	const { authed } = useAuth();
 
 	const date = dayjs().startOf('day');
 	const weekdayNow = date.weekday();
@@ -95,14 +90,6 @@ const Home = () => {
 	const fridayScrollIntoView = useScrollIntoView(
 		fridayRef,
 		0.6,
-	);
-
-	const [{ data: userMe }, getUserMe] = useAxios(
-		{
-			method: 'POST',
-			url: buildApiRoute(API_ROUTES.getMe),
-		},
-		{ manual: true, autoCancel: true },
 	);
 
 	React.useEffect(() => {
@@ -171,17 +158,6 @@ const Home = () => {
 		}
 	}, [fridayScrollIntoView.scrolledIntoView]);
 
-	React.useEffect(() => {
-		if (authed) {
-			getUserMe({
-				headers: {
-					Authorization: `Bearer ${Auth.getToken()}`,
-					uniqueId: getUniqueId(),
-				},
-			});
-		}
-	}, [authed]);
-
 	return (
 		<HomeStyle id="Home">
 			<div className="image">
@@ -243,12 +219,11 @@ const Home = () => {
 					</span>
 				</div>
 				<div className="content1-2-inline">
-					{authed ? (
+					{user ? (
 						<>
 							<h3>Welcome</h3>
 							<span>
-								Hello there{' '}
-								{userMe?.data?.user?.username}!
+								Hello there {user?.username}!
 							</span>
 						</>
 					) : (

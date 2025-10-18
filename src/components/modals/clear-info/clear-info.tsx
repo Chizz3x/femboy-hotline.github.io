@@ -9,11 +9,15 @@ import { API_ROUTES } from '../../../routes';
 import buildApiRoute from '../../../utils/build-api-route';
 import { Auth } from '../../../utils/auth';
 import { getUniqueId } from '../../../scripts/unique-id-manager';
+import { fetchUser } from '../../../store/slices/user';
+import { useDispatch } from '../../../store/store';
 
 const name = 'ModalClearUserInfo';
 const Modal = (
 	props: NModalClearUserInfo.IProps,
 ) => {
+	const dispatch = useDispatch();
+
 	const clearInfo = async () => {
 		try {
 			const res = await axios.post(
@@ -28,11 +32,11 @@ const Modal = (
 			);
 
 			if (res?.data?.data?.success) {
-				Auth.check();
 				closeModal();
 				toast('Information cleared!', {
 					type: 'success',
 				});
+				dispatch(fetchUser());
 			} else {
 				toast('Failed to clear info', {
 					type: 'error',

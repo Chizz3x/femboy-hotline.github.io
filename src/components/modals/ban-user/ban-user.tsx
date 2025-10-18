@@ -33,7 +33,6 @@ const Modal = (props: NModalBanUser.IProps) => {
 			);
 
 			if (res?.data?.data?.success) {
-				Auth.check();
 				closeModal();
 				toast('User banned', {
 					type: 'success',

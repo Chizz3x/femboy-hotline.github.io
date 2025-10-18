@@ -60,8 +60,6 @@ const Register = () => {
 		React.useState(false);
 	const [showPassword, setShowPassword] =
 		React.useState(false);
-	const [registering, setRegistering] =
-		React.useState<boolean>(false);
 	const [
 		showRepeatPassword,
 		setShowRepeatPassword,
@@ -74,7 +72,7 @@ const Register = () => {
 		register,
 		handleSubmit,
 		formState: {
-			isLoading: isFormLoading,
+			isSubmitting: isFormSubmitting,
 			errors: formErrors,
 		},
 		reset: resetForm,
@@ -85,8 +83,6 @@ const Register = () => {
 
 	const onSubmit = handleSubmit(
 		async (values) => {
-			setRegistering(true);
-
 			try {
 				const token = await executeRecaptcha?.(
 					'register',
@@ -123,8 +119,6 @@ const Register = () => {
 					type: 'error',
 				});
 			}
-
-			setRegistering(false);
 		},
 	);
 
@@ -392,9 +386,7 @@ const Register = () => {
 							<div className="buttons">
 								<Button
 									type="submit"
-									disabled={
-										isFormLoading || registering
-									}
+									disabled={isFormSubmitting}
 								>
 									Register
 								</Button>

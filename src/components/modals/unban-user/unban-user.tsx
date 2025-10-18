@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Button, TextField } from '@mui/material';
+import { Button } from '@mui/material';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import { changeModals, NModals } from '../modals';
@@ -30,7 +30,6 @@ const Modal = (props: NModalUnbanUser.IProps) => {
 			);
 
 			if (res?.data?.data?.success) {
-				Auth.check();
 				closeModal();
 				toast('User unbanned', {
 					type: 'success',

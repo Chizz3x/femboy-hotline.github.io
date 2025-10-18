@@ -8,6 +8,7 @@ import { GoogleReCaptchaProvider } from 'react-google-recaptcha-v3';
 import { ToastContainer } from 'react-toastify';
 import { ThemeProvider } from '@mui/material/styles';
 import { ThemeProvider as ThemeProviderStyled } from 'styled-components';
+import { Provider as ReduxProvider } from 'react-redux';
 import P404 from './404';
 import { Layout } from '../components/layout';
 import GlobalStyle from './style';
@@ -15,6 +16,7 @@ import { GRECAPTCHA_ID } from '../const';
 import { AuthProvider } from '../components/contexts/auth';
 import { getTheme } from './theme';
 import { PAGES } from './pages';
+import { store } from '../store/store';
 
 const Index = () => {
 	const location = useLocation();
@@ -58,39 +60,43 @@ const Index = () => {
 	}, [location.pathname]);
 
 	return (
-		<GoogleReCaptchaProvider
-			reCaptchaKey={GRECAPTCHA_ID}
-		>
-			<ThemeProvider theme={theme}>
-				<ThemeProviderStyled theme={theme}>
-					<GlobalStyle />
-					<ToastContainer
-						toastStyle={toastStyle}
-						toastClassName="toast-item"
-						position="bottom-left"
-					/>
-					<AuthProvider>
-						<Routes>
-							{PAGES.map((page, index) => (
+		<ReduxProvider store={store}>
+			<GoogleReCaptchaProvider
+				reCaptchaKey={GRECAPTCHA_ID}
+			>
+				<ThemeProvider theme={theme}>
+					<ThemeProviderStyled theme={theme}>
+						<GlobalStyle />
+						<ToastContainer
+							toastStyle={toastStyle}
+							toastClassName="toast-item"
+							position="bottom-left"
+						/>
+						<AuthProvider>
+							<Routes>
+								{PAGES.map((page, index) => (
+									<Route
+										key={index}
+										{...page}
+										path={`${page.path?.slice(
+											1,
+										)}`}
+									/>
+								))}
 								<Route
-									key={index}
-									{...page}
-									path={`${page.path?.slice(1)}`}
+									path="/*"
+									element={
+										<Layout>
+											<P404 />
+										</Layout>
+									}
 								/>
-							))}
-							<Route
-								path="/*"
-								element={
-									<Layout>
-										<P404 />
-									</Layout>
-								}
-							/>
-						</Routes>
-					</AuthProvider>
-				</ThemeProviderStyled>
-			</ThemeProvider>
-		</GoogleReCaptchaProvider>
+							</Routes>
+						</AuthProvider>
+					</ThemeProviderStyled>
+				</ThemeProvider>
+			</GoogleReCaptchaProvider>
+		</ReduxProvider>
 	);
 };
 

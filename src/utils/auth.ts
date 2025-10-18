@@ -60,7 +60,7 @@ export class Auth {
 		let localValid;
 		try {
 			localValid = await axios.post(
-				API_ROUTES.verifyAuth,
+				API_ROUTES.authenticate,
 				undefined,
 				{
 					headers: {
@@ -100,7 +100,7 @@ export class Auth {
 		let sessionValid;
 		try {
 			sessionValid = await axios.post(
-				API_ROUTES.verifyAuth,
+				API_ROUTES.authenticate,
 				undefined,
 				{
 					headers: {

@@ -22,42 +22,21 @@ import IconFemboyhotline from '../../components/icons/icon-femboyhotline';
 import UserPosts from './components/user-posts';
 import UserComments from './components/user-comments';
 import { UserCard } from '../../components/user-card';
+import { useSelector } from '../../store/store';
 
 const User = () => {
 	const params = useParams();
 
 	const otherId = params.id;
 
-	const [{ data: userCurrent }] = useAxios(
-		{
-			method: 'POST',
-			url: API_ROUTES.getMe,
-			headers: {
-				Authorization: `Bearer ${Auth.getToken()}`,
-				uniqueId: getUniqueId(),
-			},
-		},
-		{ autoCancel: true },
-	);
+	const { user: userMe, loading: loadingMe } =
+		useSelector((st) => st.user);
 
 	const canBan = [
 		USER_ROLE.ADMIN,
 		USER_ROLE.OWNER,
-	].includes(userCurrent?.data?.user?.role || 0);
+	].includes(userMe?.role || 0);
 
-	const [
-		{ data: userDataMe, loading: loadingMe },
-	] = useAxios(
-		{
-			method: 'POST',
-			url: API_ROUTES.getMe,
-			headers: {
-				Authorization: `Bearer ${Auth.getToken()}`,
-				uniqueId: getUniqueId(),
-			},
-		},
-		{ autoCancel: true },
-	);
 	const [
 		{ data: userData, loading: loadingUser },
 		getUser,
@@ -67,16 +46,14 @@ const User = () => {
 		},
 		{ manual: true, autoCancel: true },
 	);
-	const user =
+	const userViewed =
 		!otherId ||
-		userDataMe?.data?.user?.username ===
-			otherId ||
-		userCurrent?.data?.user?._id === otherId
-			? userDataMe?.data?.user
+		userMe?.username === otherId ||
+		userMe?._id === otherId
+			? userMe
 			: userData?.data?.user;
 
-	const isMe =
-		userDataMe?.data?.user?._id === user?._id;
+	const isMe = userMe?._id === userViewed?._id;
 
 	const onChangePicture = () => {
 		window.dispatchEvent(
@@ -123,7 +100,8 @@ const User = () => {
 							className="banner"
 							style={{
 								backgroundImage: `url('/img/banners/${
-									user?.banner || 'astolfo-1.png'
+									userViewed?.banner ||
+									'astolfo-1.png'
 								}')`,
 							}}
 						/>
@@ -151,7 +129,7 @@ const User = () => {
 								className="profile-picture"
 								style={{
 									backgroundImage: `url('${getUserPicture(
-										user,
+										userViewed,
 									)}')`,
 								}}
 							/>
@@ -172,14 +150,15 @@ const User = () => {
 								<UserCard
 									RenderElement={
 										<UsernameTextStyle>
-											{user?.username || '-'}
+											{userViewed?.username ||
+												'-'}
 										</UsernameTextStyle>
 									}
 									props={{
-										user,
+										user: userViewed,
 									}}
 								/>
-								{user?.role ===
+								{userViewed?.role ===
 								USER_ROLE.OWNER ? (
 									<Tooltip
 										placement="top"
@@ -191,13 +170,17 @@ const User = () => {
 										</span>
 									</Tooltip>
 								) : null}
-								{user?.discord ? (
+								{userViewed?.discord ? (
 									<span className="user-discord">
 										<IconDiscord />
-										{user?.discord?.username}
+										{
+											userViewed?.discord
+												?.username
+										}
 										<CopyButton
 											data={
-												user?.discord?.username
+												userViewed?.discord
+													?.username
 											}
 										/>
 									</span>
@@ -209,15 +192,21 @@ const User = () => {
 			</div>
 			{canBan ? (
 				<div className="mod-controls">
-					<ModControls user={user} />
+					<ModControls user={userViewed} />
 				</div>
 			) : null}
 			<div className="user-content">
-				<UserInfo user={user} isMe={isMe} />
+				<UserInfo user={userViewed} isMe={isMe} />
 			</div>
 			<div className="user-social-activity">
-				<UserPosts user={user} isMe={isMe} />
-				<UserComments user={user} isMe={isMe} />
+				<UserPosts
+					user={userViewed}
+					isMe={isMe}
+				/>
+				<UserComments
+					user={userViewed}
+					isMe={isMe}
+				/>
 			</div>
 		</UserStyle>
 	);
@@ -378,8 +367,16 @@ const UserStyle = styled.div`
 				}
 			}
 		}
+		.user-social-activity {
+			flex-direction: column;
+			row-gap: 12px;
+			> * {
+				box-sizing: border-box;
+			}
+		}
 		.user-content,
-		.mod-controls {
+		.mod-controls,
+		.user-social-activity {
 			padding: 10px 10px;
 		}
 	}

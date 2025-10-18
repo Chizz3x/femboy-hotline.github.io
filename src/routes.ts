@@ -27,6 +27,7 @@ export const ROUTES = {
 	forumPostNew: '/forum/new',
 	safePlace: '/safe-place',
 	changeEmail: '/change-email',
+	notifs: '/notifs',
 };
 
 export const API_ROUTES = {
@@ -36,7 +37,7 @@ export const API_ROUTES = {
 	login: `${API_URL}/user/login`,
 	register: `${API_URL}/user/register`,
 	verify: `${API_URL}/user/verify`,
-	verifyAuth: `${API_URL}/user/verify-auth`,
+	authenticate: `${API_URL}/auth/native/user`,
 	logout: `${API_URL}/user/logout`,
 	resendVerification: `${API_URL}/user/resend-verification`,
 	forgotPassword: `${API_URL}/user/forgot-password`,
@@ -64,6 +65,15 @@ export const API_ROUTES = {
 	forumCommentEdit: `${API_URL}/forum/:id/comments/:commentId/edit`,
 	authDiscordCallback: `${API_URL}/auth/discord/callback`,
 	authDiscordDisconnect: `${API_URL}/auth/discord/disconnect`,
+	getNotifs: `${API_URL}/notifs`,
+	getUnreadCount: `${API_URL}/notifs/unread-count`,
+	readNotifs: `${API_URL}/notifs/read`,
+	readAllNotifs: `${API_URL}/notifs/read-all`,
+	notifSub: `${API_URL}/notifs/subscribe`,
+	notifUnsub: `${API_URL}/notifs/unsubscribe`,
+
+	// Auth
+	authPusher: `${API_URL}/auth/pusher`,
 };
 
 export const CLOUDINARY_API_ROUTES = {

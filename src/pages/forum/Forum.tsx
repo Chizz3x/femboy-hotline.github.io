@@ -21,7 +21,6 @@ import ForumCard from './components/forum-card';
 import { API_ROUTES, ROUTES } from '../../routes';
 import { Auth } from '../../utils/auth';
 import { getUniqueId } from '../../scripts/unique-id-manager';
-import { useAuth } from '../../components/contexts/auth';
 import yupValidationResolver from '../../utils/yupValidationResolver';
 import schema from './schema';
 import { Paginator } from '../../components/paginator';
@@ -31,6 +30,7 @@ import {
 } from '../../components/guide';
 import { CSSMediaSize } from '../../const';
 import { JALeaderboard } from '../../components/juicyads/leaderbaord';
+import { useSelector } from '../../store/store';
 
 const guidePath: NGuide.IGuidePathItem[] = [
 	{
@@ -56,21 +56,7 @@ const Forum = () => {
 	const [searchParams, setSearchParams] =
 		useSearchParams();
 
-	const { authed, seed: authedSeed } = useAuth();
-
-	const [
-		{ data: userData, loading: userDataLoading },
-	] = useAxios(
-		{
-			method: 'POST',
-			url: API_ROUTES.getMe,
-			headers: {
-				Authorization: `Bearer ${Auth.getToken()}`,
-				uniqueId: getUniqueId(),
-			},
-		},
-		{ autoCancel: true },
-	);
+	const { user } = useSelector((st) => st.user);
 
 	const [
 		{
@@ -86,22 +72,14 @@ const Forum = () => {
 		{ manual: true, autoCancel: true },
 	);
 
-	const user = userData?.data?.user;
 	const posts = forumData?.data?.posts;
 	const totalPosts = forumData?.data?.total;
 
-	const {
-		register,
-		handleSubmit,
-		formState: {
-			isLoading: isFormLoading,
-			errors: formErrors,
-		},
-		setValue,
-	} = useForm<NForum.IForm>({
-		resolver: yupValidationResolver(schema()),
-		defaultValues: getDefaultForm(),
-	});
+	const { register, handleSubmit, setValue } =
+		useForm<NForum.IForm>({
+			resolver: yupValidationResolver(schema()),
+			defaultValues: getDefaultForm(),
+		});
 
 	const onFilter = handleSubmit(
 		async (values) => {
@@ -146,7 +124,7 @@ const Forum = () => {
 
 	React.useEffect(() => {
 		fetchForum();
-	}, [authedSeed, searchParams]);
+	}, [searchParams]);
 
 	return (
 		<ForumStyle>

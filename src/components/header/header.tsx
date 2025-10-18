@@ -1,5 +1,4 @@
 import React from 'react';
-import { toast } from 'react-toastify';
 import styled, {
 	useTheme,
 } from 'styled-components';
@@ -16,6 +15,7 @@ import {
 	Badge,
 	Avatar,
 	Skeleton,
+	useMediaQuery,
 } from '@mui/material';
 import {
 	CardGiftcard as CardGiftcardIcon,
@@ -28,39 +28,37 @@ import {
 	Login as LoginIcon,
 	Logout as LogoutIcon,
 	Person as PersonIcon,
-	DragHandle as DragHandleIcon,
 	Forum as ForumIcon,
 } from '@mui/icons-material';
 import axios from 'axios';
-import useAxios from 'axios-hooks';
 import {
 	CSSMediaSize,
 	PHONE_NUMBER,
 } from '../../const';
 import { API_ROUTES, ROUTES } from '../../routes';
-import { useAuth } from '../contexts/auth';
 import { Auth } from '../../utils/auth';
-import { getUniqueId } from '../../scripts/unique-id-manager';
-import {
-	localStorageRemove,
-	localStorageSet,
-} from '../../utils/local-storage';
-import useWatchStorage from '../../utils/hooks/use-watch-storage';
 import getUserPicture from '../../utils/get-user-picture';
+import NotifMenu from './components/notif-menu';
+import { useSelector } from '../../store/store';
 
 const Header = () => {
 	const location = useLocation();
 	const navigate = useNavigate();
 	const theme = useTheme();
 
+	const { user, loading: userDataLoading } =
+		useSelector((st) => st.user);
+
+	const isTablet = useMediaQuery(
+		CSSMediaSize.tablet,
+	);
+
 	const [currentRoute, setCurrentRoute] =
 		React.useState('');
 	const [mobileMenuAnchor, setMobileMenuAnchor] =
 		React.useState<null | HTMLElement>(null);
 
-	const { authed, seed: authedSeed } = useAuth();
-
-	const linkExclusions = authed
+	const linkExclusions = user
 		? ['goRegister', 'goLogin']
 		: ['doLogout'];
 
@@ -160,18 +158,6 @@ const Header = () => {
 	const moreLinks = getMoreLinks(linkExclusions);
 	const links = getLinks(linkExclusions);
 
-	const [
-		{ data: userData, loading: userDataLoading },
-		getMe,
-	] = useAxios(
-		{
-			method: 'POST',
-			url: API_ROUTES.getMe,
-		},
-		{ manual: true, autoCancel: true },
-	);
-	const user = userData?.data?.user;
-
 	const toggleMobileMenu = (
 		event?: React.MouseEvent<HTMLElement>,
 	) => {
@@ -181,44 +167,29 @@ const Header = () => {
 		);
 	};
 
-	const { data: repPinnedData } = useWatchStorage(
-		{
-			keys: ['rep-pinned'],
-			type: 'local',
-			withData: true,
-		},
-	);
+	// const { data: repPinnedData } = useWatchStorage(
+	//	{
+	//		keys: ['rep-pinned'],
+	//		type: 'local',
+	//		withData: true,
+	//	},
+	// );
 
-	const toggleRepPin = () => {
-		const pinned =
-			localStorage.getItem('rep-pinned');
-		if (pinned) {
-			localStorageRemove('rep-pinned');
-		} else {
-			localStorageSet('rep-pinned', 'true');
-		}
-	};
+	// const toggleRepPin = () => {
+	//	const pinned =
+	//		localStorage.getItem('rep-pinned');
+	//	if (pinned) {
+	//		localStorageRemove('rep-pinned');
+	//	} else {
+	//		localStorageSet('rep-pinned', 'true');
+	//	}
+	// };
 
 	React.useEffect(() => {
 		if (location.pathname) {
 			setCurrentRoute(location.pathname);
 		}
 	}, [location.pathname]);
-
-	React.useEffect(() => {
-		if (authed) {
-			getMe({
-				headers: {
-					Authorization: `Bearer ${Auth.getToken()}`,
-					uniqueId: getUniqueId(),
-				},
-				data: {
-					withPoints: true,
-					withRP: true,
-				},
-			});
-		}
-	}, [authed, authedSeed]);
 
 	return (
 		<HeaderStyle id="root-header">
@@ -283,79 +254,230 @@ const Header = () => {
 							{PHONE_NUMBER}
 						</a>
 					</span>
-					<div className="mobile-menu">
-						<IconButton
-							id="mobile-menu"
-							onClick={toggleMobileMenu}
-						>
-							{authed &&
-							(user || userDataLoading) ? (
-								<Badge
-									overlap="circular"
-									anchorOrigin={{
-										vertical: 'bottom',
-										horizontal: 'right',
-									}}
-									badgeContent={
-										<MenuIcon
-											className="menu-icon-on-avatar"
-											sx={{
-												fill: theme?.palette?.text
-													?.primary,
-												padding: '3px',
-												height: '18px',
-												width: '18px',
-											}}
-										/>
-									}
-								>
-									{userDataLoading ? (
-										<Skeleton
-											variant="circular"
-											width={40}
-											height={40}
-										/>
+					{isTablet ? (
+						<div className="mobile-menu">
+							{user ? <NotifMenu /> : null}
+							<IconButton
+								id="mobile-menu"
+								onClick={toggleMobileMenu}
+							>
+								{user || userDataLoading ? (
+									<Badge
+										overlap="circular"
+										anchorOrigin={{
+											vertical: 'bottom',
+											horizontal: 'right',
+										}}
+										badgeContent={
+											<MenuIcon
+												className="menu-icon-on-avatar"
+												sx={{
+													fill: theme?.palette
+														?.text?.primary,
+													padding: '3px',
+													height: '18px',
+													width: '18px',
+												}}
+											/>
+										}
+									>
+										{userDataLoading ? (
+											<Skeleton
+												variant="circular"
+												width={40}
+												height={40}
+											/>
+										) : (
+											<Avatar
+												alt={user.username}
+												src={getUserPicture(user)}
+											/>
+										)}
+									</Badge>
+								) : (
+									<MenuIcon
+										sx={{
+											fill: theme?.palette?.text
+												?.primary,
+										}}
+									/>
+								)}
+							</IconButton>
+							<MenuStyle
+								disablePortal
+								anchorOrigin={{
+									horizontal: 'right',
+									vertical: 'bottom',
+								}}
+								transformOrigin={{
+									horizontal: 'right',
+									vertical: 'top',
+								}}
+								MenuListProps={{
+									'aria-labelledby':
+										'mobile-menu',
+								}}
+								anchorEl={mobileMenuAnchor}
+								open={!!mobileMenuAnchor}
+								onClose={() => toggleMobileMenu()}
+								// PaperProps={{
+								//  style: {
+								//    maxHeight: ITEM_HEIGHT * 4.5,
+								//    width: "20ch",
+								//  },
+								// }}
+							>
+								{[...links, ...moreLinks].map(
+									(link) =>
+										link.route || link.fn ? (
+											<MenuItem
+												className="menu-item"
+												key={link.id}
+												onClick={() =>
+													toggleMobileMenu()
+												}
+											>
+												<Button
+													endIcon={link.icon}
+													disableRipple
+													className={[
+														'header-mobile-btn',
+														currentRoute ===
+														link.route
+															? 'active'
+															: '',
+													].join(' ')}
+													onClick={
+														link.fn ||
+														(() => {
+															navigate(
+																link.route ||
+																	ROUTES.home,
+															);
+														})
+													}
+												>
+													{link.name}
+												</Button>
+											</MenuItem>
+										) : null,
+								)}
+							</MenuStyle>
+						</div>
+					) : null}
+				</div>
+			</div>
+			{!isTablet ? (
+				<div className="container container-right">
+					<div className="container-parts">
+						<div className="header-buttons">
+							{links.map((link) =>
+								link.route || link.fn ? (
+									link.route ? (
+										<Link
+											key={link.id}
+											to={link.route}
+										>
+											<Button
+												startIcon={link.icon}
+												disableRipple
+												className={[
+													'header-btn',
+													currentRoute ===
+													link.route
+														? 'active'
+														: '',
+												].join(' ')}
+											>
+												{link.name}
+											</Button>
+										</Link>
 									) : (
-										<Avatar
-											alt={user.username}
-											src={getUserPicture(user)}
-										/>
-									)}
-								</Badge>
-							) : (
-								<MenuIcon
-									sx={{
-										fill: theme?.palette?.text
-											?.primary,
-									}}
-								/>
+										<Button
+											startIcon={link.icon}
+											disableRipple
+											className={[
+												'header-btn',
+												currentRoute ===
+												link.route
+													? 'active'
+													: '',
+											].join(' ')}
+											onClick={link.fn}
+										>
+											{link.name}
+										</Button>
+									)
+								) : null,
 							)}
-						</IconButton>
-						<MobileMenuStyle
-							disablePortal
-							anchorOrigin={{
-								horizontal: 'right',
-								vertical: 'bottom',
-							}}
-							transformOrigin={{
-								horizontal: 'right',
-								vertical: 'top',
-							}}
-							MenuListProps={{
-								'aria-labelledby': 'mobile-menu',
-							}}
-							anchorEl={mobileMenuAnchor}
-							open={!!mobileMenuAnchor}
-							onClose={() => toggleMobileMenu()}
-							// PaperProps={{
-							//  style: {
-							//    maxHeight: ITEM_HEIGHT * 4.5,
-							//    width: "20ch",
-							//  },
-							// }}
-						>
-							{[...links, ...moreLinks].map(
-								(link) =>
+						</div>
+						{user ? <NotifMenu /> : null}
+						<div className="burger-menu">
+							<IconButton
+								id="burger-menu"
+								onClick={toggleMobileMenu}
+							>
+								{user || userDataLoading ? (
+									<Badge
+										overlap="circular"
+										anchorOrigin={{
+											vertical: 'bottom',
+											horizontal: 'right',
+										}}
+										badgeContent={
+											<MenuIcon
+												className="menu-icon-on-avatar"
+												sx={{
+													fill: theme?.palette
+														?.text?.primary,
+													padding: '3px',
+													height: '18px',
+													width: '18px',
+												}}
+											/>
+										}
+									>
+										{userDataLoading ? (
+											<Skeleton
+												variant="circular"
+												width={40}
+												height={40}
+											/>
+										) : (
+											<Avatar
+												alt={user.username}
+												src={getUserPicture(user)}
+											/>
+										)}
+									</Badge>
+								) : (
+									<MenuIcon
+										sx={{
+											fill: theme?.palette?.text
+												?.primary,
+										}}
+									/>
+								)}
+							</IconButton>
+							<MenuStyle
+								disablePortal
+								anchorOrigin={{
+									horizontal: 'right',
+									vertical: 'bottom',
+								}}
+								transformOrigin={{
+									horizontal: 'right',
+									vertical: 'top',
+								}}
+								MenuListProps={{
+									'aria-labelledby':
+										'burger-menu',
+								}}
+								anchorEl={mobileMenuAnchor}
+								open={!!mobileMenuAnchor}
+								onClose={() => toggleMobileMenu()}
+							>
+								{moreLinks.map((link) =>
 									link.route || link.fn ? (
 										<MenuItem
 											className="menu-item"
@@ -388,153 +510,12 @@ const Header = () => {
 											</Button>
 										</MenuItem>
 									) : null,
-							)}
-						</MobileMenuStyle>
+								)}
+							</MenuStyle>
+						</div>
 					</div>
 				</div>
-			</div>
-			<div className="container container-right">
-				<div className="container-parts">
-					{links.map((link) =>
-						link.route || link.fn ? (
-							link.route ? (
-								<Link
-									key={link.id}
-									to={link.route}
-								>
-									<Button
-										startIcon={link.icon}
-										disableRipple
-										className={[
-											'header-btn',
-											currentRoute === link.route
-												? 'active'
-												: '',
-										].join(' ')}
-									>
-										{link.name}
-									</Button>
-								</Link>
-							) : (
-								<Button
-									startIcon={link.icon}
-									disableRipple
-									className={[
-										'header-btn',
-										currentRoute === link.route
-											? 'active'
-											: '',
-									].join(' ')}
-									onClick={link.fn}
-								>
-									{link.name}
-								</Button>
-							)
-						) : null,
-					)}
-					<div className="burger-menu">
-						<IconButton
-							id="burger-menu"
-							onClick={toggleMobileMenu}
-						>
-							{authed &&
-							(user || userDataLoading) ? (
-								<Badge
-									overlap="circular"
-									anchorOrigin={{
-										vertical: 'bottom',
-										horizontal: 'right',
-									}}
-									badgeContent={
-										<MenuIcon
-											className="menu-icon-on-avatar"
-											sx={{
-												fill: theme?.palette?.text
-													?.primary,
-												padding: '3px',
-												height: '18px',
-												width: '18px',
-											}}
-										/>
-									}
-								>
-									{userDataLoading ? (
-										<Skeleton
-											variant="circular"
-											width={40}
-											height={40}
-										/>
-									) : (
-										<Avatar
-											alt={user.username}
-											src={getUserPicture(user)}
-										/>
-									)}
-								</Badge>
-							) : (
-								<MenuIcon
-									sx={{
-										fill: theme?.palette?.text
-											?.primary,
-									}}
-								/>
-							)}
-						</IconButton>
-						<MobileMenuStyle
-							disablePortal
-							anchorOrigin={{
-								horizontal: 'right',
-								vertical: 'bottom',
-							}}
-							transformOrigin={{
-								horizontal: 'right',
-								vertical: 'top',
-							}}
-							MenuListProps={{
-								'aria-labelledby': 'burger-menu',
-							}}
-							anchorEl={mobileMenuAnchor}
-							open={!!mobileMenuAnchor}
-							onClose={() => toggleMobileMenu()}
-						>
-							{moreLinks.map((link) =>
-								link.route || link.fn ? (
-									<MenuItem
-										className="menu-item"
-										key={link.id}
-										onClick={() =>
-											toggleMobileMenu()
-										}
-									>
-										<Button
-											endIcon={link.icon}
-											disableRipple
-											className={[
-												'header-mobile-btn',
-												currentRoute ===
-												link.route
-													? 'active'
-													: '',
-											].join(' ')}
-											onClick={
-												link.fn ||
-												(() => {
-													navigate(
-														link.route ||
-															ROUTES.home,
-													);
-												})
-											}
-										>
-											{link.name}
-										</Button>
-									</MenuItem>
-								) : null,
-							)}
-						</MobileMenuStyle>
-					</div>
-				</div>
-			</div>
+			) : null}
 		</HeaderStyle>
 	);
 };
@@ -551,7 +532,7 @@ export namespace NHeader {
 	}
 }
 
-const MobileMenuStyle = styled(Menu)`
+const MenuStyle = styled(Menu)`
 	.MuiPaper-root {
 		background-color: ${({ theme }) =>
 			theme?.palette?.background_2?.default};
@@ -723,24 +704,23 @@ const HeaderStyle = styled.div`
 		}
 		.container-parts {
 			display: flex;
+			column-gap: 15px;
 			align-items: center;
 			text-decoration: none;
+			.header-buttons {
+				//
+			}
 		}
 	}
 
 	.container-right {
 		margin-left: auto;
-		button:not(:last-child) {
+		/*button:not(:last-child) {
 			margin-right: 15px;
-		}
-	}
-
-	.mobile-menu {
-		display: none;
+		}*/
 	}
 
 	.burger-menu {
-		margin-left: 20px;
 		.MuiButtonBase-root {
 			margin: 0 !important;
 		}
@@ -771,13 +751,9 @@ const HeaderStyle = styled.div`
 					}
 				}
 				.mobile-menu {
-					display: block;
 					margin-left: auto;
 				}
 			}
-		}
-		.container-right {
-			display: none;
 		}
 	}
 

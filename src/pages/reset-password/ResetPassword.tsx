@@ -49,7 +49,7 @@ const ResetPassword = () => {
 		register,
 		handleSubmit,
 		formState: {
-			isLoading: isFormLoading,
+			isSubmitting: isFormSubmitting,
 			errors: formErrors,
 		},
 		reset: resetForm,
@@ -188,7 +188,7 @@ const ResetPassword = () => {
 					<div className="buttons">
 						<Button
 							type="submit"
-							disabled={isFormLoading}
+							disabled={isFormSubmitting}
 						>
 							Reset
 						</Button>

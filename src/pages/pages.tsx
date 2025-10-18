@@ -24,6 +24,7 @@ import ForumPost from './forum-post';
 import ForumPostNew from './forum-post-new';
 import SafePlace from './safe-place';
 import ChangeEmail from './change-email';
+import Notifs from './notifs';
 
 export const PAGES: RouteProps[] = [
 	{
@@ -207,6 +208,14 @@ export const PAGES: RouteProps[] = [
 		element: (
 			<Layout>
 				<ChangeEmail />
+			</Layout>
+		),
+	},
+	{
+		path: ROUTES.notifs,
+		element: (
+			<Layout>
+				<Notifs />
 			</Layout>
 		),
 	},
