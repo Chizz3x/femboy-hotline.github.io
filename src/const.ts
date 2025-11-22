@@ -14,6 +14,7 @@ export const VERSION = '1.0.1';
 export const USER_ROLE = {
 	OWNER: 1,
 	ADMIN: 2,
+	USER: Number.MAX_SAFE_INTEGER,
 };
 
 export const CSSMediaSize = {

@@ -31,7 +31,7 @@ const Modal = (
 				buildApiRoute(
 					API_ROUTES.forumCommentDelete,
 					{
-						id: forum?._id,
+						post_id: forum?._id,
 						commentId,
 					},
 				),

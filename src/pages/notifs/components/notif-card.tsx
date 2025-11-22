@@ -7,7 +7,7 @@ import useAxios from 'axios-hooks';
 import {
 	NOTIF_GOTO,
 	NOTIF_ICONS,
-	NOTIF_TYPES,
+	NOTIF_DATA,
 } from '../../../utils/notif-types';
 import { API_ROUTES } from '../../../routes';
 import { getUniqueId } from '../../../scripts/unique-id-manager';
@@ -38,7 +38,7 @@ const NotifCard = (props: NNotifCard.IProps) => {
 	);
 
 	const goTo = async (to?: string) => {
-		if (notif.read) return;
+		// if (notif.read) return;
 		await readOne({
 			data: {
 				ids: [notif?._id],
@@ -55,7 +55,7 @@ const NotifCard = (props: NNotifCard.IProps) => {
 	};
 
 	const notifData = React.useMemo(() => {
-		return NOTIF_TYPES[notif?.type];
+		return NOTIF_DATA[notif?.type];
 	}, [notif]);
 
 	return (

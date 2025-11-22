@@ -1,13 +1,13 @@
 import { store } from '../store';
-import {
-	fetchUser,
-	logout,
-} from '../slices/user';
 import { Auth } from '../../utils/auth';
+import {
+	clearNotifSubs,
+	fetchNotifSubs,
+} from '../slices/notif-subs';
 
-export default function userLifecycle() {
+export default function notifSubsLifecycle() {
 	if (Auth.getToken())
-		store.dispatch(fetchUser());
+		store.dispatch(fetchNotifSubs());
 
 	window.addEventListener('storage', (e) => {
 		if (
@@ -18,9 +18,9 @@ export default function userLifecycle() {
 			const uniqueId =
 				localStorage.getItem('uniqueId');
 			if (token && uniqueId) {
-				store.dispatch(fetchUser());
+				store.dispatch(fetchNotifSubs());
 			} else {
-				store.dispatch(logout());
+				store.dispatch(clearNotifSubs());
 			}
 		}
 	});

@@ -61,7 +61,12 @@ import IconDiscord from '../../components/icons/icon-discord';
 import { CopyButton } from '../../components/copy-button';
 import IconFemboyhotline from '../../components/icons/icon-femboyhotline';
 import { UserCard } from '../../components/user-card';
-import { useSelector } from '../../store/store';
+import {
+	useDispatch,
+	useSelector,
+} from '../../store/store';
+import { NOTIF_TYPES } from '../../utils/notif-types';
+import { fetchNotifSubs } from '../../store/slices/notif-subs';
 
 const getGuidePath = (
 	forumId: string,
@@ -78,7 +83,7 @@ const getGuidePath = (
 		{
 			name: 'Post',
 			route: buildRoute(ROUTES.forumPost, {
-				id: forumId,
+				post_id: forumId,
 			}),
 		},
 	];
@@ -88,11 +93,21 @@ export const perPage = 10;
 
 const ForumPost = () => {
 	const params = useParams();
+	const dispatch = useDispatch();
 
 	const { user, loading: loadingUser } =
 		useSelector((st) => st.user);
+	const { subs: notifSubs } = useSelector(
+		(st) => st.notifSubs,
+	);
 
-	const forumId = params.id;
+	const forumId = params.post_id;
+
+	const notifSub = notifSubs?.find(
+		(f: any) =>
+			f.type === NOTIF_TYPES.NEW_POST_COMMENT &&
+			f.params.post_id === forumId,
+	);
 
 	const navigate = useNavigate();
 	const [searchParams, setSearchParams] =
@@ -128,7 +143,7 @@ const ForumPost = () => {
 		{
 			method: 'GET',
 			url: buildApiRoute(API_ROUTES.forumPost, {
-				id: forumId,
+				post_id: forumId,
 			}),
 			headers: {
 				Authorization: `Bearer ${Auth.getToken()}`,
@@ -153,7 +168,7 @@ const ForumPost = () => {
 			url: buildApiRoute(
 				API_ROUTES.forumComments,
 				{
-					id: forumId,
+					post_id: forumId,
 				},
 			),
 			headers: {
@@ -174,7 +189,7 @@ const ForumPost = () => {
 		{
 			method: 'POST',
 			url: buildApiRoute(API_ROUTES.forumVote, {
-				id: forumId,
+				post_id: forumId,
 			}),
 			headers: {
 				Authorization: `Bearer ${Auth.getToken()}`,
@@ -183,8 +198,6 @@ const ForumPost = () => {
 		},
 		{ manual: true, autoCancel: true },
 	);
-
-	// TODO: Get subscriptions and by that determine the state of the checkbox, then sub or unsub.
 
 	const forum = forumData?.data?.post;
 	const comments: any[] =
@@ -220,7 +233,7 @@ const ForumPost = () => {
 				buildApiRoute(
 					API_ROUTES.forumCommentNew,
 					{
-						id: forumId,
+						post_id: forumId,
 					},
 				),
 				{
@@ -269,7 +282,7 @@ const ForumPost = () => {
 
 		const res = await axios.get(
 			buildApiRoute(API_ROUTES.forumComments, {
-				id: forumId,
+				post_id: forumId,
 			}),
 			{
 				headers: {
@@ -376,6 +389,18 @@ const ForumPost = () => {
 		);
 	};
 
+	const deletePostAdmin = async () => {
+		window.dispatchEvent(
+			changeModals({
+				ModalDeletePostAdmin: {
+					open: true,
+					goTo: ROUTES.forum,
+					forum,
+				},
+			}),
+		);
+	};
+
 	const {
 		register: registerPostEdit,
 		handleSubmit: handleSubmitPostEdit,
@@ -395,7 +420,7 @@ const ForumPost = () => {
 		async (values) => {
 			const res = await axios.post(
 				buildApiRoute(API_ROUTES.forumEdit, {
-					id: forum?._id,
+					post_id: forum?._id,
 				}),
 				{
 					title: values.title,
@@ -452,8 +477,45 @@ const ForumPost = () => {
 		}
 	};
 
-	const subUnsubPost = () => {
-		//
+	const subUnsubPost = async () => {
+		try {
+			if (!notifSub) {
+				await axios.post(
+					buildApiRoute(API_ROUTES.notifSub),
+					{
+						type: NOTIF_TYPES.NEW_POST_COMMENT,
+						params: {
+							post_id: forumId,
+						},
+					},
+					{
+						headers: {
+							Authorization: `Bearer ${Auth.getToken()}`,
+							uniqueId: getUniqueId(),
+						},
+					},
+				);
+			} else {
+				await axios.post(
+					buildApiRoute(API_ROUTES.notifUnsub),
+					{
+						type: NOTIF_TYPES.NEW_POST_COMMENT,
+						params: {
+							post_id: forumId,
+						},
+					},
+					{
+						headers: {
+							Authorization: `Bearer ${Auth.getToken()}`,
+							uniqueId: getUniqueId(),
+						},
+					},
+				);
+			}
+			dispatch(fetchNotifSubs());
+		} catch (err) {
+			console.error(err);
+		}
 	};
 
 	React.useEffect(() => {
@@ -676,16 +738,31 @@ const ForumPost = () => {
 						</Button>
 					</div>
 				) : null}
+				<div className="post-manager-admin">
+					<div className="post-manager-admin-header">
+						<h4>Admin controls</h4>
+					</div>
+					<div className="post-manager-admin-actions">
+						<Button
+							size="small"
+							onClick={deletePostAdmin}
+						>
+							Delete
+						</Button>
+					</div>
+				</div>
 				<div className="post-options">
-					<FormControlLabel
-						label="Subscribe to this post"
-						control={
-							<Checkbox
-								checked
-								onChange={subUnsubPost}
-							/>
-						}
-					/>
+					{user ? (
+						<FormControlLabel
+							label="Subscribe to this post"
+							control={
+								<Checkbox
+									checked={!!notifSub}
+									onChange={subUnsubPost}
+								/>
+							}
+						/>
+					) : null}
 				</div>
 				{!loadingUser && user ? (
 					<div className="post-comment-new">
@@ -752,24 +829,27 @@ const ForumPost = () => {
 									/>
 									<div className="comment-new-options">
 										<div className="comment-new-options-left">
-											<FormControlLabel
-												className="checkbox"
-												label={
-													<div className="checkbox-label">
-														<span>
-															Comment as anonymous
-														</span>
-														<InfoHover text="Your account information will be hidden from all users except you." />
-													</div>
-												}
-												control={
-													<Checkbox
-														{...registerPostComment(
-															'anonymous',
-														)}
-													/>
-												}
-											/>
+											<div className="comment-anonymous-wrapper">
+												<FormControlLabel
+													className="checkbox"
+													label={
+														<div className="checkbox-label">
+															<span>
+																Comment as
+																anonymous
+															</span>
+															<InfoHover text="Your account information will be hidden from all users except you and admins." />
+														</div>
+													}
+													control={
+														<Checkbox
+															{...registerPostComment(
+																'anonymous',
+															)}
+														/>
+													}
+												/>
+											</div>
 										</div>
 										<div className="comment-new-options-right">
 											<Button
@@ -887,6 +967,16 @@ const ForumPostStyle = styled.div`
 		padding: 10px;
 		border-radius: 10px;
 	}
+	.post-manager-admin {
+		margin-top: 10px;
+		background-color: ${({ theme }) =>
+			theme?.palette?.background_2?.default};
+		padding: 10px;
+		border-radius: 10px;
+		display: flex;
+		flex-direction: column;
+		row-gap: 10px;
+	}
 
 	.post-title {
 		margin-bottom: 12px;
@@ -977,7 +1067,7 @@ const ForumPostStyle = styled.div`
 			}
 		}
 		.comment-new-right {
-			overflow: hidden;
+			/*overflow: hidden;*/
 			max-width: 100%;
 			flex-grow: 1;
 			flex-shrink: 1;
@@ -1001,10 +1091,14 @@ const ForumPostStyle = styled.div`
 					justify-content: space-between;
 					margin-top: 8px;
 					.comment-new-options-left {
-						//
+						flex-grow: 1;
+						display: flex;
+						justify-content: flex-start;
 					}
 					.comment-new-options-right {
-						//
+						flex-grow: 1;
+						display: flex;
+						justify-content: flex-end;
 					}
 				}
 			}

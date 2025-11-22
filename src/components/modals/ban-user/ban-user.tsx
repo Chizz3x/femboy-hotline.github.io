@@ -19,7 +19,7 @@ const Modal = (props: NModalBanUser.IProps) => {
 	const ban = async () => {
 		try {
 			const res = await axios.post(
-				buildApiRoute(API_ROUTES.userBan),
+				buildApiRoute(API_ROUTES.adminBan),
 				{
 					target: target._id,
 					reason,

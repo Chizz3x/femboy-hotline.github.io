@@ -1,6 +1,9 @@
 import React from 'react';
 import styled from 'styled-components';
 import {
+	Accordion,
+	AccordionDetails,
+	AccordionSummary,
 	Button,
 	Checkbox,
 	FormControlLabel,
@@ -63,6 +66,13 @@ const Modal = (
 	const dispatch = useDispatch();
 
 	const navigate = useNavigate();
+
+	const [openAccordion, setOpenAccordion] =
+		React.useState<string>('generic');
+
+	const openAccordionHandler = (id: string) => {
+		setOpenAccordion(id);
+	};
 
 	const [, updateUserSettings] = useAxios(
 		{
@@ -181,47 +191,69 @@ const Modal = (
 			<ModalUserSettingsStyle>
 				<form>
 					<div className="form-body">
-						<div className="form-generic">
-							<h3>Generic</h3>
-							<Controller
-								name="email"
-								control={control}
-								render={({ field }) => (
-									<TextField
-										{...field}
-										helperText={
-											formErrors.email?.message
-										}
-										error={
-											!!formErrors.email?.message
-										}
-										size="small"
-										label="Email"
-									/>
-								)}
-							/>
-							<Controller
-								name="username"
-								control={control}
-								render={({ field }) => (
-									<TextField
-										{...field}
-										helperText={
-											formErrors.username?.message
-										}
-										error={
-											!!formErrors.username
-												?.message
-										}
-										size="small"
-										label="Username"
-									/>
-								)}
-							/>
-						</div>
-						<div className="form-privacy">
-							<h3>Privacy</h3>
-							<div className="privacy-rows">
+						<Accordion
+							expanded={
+								openAccordion === 'generic'
+							}
+							onChange={() =>
+								openAccordionHandler('generic')
+							}
+						>
+							<AccordionSummary>
+								<h3>Generic</h3>
+							</AccordionSummary>
+							<AccordionDetails>
+								<Controller
+									name="email"
+									control={control}
+									render={({ field }) => (
+										<TextField
+											{...field}
+											helperText={
+												formErrors.email?.message
+											}
+											error={
+												!!formErrors.email
+													?.message
+											}
+											size="small"
+											label="Email"
+										/>
+									)}
+								/>
+								<Controller
+									name="username"
+									control={control}
+									render={({ field }) => (
+										<TextField
+											{...field}
+											helperText={
+												formErrors.username
+													?.message
+											}
+											error={
+												!!formErrors.username
+													?.message
+											}
+											size="small"
+											label="Username"
+										/>
+									)}
+								/>
+							</AccordionDetails>
+						</Accordion>
+						<Accordion
+							expanded={
+								openAccordion === 'privacy'
+							}
+							onChange={() =>
+								openAccordionHandler('privacy')
+							}
+						>
+							<AccordionSummary>
+								<h3>Privacy</h3>
+							</AccordionSummary>
+							<AccordionDetails>
 								<Controller
 									name="unlisted"
 									control={control}
@@ -246,11 +278,22 @@ const Modal = (
 										/>
 									)}
 								/>
-							</div>
-						</div>
-						<div className="form-connections">
-							<h3>Connections</h3>
-							<div className="connection-buttons">
+							</AccordionDetails>
+						</Accordion>
+						<Accordion
+							expanded={
+								openAccordion === 'connections'
+							}
+							onChange={() =>
+								openAccordionHandler(
+									'connections',
+								)
+							}
+						>
+							<AccordionSummary>
+								<h3>Connections</h3>
+							</AccordionSummary>
+							<AccordionDetails>
 								<div className="connection-row">
 									<h4>
 										<IconDiscord /> Discord
@@ -282,8 +325,8 @@ const Modal = (
 										</Button>
 									</div>
 								</div>
-							</div>
-						</div>
+							</AccordionDetails>
+						</Accordion>
 						<div className="form-security">
 							<h3>Security</h3>
 							<div className="security-buttons">
@@ -380,16 +423,24 @@ const ModalUserSettingsStyle = styled.div`
 			row-gap: 10px;
 		}
 	}
+	.MuiAccordion-root {
+		&.Mui-expanded {
+			margin: 0;
+		}
+		.MuiAccordionSummary-root {
+			//
+		}
+		.MuiAccordionDetails-root {
+			display: flex;
+			flex-direction: column;
+			row-gap: 10px;
+		}
+	}
 	.user-discord-username {
 		margin-left: 5px;
 		font-size: 12px;
 		color: ${({ theme }) =>
 			theme?.palette?.text?.secondary};
-	}
-	.connection-buttons {
-		display: flex;
-		flex-direction: column;
-		row-gap: 10px;
 	}
 	.connection-row {
 		> h4 {

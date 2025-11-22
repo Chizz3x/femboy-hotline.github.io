@@ -9,13 +9,15 @@ import useAxios from 'axios-hooks';
 import {
 	NOTIF_GOTO,
 	NOTIF_ICONS,
-	NOTIF_TYPES,
+	NOTIF_DATA,
 } from '../../../utils/notif-types';
 import { API_ROUTES } from '../../../routes';
 import { getUniqueId } from '../../../scripts/unique-id-manager';
 import { Auth } from '../../../utils/auth';
 import { useDispatch } from '../../../store/store';
 import { fetchNotifications } from '../../../store/slices/notifs';
+import placeNotifData from '../../../utils/place-notif-data';
+import buildRoute from '../../../utils/build-route';
 
 const NotifItem = (props: NNotifItem.IProps) => {
 	const { notif, closeMenu, ...rest } = props;
@@ -24,11 +26,17 @@ const NotifItem = (props: NNotifItem.IProps) => {
 	const navigate = useNavigate();
 
 	const notifData = React.useMemo(() => {
-		return NOTIF_TYPES[notif?.type];
+		return {
+			...NOTIF_DATA[notif?.type],
+			message: placeNotifData(
+				NOTIF_DATA[notif?.type]?.message,
+				notif?.params,
+			),
+		};
 	}, [notif]);
 
 	const goTo = async (to?: string) => {
-		if (notif.read) return;
+		// if (notif.read) return;
 		await readOneNotif();
 		if (!to) return;
 		const isBlank = to.startsWith('_blank:');
@@ -68,9 +76,13 @@ const NotifItem = (props: NNotifItem.IProps) => {
 			{...rest}
 			onClick={() =>
 				goTo(
-					NOTIF_GOTO[
-						notif?.go_to || notifData?.goTo
-					],
+					buildRoute(
+						NOTIF_GOTO[
+							notif?.go_to || notifData?.goTo
+						],
+						notif.params,
+						false,
+					),
 				)
 			}
 		>

@@ -17,7 +17,7 @@ const Modal = (props: NModalUnbanUser.IProps) => {
 	const unban = async () => {
 		try {
 			const res = await axios.post(
-				buildApiRoute(API_ROUTES.userUnban),
+				buildApiRoute(API_ROUTES.adminUnban),
 				{
 					target: target._id,
 				},

@@ -8,20 +8,20 @@ import { getUniqueId } from '../../../scripts/unique-id-manager';
 import { API_ROUTES } from '../../../routes';
 import { Auth } from '../../../utils/auth';
 
-interface UserState {
-	user: any | null;
+interface NotifSubsState {
+	subs: any | null;
 	loading: boolean;
 	error: string | null;
 }
 
-const initialState: UserState = {
-	user: null,
+const initialState: NotifSubsState = {
+	subs: null,
 	loading: false,
 	error: null,
 };
 
-export const fetchUser = createAsyncThunk(
-	'user/fetchUser',
+export const fetchNotifSubs = createAsyncThunk(
+	'notifs/fetchNotifSubs',
 	async (_, thunkAPI) => {
 		const token = Auth.getToken();
 		if (!token)
@@ -30,9 +30,8 @@ export const fetchUser = createAsyncThunk(
 		if (!uniqueId)
 			throw new Error('No unique ID found');
 
-		const res = await axios.post(
-			API_ROUTES.getMe,
-			undefined,
+		const res = await axios.get(
+			API_ROUTES.getNotifSubs,
 			{
 				headers: {
 					Authorization: `Bearer ${token}`,
@@ -41,45 +40,49 @@ export const fetchUser = createAsyncThunk(
 			},
 		);
 
-		if (res.status !== StatusCodes.CREATED)
-			throw new Error('Failed to fetch user');
-		return res?.data?.data?.user || null;
+		if (res.status !== StatusCodes.OK)
+			throw new Error(
+				'Failed to fetch notif subs',
+			);
+		return res?.data?.data?.subs || null;
 	},
 );
 
-export const userSlice = createSlice({
-	name: 'user',
+export const notifSubsSlice = createSlice({
+	name: 'notifSubs',
 	initialState,
 	reducers: {
-		// logout
-		logout: (state) => {
-			state.user = null;
+		clearNotifSubs: (state) => {
+			state.subs = null;
 		},
 	},
-	// login and fetch user
 	extraReducers: (builder) => {
 		builder
-			.addCase(fetchUser.pending, (state) => {
-				state.loading = true;
-			})
 			.addCase(
-				fetchUser.fulfilled,
+				fetchNotifSubs.pending,
+				(state) => {
+					state.loading = true;
+				},
+			)
+			.addCase(
+				fetchNotifSubs.fulfilled,
 				(state, action) => {
-					state.user = action.payload;
+					state.subs = action.payload;
 					state.loading = false;
 				},
 			)
 			.addCase(
-				fetchUser.rejected,
+				fetchNotifSubs.rejected,
 				(state, action) => {
 					state.loading = false;
 					state.error =
 						action.error.message ??
-						'Failed to load user';
-					state.user = null;
+						'Failed to load notif subs';
+					state.subs = null;
 				},
 			);
 	},
 });
 
-export const { logout } = userSlice.actions;
+export const { clearNotifSubs } =
+	notifSubsSlice.actions;

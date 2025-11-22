@@ -1,4 +1,5 @@
 import {
+	Avatar,
 	Popover,
 	PopoverProps,
 	Tooltip,
@@ -13,6 +14,7 @@ import IconDiscord from '../icons/icon-discord';
 import { CopyButton } from '../copy-button';
 import { USER_ROLE } from '../../const';
 import IconFemboyhotline from '../icons/icon-femboyhotline';
+import getUserPicture from '../../utils/get-user-picture';
 
 const UserCard = (props: NUserCard.IProps) => {
 	const {
@@ -87,6 +89,13 @@ const UserCard = (props: NUserCard.IProps) => {
 				key={`user-card-popover-${rest.key}`}
 			>
 				<div className="top-content">
+					<div className="user-avatar">
+						<Avatar
+							alt="user-avatar"
+							src={getUserPicture(user)}
+							sx={{ width: 56, height: 56 }}
+						/>
+					</div>
 					<div className="username">
 						<Link
 							to={buildRoute(ROUTES.userId, {
@@ -168,6 +177,9 @@ const UserCardStyle = styled(Popover)`
 		display: flex;
 		flex-direction: column;
 		.top-content {
+			display: flex;
+			flex-direction: column;
+			row-gap: 6px;
 			padding: 4px 12px;
 			padding-top: 12px;
 			.username {

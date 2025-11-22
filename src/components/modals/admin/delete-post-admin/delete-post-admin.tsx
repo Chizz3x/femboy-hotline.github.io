@@ -4,16 +4,19 @@ import { Button } from '@mui/material';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
-import { changeModals, NModals } from '../modals';
-import { ModalLayout } from '../layout';
-import { API_ROUTES } from '../../../routes';
-import buildApiRoute from '../../../utils/build-api-route';
-import { Auth } from '../../../utils/auth';
-import { getUniqueId } from '../../../scripts/unique-id-manager';
+import {
+	changeModals,
+	NModals,
+} from '../../modals';
+import { ModalLayout } from '../../layout';
+import { API_ROUTES } from '../../../../routes';
+import buildApiRoute from '../../../../utils/build-api-route';
+import { Auth } from '../../../../utils/auth';
+import { getUniqueId } from '../../../../scripts/unique-id-manager';
 
-const name = 'ModalDeletePost';
+const name = 'ModalDeletePostAdmin';
 const Modal = (
-	props: NModalDeletePost.IProps,
+	props: NModalDeletePostAdmin.IProps,
 ) => {
 	const { forum, goTo, refetchPosts } = props;
 
@@ -22,9 +25,12 @@ const Modal = (
 	const deletePost = async () => {
 		try {
 			const res = await axios.post(
-				buildApiRoute(API_ROUTES.forumDelete, {
-					post_id: forum?._id,
-				}),
+				buildApiRoute(
+					API_ROUTES.adminDeletePost,
+					{
+						id: forum?._id,
+					},
+				),
 				undefined,
 				{
 					headers: {
@@ -64,20 +70,20 @@ const Modal = (
 			{...props}
 			showHeader
 			hideCloseButton
-			title="Are you sure you want to delete your post?"
+			title="Are you sure you want to delete this post?"
 			name={name}
 		>
-			<ModalDeletePostStyle>
+			<ModalDeletePostAdminStyle>
 				<Button onClick={closeModal}>No</Button>
 				<Button onClick={deletePost}>Yes</Button>
-			</ModalDeletePostStyle>
+			</ModalDeletePostAdminStyle>
 		</ModalLayout>
 	);
 };
 
 export { name, Modal };
 
-export namespace NModalDeletePost {
+export namespace NModalDeletePostAdmin {
 	// eslint-disable-next-line @typescript-eslint/no-empty-interface
 	export interface IProps
 		extends NModals.IDefaultProps {
@@ -87,7 +93,7 @@ export namespace NModalDeletePost {
 	}
 }
 
-const ModalDeletePostStyle = styled.div`
+const ModalDeletePostAdminStyle = styled.div`
 	display: flex;
 	justify-content: flex-end;
 `;

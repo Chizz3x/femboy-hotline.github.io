@@ -9,8 +9,6 @@ import {
 	CSSMediaSize,
 	USER_ROLE,
 } from '../../const';
-import { Auth } from '../../utils/auth';
-import { getUniqueId } from '../../scripts/unique-id-manager';
 import { changeModals } from '../../components/modals/modals';
 import buildApiRoute from '../../utils/build-api-route';
 import UserInfo from './components/user-info';
@@ -23,6 +21,7 @@ import UserPosts from './components/user-posts';
 import UserComments from './components/user-comments';
 import { UserCard } from '../../components/user-card';
 import { useSelector } from '../../store/store';
+import roleCheck from '../../utils/role-check';
 
 const User = () => {
 	const params = useParams();
@@ -32,10 +31,10 @@ const User = () => {
 	const { user: userMe, loading: loadingMe } =
 		useSelector((st) => st.user);
 
-	const canBan = [
+	const canBan = roleCheck(
 		USER_ROLE.ADMIN,
-		USER_ROLE.OWNER,
-	].includes(userMe?.role || 0);
+		userMe?.role,
+	);
 
 	const [
 		{ data: userData, loading: loadingUser },

@@ -168,14 +168,16 @@ const Forum = () => {
 						<Button type="submit">Search</Button>
 					</div>
 					<div className="filters-right">
-						<Button
-							type="button"
-							onClick={() =>
-								navigate(ROUTES.forumPostNew)
-							}
-						>
-							New post
-						</Button>
+						{user ? (
+							<Button
+								type="button"
+								onClick={() =>
+									navigate(ROUTES.forumPostNew)
+								}
+							>
+								New post
+							</Button>
+						) : null}
 					</div>
 				</form>
 			</div>

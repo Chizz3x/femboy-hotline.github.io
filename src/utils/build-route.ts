@@ -3,12 +3,13 @@ import replaceUrlParts from './replace-url-parts';
 const buildRoute = (
 	url: string,
 	params?: Record<string, any>,
+	addExtra = true,
 ) => {
 	const { computedUrl, paramString } =
 		replaceUrlParts(url, params);
 
 	const newUrl = new URL(
-		computedUrl + paramString,
+		computedUrl + (addExtra ? paramString : ''),
 		window.location.origin,
 	);
 

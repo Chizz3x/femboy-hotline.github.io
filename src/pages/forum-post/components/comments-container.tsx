@@ -99,7 +99,7 @@ const CommentsContainer = (
 					buildApiRoute(
 						API_ROUTES.forumCommentNew,
 						{
-							id: forumId,
+							post_id: forumId,
 						},
 					),
 					{
@@ -186,7 +186,7 @@ const CommentsContainer = (
 				buildApiRoute(
 					API_ROUTES.forumCommentEdit,
 					{
-						id: forumId,
+						post_id: forumId,
 						commentId: id,
 					},
 				),
@@ -315,16 +315,18 @@ const CommentsContainer = (
 									<DeletedTag />
 								) : (
 									<>
-										{m?.updated_at &&
-										editingId !== m._id ? (
-											<EditedTag
-												tooltip={dayjs(
-													m?.updated_at,
-												).format(
-													'YYYY-MM-DD HH:mm',
-												)}
-											/>
-										) : null}
+										<div className="comment-item-tags">
+											{m?.updated_at &&
+											editingId !== m._id ? (
+												<EditedTag
+													tooltip={dayjs(
+														m?.updated_at,
+													).format(
+														'YYYY-MM-DD HH:mm',
+													)}
+												/>
+											) : null}
+										</div>
 										<InputMarkdown
 											key={commentEditKey}
 											props={{
@@ -474,7 +476,7 @@ const CommentsContainer = (
 												<span>
 													Reply as anonymous
 												</span>
-												<InfoHover text="Your account information will be hidden from all users except you." />
+												<InfoHover text="Your account information will be hidden from all users except you and admins." />
 											</div>
 										}
 										control={
@@ -603,12 +605,16 @@ const CommentsContainerStyle = styled.div`
 			row-gap: 3px;
 			width: 100%;
 			.comment-item-content {
+				margin-top: 5px;
 				display: flex;
+				.comment-item-tags {
+					margin-right: 5px;
+					display: flex;
+					flex-direction: column;
+					row-gap: 5px;
+				}
 				> .input-markdown {
 					flex-grow: 1;
-				}
-				> .edited-tag {
-					margin-right: 5px;
 				}
 			}
 			.comment-item-author {
@@ -624,6 +630,7 @@ const CommentsContainerStyle = styled.div`
 			.comment-item-options {
 				display: flex;
 				column-gap: 5px;
+				margin-top: 5px;
 				font-size: 12px;
 				color: ${({ theme }) =>
 					theme?.palette?.text?.secondary};

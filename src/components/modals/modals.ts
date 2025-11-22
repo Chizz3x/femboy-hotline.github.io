@@ -11,6 +11,7 @@ import * as ModalClearUserInfo from './clear-info';
 import * as ModalUserSettings from './user-settings';
 import * as ModalBanUser from './ban-user';
 import * as ModalUnbanUser from './unban-user';
+import * as ModalDeletePostAdmin from './admin/delete-post-admin';
 
 export const modals = [
 	ModalSwitchingDomains,
@@ -25,6 +26,7 @@ export const modals = [
 	ModalUserSettings,
 	ModalBanUser,
 	ModalUnbanUser,
+	ModalDeletePostAdmin,
 ];
 
 export const changeModals = <

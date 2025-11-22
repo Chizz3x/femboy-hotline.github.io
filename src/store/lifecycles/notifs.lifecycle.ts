@@ -14,9 +14,6 @@ let channel: Channel | null = null;
 let lastUserId: string | null = null;
 
 export default function notificationsLifecycle() {
-	// Watch for user state changes
-	let unsubscribe: (() => void) | null = null;
-
 	const initializePusher = (userId: string) => {
 		if (pusher) return;
 
@@ -60,28 +57,26 @@ export default function notificationsLifecycle() {
 		lastUserId = null;
 	};
 
-	// React to changes in Redux user state
-	const currentUserId =
-		store.getState().user.user?._id ?? null;
-
-	if (currentUserId) {
-		lastUserId = currentUserId;
-		initializePusher(currentUserId);
-	}
-
-	unsubscribe = store.subscribe(() => {
+	const unsubscribe = store.subscribe(() => {
 		const state = store.getState();
-		const { user } = state.user;
-		const newUserId = user?._id ?? null;
+		const newUserId =
+			state.user.user?._id ?? null;
 
 		if (newUserId && newUserId !== lastUserId) {
-			// user logged in or changed
 			cleanup();
 			lastUserId = newUserId;
 			initializePusher(newUserId);
 		} else if (!newUserId && lastUserId) {
-			// user logged out
 			cleanup();
 		}
 	});
+
+	const initialUserId =
+		store.getState().user.user?._id ?? null;
+	if (initialUserId) {
+		lastUserId = initialUserId;
+		initializePusher(initialUserId);
+	}
+
+	return cleanup;
 }

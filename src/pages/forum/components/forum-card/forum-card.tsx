@@ -159,7 +159,7 @@ const ForumCard = (props: NForumCard.IProps) => {
 			onClick={(e: React.MouseEvent) =>
 				navigate(
 					buildRoute(ROUTES.forumPost, {
-						id: forum?._id,
+						post_id: forum?._id,
 					}),
 				)
 			}

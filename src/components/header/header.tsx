@@ -68,30 +68,35 @@ const Header = () => {
 				id: 'goHome',
 				name: 'Home',
 				route: ROUTES.home,
+				active_check: ROUTES.home,
 				icon: <HomeIcon />,
 			},
 			{
 				id: 'goForum',
 				name: 'Forum',
 				route: ROUTES.forum,
+				active_check: ROUTES.forum,
 				icon: <ForumIcon />,
 			},
 			{
 				id: 'goAbout',
 				name: 'About',
 				route: ROUTES.about,
+				active_check: ROUTES.about,
 				icon: <InfoIcon />,
 			},
 			{
 				id: 'goContact',
 				name: 'Contact',
 				route: ROUTES.contact,
+				active_check: ROUTES.contact,
 				icon: <ContactsIcon />,
 			},
 			{
 				id: 'goDonate',
 				name: 'Donate',
 				route: ROUTES.donate,
+				active_check: ROUTES.donate,
 				icon: <CardGiftcardIcon />,
 			},
 		].filter(
@@ -107,25 +112,31 @@ const Header = () => {
 			{
 				id: 'goProfile',
 				name: 'Profile',
-				route: ROUTES.user,
+				route: user
+					? ROUTES.user
+					: ROUTES.register,
+				active_check: ROUTES.user,
 				icon: <PersonIcon />,
 			},
 			{
 				id: 'goCrashCourse',
 				name: 'Crash course',
 				route: ROUTES.crashCourse,
+				active_check: ROUTES.crashCourse,
 				icon: <AutoStoriesIcon />,
 			},
 			{
 				id: 'goRegister',
 				name: 'Register',
 				route: ROUTES.register,
+				active_check: ROUTES.register,
 				icon: <PersonAddIcon />,
 			},
 			{
 				id: 'goLogin',
 				name: 'Login',
 				route: ROUTES.login,
+				active_check: ROUTES.login,
 				icon: <LoginIcon />,
 			},
 			{
@@ -343,7 +354,7 @@ const Header = () => {
 													className={[
 														'header-mobile-btn',
 														currentRoute ===
-														link.route
+														link.active_check
 															? 'active'
 															: '',
 													].join(' ')}
@@ -384,7 +395,7 @@ const Header = () => {
 												className={[
 													'header-btn',
 													currentRoute ===
-													link.route
+													link.active_check
 														? 'active'
 														: '',
 												].join(' ')}
@@ -399,7 +410,7 @@ const Header = () => {
 											className={[
 												'header-btn',
 												currentRoute ===
-												link.route
+												link.active_check
 													? 'active'
 													: '',
 											].join(' ')}
@@ -492,7 +503,7 @@ const Header = () => {
 												className={[
 													'header-mobile-btn',
 													currentRoute ===
-													link.route
+													link.active_check
 														? 'active'
 														: '',
 												].join(' ')}
@@ -527,6 +538,7 @@ export namespace NHeader {
 		id: string;
 		name: string;
 		route?: string;
+		active_check?: string;
 		icon?: JSX.Element;
 		fn?: () => any;
 	}
