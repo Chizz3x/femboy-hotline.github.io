@@ -41,7 +41,14 @@
 		"react/jsx-props-no-spreading": "off",
 		"react/jsx-filename-extension": [
 			2,
-			{ "extensions": [".js", ".jsx", ".ts", ".tsx"] }
+			{
+				"extensions": [
+					".js",
+					".jsx",
+					".ts",
+					".tsx"
+				]
+			}
 		],
 		"react/function-component-definition": "off",
 		"no-use-before-define": "off",
