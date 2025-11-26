@@ -31,7 +31,7 @@ const User = () => {
 	const { user: userMe, loading: loadingMe } =
 		useSelector((st) => st.user);
 
-	const canBan = roleCheck(
+	const isAdmin = roleCheck(
 		USER_ROLE.ADMIN,
 		userMe?.role,
 	);
@@ -189,7 +189,7 @@ const User = () => {
 					</div>
 				</div>
 			</div>
-			{canBan ? (
+			{isAdmin ? (
 				<div className="mod-controls">
 					<ModControls user={userViewed} />
 				</div>

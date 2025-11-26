@@ -67,6 +67,7 @@ import {
 } from '../../store/store';
 import { NOTIF_TYPES } from '../../utils/notif-types';
 import { fetchNotifSubs } from '../../store/slices/notif-subs';
+import roleCheck from '../../utils/role-check';
 
 const getGuidePath = (
 	forumId: string,
@@ -99,6 +100,11 @@ const ForumPost = () => {
 		useSelector((st) => st.user);
 	const { subs: notifSubs } = useSelector(
 		(st) => st.notifSubs,
+	);
+
+	const isAdmin = roleCheck(
+		USER_ROLE.ADMIN,
+		user?.role,
 	);
 
 	const forumId = params.post_id;
@@ -738,19 +744,21 @@ const ForumPost = () => {
 						</Button>
 					</div>
 				) : null}
-				<div className="post-manager-admin">
-					<div className="post-manager-admin-header">
-						<h4>Admin controls</h4>
+				{isAdmin ? (
+					<div className="post-manager-admin">
+						<div className="post-manager-admin-header">
+							<h4>Admin controls</h4>
+						</div>
+						<div className="post-manager-admin-actions">
+							<Button
+								size="small"
+								onClick={deletePostAdmin}
+							>
+								Delete
+							</Button>
+						</div>
 					</div>
-					<div className="post-manager-admin-actions">
-						<Button
-							size="small"
-							onClick={deletePostAdmin}
-						>
-							Delete
-						</Button>
-					</div>
-				</div>
+				) : null}
 				<div className="post-options">
 					{user ? (
 						<FormControlLabel
