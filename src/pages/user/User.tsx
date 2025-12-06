@@ -14,7 +14,7 @@ import buildApiRoute from '../../utils/build-api-route';
 import UserInfo from './components/user-info';
 import getUserPicture from '../../utils/get-user-picture';
 import IconDiscord from '../../components/icons/icon-discord';
-import ModControls from './components/mod-controls';
+import AdminControls from './components/admin-controls';
 import { CopyButton } from '../../components/copy-button';
 import IconFemboyhotline from '../../components/icons/icon-femboyhotline';
 import UserPosts from './components/user-posts';
@@ -191,7 +191,7 @@ const User = () => {
 			</div>
 			{isAdmin ? (
 				<div className="mod-controls">
-					<ModControls user={userViewed} />
+					<AdminControls user={userViewed} />
 				</div>
 			) : null}
 			<div className="user-content">

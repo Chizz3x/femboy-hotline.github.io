@@ -3,8 +3,8 @@ import React from 'react';
 import styled from 'styled-components';
 import { changeModals } from '../../../components/modals/modals';
 
-const ModControls = (
-	props: NModControls.IProps,
+const AdminControls = (
+	props: NAdminControls.IProps,
 ) => {
 	const { user, ...rest } = props;
 
@@ -31,8 +31,8 @@ const ModControls = (
 	};
 
 	return (
-		<ModControlsStyle {...rest}>
-			<h3>Mod controls</h3>
+		<AdminControlsStyle {...rest}>
+			<h3>Admin controls</h3>
 			<div className="controls">
 				<Button
 					variant="outlined"
@@ -41,19 +41,19 @@ const ModControls = (
 					{user?.banned_at ? 'Unban' : 'Ban'}
 				</Button>
 			</div>
-		</ModControlsStyle>
+		</AdminControlsStyle>
 	);
 };
 
-export default ModControls;
+export default AdminControls;
 
-export namespace NModControls {
+export namespace NAdminControls {
 	export interface IProps {
 		user: any;
 	}
 }
 
-const ModControlsStyle = styled.div`
+const AdminControlsStyle = styled.div`
 	background-color: ${({ theme }) =>
 		theme?.palette?.background_2?.default};
 	border-radius: 10px;

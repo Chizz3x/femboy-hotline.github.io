@@ -6,8 +6,13 @@ import {
 	useSearchParams,
 } from 'react-router-dom';
 import {
+	Accordion,
+	AccordionDetails,
+	AccordionSummary,
+	Autocomplete,
 	Button,
 	ButtonBase,
+	IconButton,
 	InputAdornment,
 	Skeleton,
 	TextField,
@@ -15,14 +20,22 @@ import {
 import {
 	Search as SearchIcon,
 	Clear as ClearIcon,
+	ExpandMore as ExpandMoreIcon,
+	Sort as SortIcon,
 } from '@mui/icons-material';
-import { useForm } from 'react-hook-form';
+import {
+	Controller,
+	useForm,
+} from 'react-hook-form';
 import ForumCard from './components/forum-card';
 import { API_ROUTES, ROUTES } from '../../routes';
 import { Auth } from '../../utils/auth';
 import { getUniqueId } from '../../scripts/unique-id-manager';
 import yupValidationResolver from '../../utils/yupValidationResolver';
-import schema from './schema';
+import schema, {
+	filterPrivateOptions,
+	sortOptions,
+} from './schema';
 import { Paginator } from '../../components/paginator';
 import {
 	Guide,
@@ -43,9 +56,15 @@ const guidePath: NGuide.IGuidePathItem[] = [
 	},
 ];
 
-const getDefaultForm = (): NForum.IForm => {
+const getDefaultForm = (
+	override?: Partial<NForum.IForm>,
+): NForum.IForm => {
 	return {
 		text: '',
+		sortBy: 'date_created',
+		sortOrder: 'desc',
+		filterPrivate: 0,
+		...override,
 	};
 };
 
@@ -75,19 +94,49 @@ const Forum = () => {
 	const posts = forumData?.data?.posts;
 	const totalPosts = forumData?.data?.total;
 
-	const { register, handleSubmit, setValue } =
-		useForm<NForum.IForm>({
-			resolver: yupValidationResolver(schema()),
-			defaultValues: getDefaultForm(),
-		});
+	const {
+		register,
+		handleSubmit,
+		setValue,
+		formState,
+		control,
+	} = useForm<NForum.IForm>({
+		resolver: yupValidationResolver(schema()),
+		defaultValues: getDefaultForm(
+			Object.fromEntries(searchParams.entries()),
+		),
+	});
 
 	const onFilter = handleSubmit(
 		async (values) => {
-			if (values.text) {
+			if (values.text)
 				searchParams.set('search', values.text);
-			} else {
-				searchParams.delete('search');
-			}
+			else searchParams.delete('search');
+			if (
+				values.sortBy &&
+				values.sortBy !== 'date_created'
+			)
+				searchParams.set('sortBy', values.sortBy);
+			else searchParams.delete('sortBy');
+			if (
+				values.sortOrder &&
+				values.sortOrder !== 'desc'
+			)
+				searchParams.set(
+					'sortOrder',
+					values.sortOrder,
+				);
+			else searchParams.delete('sortOrder');
+			if (
+				values.filterPrivate &&
+				values.filterPrivate !== 0
+			)
+				searchParams.set(
+					'filterPrivate',
+					values.filterPrivate.toString(),
+				);
+			else searchParams.delete('filterPrivate');
+			searchParams.delete('page');
 			setSearchParams(searchParams);
 		},
 	);
@@ -112,12 +161,19 @@ const Forum = () => {
 			},
 			params: {
 				withAuthor: true,
+				withVotes: true,
+				countComments: true,
 				offset:
 					(Number(searchParams.get('page') || 1) -
 						1) *
 					perPage,
 				limit: perPage,
 				search: searchParams.get('search'),
+				sortBy: searchParams.get('sortBy'),
+				sortOrder: searchParams.get('sortOrder'),
+				filterPrivate: searchParams.get(
+					'filterPrivate',
+				),
 			},
 		});
 	};
@@ -138,46 +194,155 @@ const Forum = () => {
 					className="filter-form"
 					onSubmit={onFilter}
 				>
-					<div className="filters-left">
-						<TextField
-							variant="outlined"
-							size="small"
-							placeholder="Search"
-							InputProps={{
-								...register('text'),
-								startAdornment: (
-									<InputAdornment position="start">
-										<SearchIcon />
-									</InputAdornment>
-								),
-								endAdornment: (
-									<InputAdornment position="end">
-										<ButtonBase
-											disableRipple
-											onClick={() => {
-												clearSearch();
-												setValue('text', '');
+					<div className="form-row-horizontal">
+						<div className="filters-left">
+							<TextField
+								variant="outlined"
+								size="small"
+								placeholder="Search"
+								InputProps={{
+									...register('text'),
+									startAdornment: (
+										<InputAdornment position="start">
+											<SearchIcon />
+										</InputAdornment>
+									),
+									endAdornment: formState
+										.dirtyFields.text ? (
+										<InputAdornment position="end">
+											<ButtonBase
+												disableRipple
+												onClick={() => {
+													clearSearch();
+													setValue('text', '');
+												}}
+											>
+												<ClearIcon />
+											</ButtonBase>
+										</InputAdornment>
+									) : null,
+								}}
+							/>
+							<Controller
+								name="sortBy"
+								control={control}
+								render={({ field }) => (
+									<Autocomplete
+										style={{ minWidth: 200 }}
+										disableClearable
+										onChange={(_, data) =>
+											field.onChange(data?.value)
+										}
+										value={sortOptions.find(
+											(o) =>
+												o.value === field.value,
+										)}
+										renderInput={(params) => (
+											<TextField
+												{...params}
+												size="small"
+												label="Sort by"
+												inputProps={{
+													...params.inputProps,
+													readOnly: true,
+												}}
+											/>
+										)}
+										options={sortOptions}
+									/>
+								)}
+							/>
+							<Controller
+								name="sortOrder"
+								control={control}
+								render={({ field }) => (
+									<IconButton
+										onClick={() =>
+											field.onChange(
+												field.value === 'asc'
+													? 'desc'
+													: 'asc',
+											)
+										}
+									>
+										<SortIcon
+											style={{
+												transform: `scaleY(${
+													field.value === 'asc'
+														? -1
+														: 1
+												})`,
+												transition:
+													'transform .2s',
 											}}
-										>
-											<ClearIcon />
-										</ButtonBase>
-									</InputAdornment>
-								),
-							}}
-						/>
-						<Button type="submit">Search</Button>
-					</div>
-					<div className="filters-right">
-						{user ? (
-							<Button
-								type="button"
-								onClick={() =>
-									navigate(ROUTES.forumPostNew)
-								}
-							>
-								New post
+										/>
+									</IconButton>
+								)}
+							/>
+							<Button type="submit">
+								Search
 							</Button>
-						) : null}
+						</div>
+						<div className="filters-right">
+							{user ? (
+								<Button
+									type="button"
+									onClick={() =>
+										navigate(ROUTES.forumPostNew)
+									}
+								>
+									New post
+								</Button>
+							) : null}
+						</div>
+					</div>
+					<div className="form-row">
+						<Accordion className="accordion-simple accordion-filter">
+							<AccordionSummary>
+								<span>Advanced filters</span>
+								<ExpandMoreIcon />
+							</AccordionSummary>
+							<AccordionDetails>
+								<Controller
+									name="filterPrivate"
+									control={control}
+									render={({ field }) => (
+										<Autocomplete<
+											(typeof filterPrivateOptions)[number],
+											false,
+											true,
+											false
+										>
+											style={{ minWidth: 200 }}
+											disableClearable
+											onChange={(_, data) =>
+												field.onChange(
+													data?.value,
+												)
+											}
+											value={filterPrivateOptions.find(
+												(o) =>
+													o.value === field.value,
+											)}
+											renderInput={(params) => (
+												<TextField
+													{...params}
+													size="small"
+													label="Private"
+													inputProps={{
+														...params.inputProps,
+														readOnly: true,
+													}}
+												/>
+											)}
+											options={
+												filterPrivateOptions
+											}
+										/>
+									)}
+								/>
+							</AccordionDetails>
+						</Accordion>
 					</div>
 				</form>
 			</div>
@@ -236,6 +401,9 @@ export default Forum;
 export namespace NForum {
 	export interface IForm {
 		text?: string;
+		sortBy?: string;
+		sortOrder?: string;
+		filterPrivate?: number;
 	}
 }
 
@@ -260,21 +428,35 @@ const ForumStyle = styled.div`
 		box-sizing: border-box;
 		border-radius: 10px;
 		.filter-form {
-			align-items: center;
 			display: flex;
-			column-gap: 12px;
-			> * {
-				width: 50%;
-			}
-			.filters-left {
+			flex-direction: column;
+			row-gap: 12px;
+			.form-row-horizontal {
+				align-items: center;
 				display: flex;
 				column-gap: 12px;
+				> * {
+					width: 50%;
+				}
+				.filters-left {
+					display: flex;
+					column-gap: 12px;
+				}
+				.filters-right {
+					display: flex;
+					justify-content: flex-end;
+					column-gap: 12px;
+				}
 			}
-			.filters-right {
-				display: flex;
-				justify-content: flex-end;
-				column-gap: 12px;
+			.form-row {
+				//
 			}
+		}
+	}
+
+	.accordion-filter {
+		.MuiAccordionDetails-root {
+			display: flex;
 		}
 	}
 

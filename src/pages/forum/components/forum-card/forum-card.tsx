@@ -1,14 +1,20 @@
-import styled from 'styled-components';
+import styled, {
+	useTheme,
+} from 'styled-components';
 import React from 'react';
 import {
 	Avatar,
-	ButtonBase,
+	Badge,
 	IconButton,
 	Tooltip,
 	useMediaQuery,
 } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
-import { Delete as DeleteIcon } from '@mui/icons-material';
+import {
+	Delete as DeleteIcon,
+	SpeakerNotes as SpeakerNotesIcon,
+	UnfoldMore as UnfoldMoreIcon,
+} from '@mui/icons-material';
 import dayjs from '../../../../utils/dayjs';
 import { ROUTES } from '../../../../routes';
 import buildRoute from '../../../../utils/build-route';
@@ -96,6 +102,8 @@ const ForumCard = (props: NForumCard.IProps) => {
 		refetchPosts,
 	} = props;
 
+	const theme = useTheme();
+
 	const isPhone = useMediaQuery(
 		CSSMediaSize.phone,
 	);
@@ -118,8 +126,104 @@ const ForumCard = (props: NForumCard.IProps) => {
 		);
 	};
 
+	const CommentsCounter = (
+		<Badge
+			className="comments-counter"
+			overlap="circular"
+			anchorOrigin={{
+				vertical: 'top',
+				horizontal: 'right',
+			}}
+			sx={{
+				'& .MuiBadge-badge': {
+					minWidth: 16,
+					height: 16,
+					fontSize: '0.65rem',
+					padding: 0,
+					backgroundColor:
+						theme?.palette?.background?.default,
+					color:
+						(forum?.comment_count || 0) > 0
+							? theme?.palette?.text?.primary
+							: theme?.palette?.text?.secondary,
+				},
+			}}
+			badgeContent={forum?.comment_count || 0}
+			max={99}
+			showZero
+			color="default"
+		>
+			<Avatar
+				sx={{
+					width: 26,
+					height: 26,
+					backgroundColor: 'transparent',
+				}}
+			>
+				<SpeakerNotesIcon
+					sx={{
+						fill:
+							(forum?.comment_count || 0) > 0
+								? theme?.palette?.text?.primary
+								: theme?.palette?.text?.secondary,
+					}}
+				/>
+			</Avatar>
+		</Badge>
+	);
+
+	const VotesCounter = (
+		<Badge
+			className="votes-counter"
+			overlap="circular"
+			anchorOrigin={{
+				vertical: 'top',
+				horizontal: 'right',
+			}}
+			sx={{
+				'& .MuiBadge-badge': {
+					minWidth: 16,
+					height: 16,
+					fontSize: '0.65rem',
+					padding: 0,
+					backgroundColor:
+						theme?.palette?.background?.default,
+					color:
+						(forum?.votes?.score || 0) > 0
+							? theme?.palette?.text?.primary
+							: theme?.palette?.text?.secondary,
+				},
+			}}
+			badgeContent={forum?.votes?.score || 0}
+			max={99}
+			showZero
+			color="default"
+		>
+			<Avatar
+				sx={{
+					width: 26,
+					height: 26,
+					backgroundColor: 'transparent',
+				}}
+			>
+				<UnfoldMoreIcon
+					sx={{
+						fill:
+							(forum?.votes?.score || 0) > 0
+								? theme?.palette?.text?.primary
+								: theme?.palette?.text?.secondary,
+					}}
+				/>
+			</Avatar>
+		</Badge>
+	);
+
 	const LeftContainer = (
 		<>
+			<div className="post-badges">
+				{!isPhone ? VotesCounter : null}
+				{!isPhone ? CommentsCounter : null}
+			</div>
 			{!forum?.public ? <PrivateTag /> : null}
 			<div className="forum-title">
 				<span>{forum?.title}</span>
@@ -141,6 +245,7 @@ const ForumCard = (props: NForumCard.IProps) => {
 
 	const RightContainer = (
 		<>
+			{isPhone ? CommentsCounter : null}
 			<span className="created-at">
 				{dayjs(forum.created_at).format(
 					'YYYY-MM-DD HH:mm',
@@ -156,6 +261,7 @@ const ForumCard = (props: NForumCard.IProps) => {
 
 	return (
 		<ForumCardStyle
+			className="forum-card"
 			onClick={(e: React.MouseEvent) =>
 				navigate(
 					buildRoute(ROUTES.forumPost, {
@@ -209,7 +315,9 @@ const ForumCardStyle = styled.div`
 	cursor: pointer;
 	min-height: 52px;
 	&:hover {
-		box-shadow: 0 0 8px 0 var(--c-p);
+		box-shadow: 0 0 8px 0
+			${({ theme }) =>
+				theme?.palette?.background?.paper};
 	}
 	> * {
 		flex: 1;
@@ -243,18 +351,24 @@ const ForumCardStyle = styled.div`
 		display: flex;
 		align-items: center;
 		max-width: 300px;
-		column-gap: 5px;
+		column-gap: 12px;
+		.post-badges {
+			display: grid;
+			grid-template-columns: repeat(2, 1fr);
+			row-gap: 3px;
+			column-gap: 6px;
+		}
 	}
 	.middle-container {
 		display: flex;
-		column-gap: 5px;
-		/*align-items: center;*/
+		column-gap: 12px;
+		align-items: center;
 	}
 	.right-container {
 		display: flex;
 		justify-content: flex-end;
 		align-items: center;
-		column-gap: 5px;
+		column-gap: 12px;
 	}
 
 	.forum-title {

@@ -146,6 +146,51 @@ export default createGlobalStyle`
 		padding-left: 4px !important;
 	}
 
+	.accordion-simple {
+		background-color: transparent !important;
+		background-image: none !important;
+		box-shadow: none !important;
+		.MuiAccordionSummary-root {
+			min-height: 0 !important;
+			width: max-content;
+			margin: 0 auto;
+			.MuiAccordionSummary-content {
+				margin: 0;
+				justify-content: center;
+				&:hover {
+					text-decoration: underline;
+				}
+				[data-testid="ExpandMoreIcon"] {
+					transition: ${({ theme }) =>
+						theme?.transitions?.create(
+							'transform',
+							{
+								duration:
+									theme?.transitions?.duration
+										?.shortest,
+							},
+						)}
+				}
+				&.Mui-expanded {
+					[data-testid="ExpandMoreIcon"] {
+						transform: rotate(180deg);
+					}
+				}
+			}
+		}
+		.MuiCollapse-root {
+			.MuiCollapse-wrapper {
+				.MuiCollapse-wrapperInner {
+					.MuiAccordion-region {
+						.MuiAccordionDetails-root {
+							padding: 6px 16px;
+						}
+					}
+				}
+			}
+		}
+	}
+
 	${CSSMediaSize.tablet} {
 		::-webkit-scrollbar {
 			width: 5px;

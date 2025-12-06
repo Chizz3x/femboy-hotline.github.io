@@ -46,6 +46,7 @@ const UserPosts = (props: NUserPosts.IProps) => {
 			params: {
 				withVotes: true,
 				withAuthor: true,
+				countComments: true,
 				offset:
 					(Number(
 						searchParams.get('posts-page') || 1,
@@ -138,5 +139,9 @@ const UserPostsStyle = styled.div`
 	width: 100%;
 	.paginator {
 		align-self: center;
+	}
+	.forum-card {
+		background-color: ${({ theme }) =>
+			theme?.palette?.background?.default};
 	}
 `;

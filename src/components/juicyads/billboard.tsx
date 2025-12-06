@@ -69,6 +69,10 @@ const JABillboard = (
 						iframe[0]?.offsetHeight === 0
 					) {
 						setAdBlocked(true);
+					} else {
+						// const iframeItem = iframe?.item(0);
+						// if (iframeItem)
+						//	iframeItem.style.zIndex = '100';
 					}
 				}, 1000);
 			} catch (e) {
@@ -101,7 +105,8 @@ const JABillboard = (
 		return (
 			<JABillboardStyle className="ad-container ad-billboard ad-blocked">
 				Please whitelist this website on your ad
-				blocker. (We don&apos;t use click ads ;P)
+				blocker. (We don&apos;t use annoying click
+				ads ;P)
 				<p>THANKS!</p>
 			</JABillboardStyle>
 		);
